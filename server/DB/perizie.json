@@ -1,0 +1,46 @@
+[
+    {
+        "_id": 101,
+        "cod_user": 1,
+        "date": "2024-02-28T10:00:00Z",
+        "coordinates": {
+            "lat": 45.1234,
+            "long": 9.5678
+        },
+        "description": "Perizia dettagliata dell'incidente",
+        "photos": [
+            {
+                "url": "url_foto_1.jpg",
+                "comment": "Vista dall'alto"
+            },
+            {
+                "url": "url_foto_2.jpg",
+                "comments": [
+                    "Dettaglio danni"
+                ]
+            }
+        ]
+    },
+    {
+        "_id": 102,
+        "cod_user": 2,
+        "date": "2024-02-28T12:30:00Z",
+        "coordinates": {
+            "lat": 46.9876,
+            "long": 10.9876
+        },
+        "description": "Perizia in luogo remoto",
+        "photos": [
+            {
+                "url": "url_foto_3.jpg",
+                "comment": "Condizioni atmosferiche"
+            },
+            {
+                "url": "url_foto_4.jpg",
+                "comments": [
+                    "Scenario generale"
+                ]
+            }
+        ]
+    }
+]
