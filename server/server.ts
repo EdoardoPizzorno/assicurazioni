@@ -129,6 +129,14 @@ app.use("/", _cors(corsOptions));
 
 //#region ROUTES
 
+app.get("/api/test", (req, res, next) => {
+    res.send({ "status": "ok" });
+});
+
+//#endregion
+
+//#region AUTHENTICATION
+
 const OAUTH_CREDENTIALS = JSON.parse(process.env.OAUTH_CREDENTIALS as any)
 const OAuth2 = google.auth.OAuth2;
 const OAuth2Client = new OAuth2(
@@ -140,15 +148,14 @@ OAuth2Client.setCredentials({
 });
 
 app.post("/api/login", async (req, res, next) => {
-    let username = req["body"].username;
-    let pwd = req["body"].password;
-    console.log(username, pwd)
+    let email = req["body"]["body"].email;
+    let pwd = req["body"]["body"].password;
 
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
-    const collection = client.db(DBNAME).collection("mail");
-    let regex = new RegExp(`^${username}$`, "i");
-    let rq = collection.findOne({ "username": regex }, { "projection": { "username": 1, "password": 1 } });
+    const collection = client.db(DBNAME).collection("UTENTI");
+    let regex = new RegExp(`^${email}$`, "i");
+    let rq = collection.findOne({ "email": regex }, { "projection": { "email": 1, "password": 1 } });
     rq.then((dbUser) => {
         if (!dbUser) {
             res.status(401).send("Username non valido");
@@ -164,10 +171,9 @@ app.post("/api/login", async (req, res, next) => {
                     }
                     else {
                         let token = createToken(dbUser);
-                        console.log(token);
                         res.setHeader("authorization", token);
                         res.setHeader("access-control-expose-headers", "authorization");
-                        res.send({ "ris": "ok" });
+                        res.send({ "status": "ok" });
                     }
                 }
             })
@@ -199,17 +205,13 @@ app.post("/api/googleLogin", async (req: any, res: any, next: any) => {
                 console.log(token);
                 res.setHeader("authorization", token);
                 res.setHeader("access-control-expose-headers", "authorization");
-                res.send({ "ris": "ok" });
+                res.send({ "status": "ok" });
             }
         });
         rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
         rq.finally(() => client.close());
     }
 });
-
-//#endregion
-
-//#region AUTHENTICATION
 
 app.use("/api/", (req: any, res: any, next: any) => {
     if (!req["body"].skipCheckToken) {
@@ -224,7 +226,6 @@ app.use("/api/", (req: any, res: any, next: any) => {
                 }
                 else {
                     let newToken = createToken(payload);
-                    console.log(newToken);
                     res.setHeader("authorization", newToken);
                     res.setHeader("access-control-expose-headers", "authorization");
                     req["payload"] = payload;

@@ -8,9 +8,18 @@ import { HomeService } from '../../services/home.service';
 })
 export class HomeComponent {
 
-  constructor() { }
+  constructor(private homeService: HomeService) {
+    
+    let token = localStorage.getItem("ASSICURAZIONI_TOKEN");
+    if (!token || token === "undefined") {
+      window.location.href = "/login";
+    }
 
-  ngOnInit(): void { }
+  }
+
+  ngOnInit(): void {
+    this.homeService.getTest();
+  }
 
   display: any;
   center: google.maps.LatLngLiteral = {
@@ -26,5 +35,5 @@ export class HomeComponent {
   move(event: google.maps.MapMouseEvent) {
     if (event.latLng != null) this.display = event.latLng.toJSON();
   }
-  
+
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'login',
@@ -10,10 +11,10 @@ export class LoginComponent {
   email: string = "";
   password: string = "";
 
-  constructor() { }
+  constructor(private loginService: LoginService) { }
 
   login() {
-    
+    this.loginService.checkLogin(this.email, this.password);
   }
 
 }
