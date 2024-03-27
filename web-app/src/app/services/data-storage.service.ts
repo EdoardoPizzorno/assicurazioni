@@ -11,14 +11,13 @@ export class DataStorageService {
 
     _axios.interceptors.response.use((response: any) => {
       let token = response.headers["authorization"];
-      console.log("res: " + token)
-      localStorage.setItem("ASSICURAZIONI_TOKEN", token);
+      if (token != undefined && token != null)
+        localStorage.setItem("ASSICURAZIONI_TOKEN", token);
       return response;
     });
 
     _axios.interceptors.request.use((config: any) => {
       let token = localStorage.getItem("ASSICURAZIONI_TOKEN");
-      console.log("req: " + token)
       if (token) {
         if (token === "undefined") {
           localStorage.removeItem("ASSICURAZIONI_TOKEN");

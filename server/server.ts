@@ -130,7 +130,7 @@ app.use("/", _cors(corsOptions));
 //#region ROUTES
 
 app.get("/api/test", (req, res, next) => {
-    res.send({ "status": "ok" });
+    res.status(200).send("Prova")
 });
 
 //#endregion
@@ -214,28 +214,23 @@ app.post("/api/googleLogin", async (req: any, res: any, next: any) => {
 });
 
 app.use("/api/", (req: any, res: any, next: any) => {
-    if (!req["body"].skipCheckToken) {
-        if (!req.headers["authorization"]) {
-            res.status(403).send("Token mancante");
-        }
-        else {
-            let token = req.headers["authorization"];
-            _jwt.verify(token, ENCRYPTION_KEY, (err, payload) => {
-                if (err) {
-                    res.status(403).send(`Token non valido: ${err}`);
-                }
-                else {
-                    let newToken = createToken(payload);
-                    res.setHeader("authorization", newToken);
-                    res.setHeader("access-control-expose-headers", "authorization");
-                    req["payload"] = payload;
-                    next();
-                }
-            });
-        }
+    if (!req.headers["authorization"]) {
+        res.status(403).send("Token mancante");
     }
     else {
-        next();
+        let token = req.headers["authorization"];
+        _jwt.verify(token, ENCRYPTION_KEY, (err, payload) => {
+            if (err) {
+                res.status(403).send(`Token non valido: ${err}`);
+            }
+            else {
+                let newToken = createToken(payload);
+                res.setHeader("authorization", newToken);
+                res.setHeader("access-control-expose-headers", "authorization");
+                req["payload"] = payload;
+                next();
+            }
+        });
     }
 });
 

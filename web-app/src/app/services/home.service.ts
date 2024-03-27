@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { MAPS_API_KEY } from './env';
 import { DataStorageService } from './data-storage.service';
 
 @Injectable({
@@ -7,18 +6,11 @@ import { DataStorageService } from './data-storage.service';
 })
 export class HomeService {
 
-  test: any;
+  headQuarter: any = {
+    lat: 44.5558401,
+    lng: 7.7358973
+  }
 
   constructor(private dataStorage: DataStorageService) { }
-
-  getTest() {
-    this.dataStorage.sendRequest('GET', '/test')
-      .then((response: any) => {
-        this.test = response.data;
-      })
-      .catch((error: any) => {
-        console.error(error);
-      });
-  }
 
 }
