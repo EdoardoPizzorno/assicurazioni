@@ -18,7 +18,7 @@ export class HomeComponent {
 
   @ViewChild(MapInfoWindow, { static: false }) infoWindow!: MapInfoWindow;
 
-  constructor(private homeService: HomeService) {
+  constructor(public homeService: HomeService) {
 
     this.checkToken();
 
@@ -32,6 +32,9 @@ export class HomeComponent {
       title: "HEADQUARTER",
       info: "Descrizione Headquarter"
     });
+
+    // Get Perizie
+    this.homeService.getPerizie();
 
   }
 
