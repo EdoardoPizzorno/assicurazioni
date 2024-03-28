@@ -13,12 +13,4 @@ export class HomeService {
 
   constructor(private dataStorage: DataStorageService) { }
 
-  getTest() {
-    this.dataStorage.sendRequest("GET", "/test")
-      .catch(this.dataStorage.error)
-      .then((data) => {
-        console.log(data)
-      })
-  }
-
 }

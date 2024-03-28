@@ -194,7 +194,6 @@ app.post("/api/googleLogin", async (req: any, res: any, next: any) => {
             }
             else {
                 let token = createToken(dbUser);
-                console.log(token);
                 res.setHeader("authorization", token);
                 res.setHeader("access-control-expose-headers", "authorization");
                 res.send({ "status": "ok" });
@@ -211,9 +210,7 @@ app.use("/api/", (req: any, res: any, next: any) => {
     }
     else {
         let token = req.headers["authorization"];
-        console.log(token)
         _jwt.verify(token, ENCRYPTION_KEY, (err, payload) => {
-            console.log(err)
             if (err) {
                 res.status(403).send(`Token non valido: ${err}`);
             }

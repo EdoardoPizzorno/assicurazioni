@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { HomeService } from '../../services/home.service';
-import { MapInfoWindow } from '@angular/google-maps';
+import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 
 @Component({
   selector: 'home',
@@ -14,9 +14,9 @@ export class HomeComponent {
   zoom: number;
 
   markers: any[] = [];
+  @ViewChild(MapMarker, { static: false }) markerElem!: MapMarker;
 
-  @ViewChild("infoWindow") infoWindow!: MapInfoWindow;
-  infoContent: string = "";
+  @ViewChild(MapInfoWindow, { static: false }) infoWindow!: MapInfoWindow;
 
   constructor(private homeService: HomeService) {
 
@@ -33,8 +33,6 @@ export class HomeComponent {
       info: "Descrizione Headquarter"
     });
 
-    this.homeService.getTest();
-    
   }
 
   //#region MAP & MARKERS EVENTS
@@ -49,9 +47,8 @@ export class HomeComponent {
       this.display = event.latLng.toJSON();
   }
 
-  openInfo(markerElem: any, content: string) {
-    this.infoContent = content;
-    this.infoWindow.open(markerElem);
+  openInfo() {
+    this.infoWindow.open(this.markerElem);
   }
 
   //#endregion
