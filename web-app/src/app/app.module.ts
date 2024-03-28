@@ -11,6 +11,8 @@ import { DecimalPipe } from '@angular/common';
 import { UserComponent } from './components/user/user.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { UserListComponent } from './components/user-list/user-list.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { UserListComponent } from './components/user-list/user-list.component';
     LoginComponent,
     UserComponent,
     AddUserComponent,
-    UserListComponent
+    UserListComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
