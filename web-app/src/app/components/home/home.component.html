@@ -2,9 +2,10 @@
 
 <div class="container p-1">
     <google-map height="450px" width="100%" [center]="center" [zoom]="zoom" (mapClick)="moveMap($event)">
-        <map-marker #markerElem *ngFor="let marker of markers" [position]="marker.position" [label]="marker.label"
-            [title]="marker.title" [options]="marker.options">
+        <map-marker #markerElem *ngFor="let marker of markers" [position]="marker.position" [title]="marker.title"
+            (mapClick)="openInfo(markerElem, marker.info)">
         </map-marker>
+        <map-info-window #infoWindow>{{ infoContent }}</map-info-window>
     </google-map>
 </div>
 

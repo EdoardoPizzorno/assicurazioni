@@ -47,4 +47,20 @@ export class DataStorageService {
         return _axios.get(resource);
     }
   }
+
+  public error(err: any) {
+    if (!err.response)
+      alert("Connection Refused or Server timeout");
+    else if (err.response.status == 200)
+      alert("Formato dei dati non corretto : " + err.response.data);
+    else if (err.response.status == 403) {
+      alert("Sessione scaduta");
+      localStorage.removeItem("ASSICURAZIONI_TOKEN")
+      window.location.href = "/login"
+    }
+    else {
+      alert("Server Error: " + err.response.status + " - " + err.response.data);
+    }
+  }
+
 }

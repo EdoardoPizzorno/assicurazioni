@@ -127,14 +127,6 @@ app.use("/", _cors(corsOptions));
 
 //#endregion
 
-//#region ROUTES
-
-app.get("/api/test", (req, res, next) => {
-    res.status(200).send("Prova")
-});
-
-//#endregion
-
 //#region AUTHENTICATION
 
 const OAUTH_CREDENTIALS = JSON.parse(process.env.OAUTH_CREDENTIALS as any)
@@ -219,7 +211,9 @@ app.use("/api/", (req: any, res: any, next: any) => {
     }
     else {
         let token = req.headers["authorization"];
+        console.log(token)
         _jwt.verify(token, ENCRYPTION_KEY, (err, payload) => {
+            console.log(err)
             if (err) {
                 res.status(403).send(`Token non valido: ${err}`);
             }
@@ -245,6 +239,14 @@ function createToken(data) {
     let token = _jwt.sign(payload, ENCRYPTION_KEY);
     return token;
 }
+
+//#endregion
+
+//#region ROUTES
+
+app.get("/api/test", (req, res, next) => {
+    res.send("Prova");
+});
 
 //#endregion
 

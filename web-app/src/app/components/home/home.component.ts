@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { HomeService } from '../../services/home.service';
-import { MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { MapInfoWindow } from '@angular/google-maps';
 
 @Component({
   selector: 'home',
@@ -12,18 +12,29 @@ export class HomeComponent {
   display: any;
   center: google.maps.LatLngLiteral;
   zoom: number;
+
   markers: any[] = [];
 
+  @ViewChild("infoWindow") infoWindow!: MapInfoWindow;
+  infoContent: string = "";
+
   constructor(private homeService: HomeService) {
+
     this.checkToken();
+
     // Set map
     this.center = this.homeService.headQuarter;
     this.zoom = 12;
+
     // Add headquarter marker
     this.markers.push({
       position: this.homeService.headQuarter,
       title: "HEADQUARTER",
+      info: "Descrizione Headquarter"
     });
+
+    this.homeService.getTest();
+    
   }
 
   //#region MAP & MARKERS EVENTS
@@ -38,25 +49,14 @@ export class HomeComponent {
       this.display = event.latLng.toJSON();
   }
 
-  addMarker() {
-    this.markers.push({
-      position: {
-        lat: this.center.lat + ((Math.random() - 0.5) * 2) / 10,
-        lng: this.center.lng + ((Math.random() - 0.5) * 2) / 10,
-      },
-      label: {
-        color: 'red',
-        text: 'Marker label ' + (this.markers.length + 1),
-      },
-      title: 'Marker title ' + (this.markers.length + 1)
-    });
+  openInfo(markerElem: any, content: string) {
+    this.infoContent = content;
+    this.infoWindow.open(markerElem);
   }
-
-
 
   //#endregion
 
-  //#region AUTHORITAZION
+  //#region AUTHORIZATION
 
   checkToken() {
     let token = localStorage.getItem("ASSICURAZIONI_TOKEN");
