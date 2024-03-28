@@ -35,7 +35,7 @@ export class HomeComponent {
 
     // Get Perizie
     this.homeService.getPerizie();
-    this.homeService.sendNewPassword();
+
   }
 
   //#region MAP & MARKERS EVENTS

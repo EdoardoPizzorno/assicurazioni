@@ -1,14 +1,20 @@
 [
     {
-        "_id": 1,
         "name": "Mario",
         "surname": "Rossi",
-        "email": "mario.rossi@email.com"
+        "email": "mario.rossi@rilievi.it",
+        "password": "password"
     },
     {
-        "_id": 2,
         "name": "Paolo",
         "surname": "Bianchi",
-        "email": "paola.bianchi@email.com"
+        "email": "paola.bianchi@rilievi.it",
+        "password": "password"
+    },
+    {
+        "name": "ADMIN",
+        "surname": "ADMIN",
+        "email": "admin@rilievi.it",
+        "password": "password"
     }
 ]

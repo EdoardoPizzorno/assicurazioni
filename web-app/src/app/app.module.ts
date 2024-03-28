@@ -8,12 +8,18 @@ import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { DecimalPipe } from '@angular/common';
+import { UserComponent } from './components/user/user.component';
+import { AddUserComponent } from './components/add-user/add-user.component';
+import { UserListComponent } from './components/user-list/user-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    UserComponent,
+    AddUserComponent,
+    UserListComponent
   ],
   imports: [
     BrowserModule,

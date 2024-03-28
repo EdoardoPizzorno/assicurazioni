@@ -1,0 +1,4 @@
+.bi-plus::before {
+    font-weight: bold;
+    font-size: 15pt
+}

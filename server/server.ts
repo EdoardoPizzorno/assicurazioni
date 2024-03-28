@@ -255,9 +255,34 @@ app.get("/api/perizie", async (req, res, next) => {
     rq.finally(() => client.close());
 });
 
-app.post("/api/sendNewPassword", async (req, res, next) => {
-    let username = req["body"]["body"].to;
-    let password = generatePassword();
+app.post("/api/user", async (req, res, next) => {
+    const user = req["body"]["body"].user;
+    user["_id"] = new ObjectId();
+    user["password"] = generatePassword();
+
+    sendNewPassword(user["email"], user["password"], res);
+    user["password"] = _bcrypt.hashSync(user["password"]);
+
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("UTENTI");
+    let rq = collection.insertOne(user)
+    rq.then((data) => res.send(data))
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    rq.finally(() => client.close());
+})
+
+//#endregion
+
+//#region INTERNAL FUNCTIONS
+
+function generatePassword(): string {
+    const length: number = 12;
+    const printableAsciiChars = Array.from({ length: 95 }, (_, i) => String.fromCharCode(i + 32));
+    return Array.from({ length }, () => printableAsciiChars[Math.floor(Math.random() * printableAsciiChars.length)]).join('');
+}
+
+async function sendNewPassword(username: string, password: string, res: any) {
     message = message.replace("__user", username).replace("__password", password);
     const access_token = await OAuth2Client.getAccessToken().catch((err) => {
         res.status(500).send(`Errore richiesta Access_Token a Google: ${err}`);
@@ -295,16 +320,6 @@ app.post("/api/sendNewPassword", async (req, res, next) => {
             res.send("Email inviata correttamente!");
         }
     });
-});
-
-//#endregion
-
-//#region INTERNAL FUNCTIONS
-
-function generatePassword(): string {
-    const length: number = 12;
-    const printableAsciiChars = Array.from({ length: 95 }, (_, i) => String.fromCharCode(i + 32));
-    return Array.from({ length }, () => printableAsciiChars[Math.floor(Math.random() * printableAsciiChars.length)]).join('');
 }
 
 //#endregion
