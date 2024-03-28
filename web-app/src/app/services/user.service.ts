@@ -6,7 +6,17 @@ import { DataStorageService } from './data-storage.service';
 })
 export class UserService {
 
+  users: any;
+
   constructor(private dataStorage: DataStorageService) { }
+
+  getUsers() {
+    this.dataStorage.sendRequest("GET", "/users")
+      .catch(this.dataStorage.error)
+      .then((response) => {
+        this.users = response.data;
+      })
+  }
 
   addUser(user: any) {
     this.dataStorage.sendRequest("POST", "/user", { user })

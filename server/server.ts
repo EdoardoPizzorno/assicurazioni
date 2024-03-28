@@ -255,6 +255,16 @@ app.get("/api/perizie", async (req, res, next) => {
     rq.finally(() => client.close());
 });
 
+app.get("/api/users", async (req, res, next) => {
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("UTENTI");
+    let rq = collection.find().project({ "name": 1, "surname": 1, "email": 1 }).toArray();
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    rq.finally(() => client.close());
+})
+
 app.post("/api/user", async (req, res, next) => {
     const user = req["body"]["body"].user;
     user["_id"] = new ObjectId();
