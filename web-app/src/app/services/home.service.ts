@@ -21,11 +21,16 @@ export class HomeService {
       .catch(this.dataStorage.error)
       .then((response) => {
         this.perizie = response.data;
-        // 150000 becomes 150,000
-        for (let perizia of this.perizie) {
-          perizia.evaluation = this.decimalPipe.transform(perizia.evaluation, '1.0-3');
-        }
       })
+  }
+
+  sendNewPassword() {
+    let mail = {
+      "to": "e.pizzorno.2293@vallauri.edu",
+      "subject": "Prova",
+      "message": "Messaggio"
+  };
+    this.dataStorage.sendRequest("POST", "/sendNewPassword", mail)
   }
 
 }

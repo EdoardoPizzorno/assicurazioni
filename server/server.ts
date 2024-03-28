@@ -11,6 +11,8 @@ import _axios from "axios";
 import _bcrypt from "bcryptjs";
 import _jwt from "jsonwebtoken";
 import { google } from "googleapis";
+import _nodemailer from "nodemailer";
+
 import { MongoClient, ObjectId } from "mongodb";
 
 
@@ -128,6 +130,8 @@ app.use("/", _cors(corsOptions));
 //#endregion
 
 //#region AUTHENTICATION
+
+let message = _fs.readFileSync("./message.html", "utf8");
 
 const OAUTH_CREDENTIALS = JSON.parse(process.env.OAUTH_CREDENTIALS as any)
 const OAuth2 = google.auth.OAuth2;
@@ -250,6 +254,58 @@ app.get("/api/perizie", async (req, res, next) => {
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
 });
+
+app.post("/api/sendNewPassword", async (req, res, next) => {
+    let username = req["body"]["body"].to;
+    let password = generatePassword();
+    message = message.replace("__user", username).replace("__password", password);
+    const access_token = await OAuth2Client.getAccessToken().catch((err) => {
+        res.status(500).send(`Errore richiesta Access_Token a Google: ${err}`);
+    });
+
+    const auth = {
+        "type": "OAuth2",
+        "user": username,
+        "clientId": OAUTH_CREDENTIALS.client_id,
+        "clientSecret": OAUTH_CREDENTIALS.client_secret,
+        "refreshToken": OAUTH_CREDENTIALS.refresh_token,
+        "accessToken": access_token
+    }
+    const transporter = _nodemailer.createTransport({
+        "service": "gmail",
+        "auth": auth
+    });
+    let mailOptions = {
+        "from": auth.user,
+        "to": username,
+        "subject": "Nuova password di accesso a Rilievi e Perizie",
+        "html": message,
+        /*"attachments": [
+            {
+                "filename": "nuovaPassword.png",
+                "path": "./qrCode.png"
+            }
+        ]*/
+    }
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+            res.status(500).send(`Errore invio mail:\n${err.message}`);
+        }
+        else {
+            res.send("Email inviata correttamente!");
+        }
+    });
+});
+
+//#endregion
+
+//#region INTERNAL FUNCTIONS
+
+function generatePassword(): string {
+    const length: number = 12;
+    const printableAsciiChars = Array.from({ length: 95 }, (_, i) => String.fromCharCode(i + 32));
+    return Array.from({ length }, () => printableAsciiChars[Math.floor(Math.random() * printableAsciiChars.length)]).join('');
+}
 
 //#endregion
 
