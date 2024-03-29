@@ -1,7 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { HomeService } from '../../services/home.service';
-import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { LoginService } from '../../services/login.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'home',
@@ -14,9 +14,6 @@ export class HomeComponent {
   center: google.maps.LatLngLiteral;
   zoom: number;
 
-  markers: any[] = [];
-  @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
-
   constructor(public homeService: HomeService, private loginService: LoginService) {
 
     this.loginService.checkToken();
@@ -25,26 +22,11 @@ export class HomeComponent {
     this.center = this.homeService.headQuarter;
     this.zoom = 12;
 
-    // Add headquarter marker
-    this.markers.push({
-      position: this.homeService.headQuarter,
-      title: "HEADQUARTER",
-      info: "Descrizione Headquarter"
-    });
-
   }
 
   async ngOnInit() {
     // Get Perizie
     await this.homeService.getPerizie();
-    // Load markers
-    for (let perizia of this.homeService.perizie) {
-      this.markers.push({
-        position: perizia.coords,
-        title: perizia.description,
-        info: perizia.description
-      })
-    }
   }
 
   //#region MAP & MARKERS EVENTS
@@ -59,9 +41,33 @@ export class HomeComponent {
       this.display = event.latLng.toJSON();
   }
 
-  openInfo(marker: any) {
-    console.log(marker)
-    this.infoWindow.open(marker);
+  openInfo(perizia: any) {
+    let imagesHtml = '';
+    perizia.photos.forEach((image: any) => {
+      // Load images
+      imagesHtml += `
+      <div style="display: inline-block; border: 1px solid gray; border-radius: 5px">
+        <img src="${image.url}" alt="Image" style="width: 100px; height: 75px">
+      </div>
+      `;
+    });
+
+
+    Swal.fire({
+      title: perizia.description,
+      html: `
+        <b>Data:</b> ${perizia.date} - ${perizia.time}<br>
+        <b>Descrizione:</b> ${perizia.description}<br>
+        <br>
+        <div>
+          ${imagesHtml}
+        </div>
+      `,
+      imageUrl: perizia.immagine,
+      imageWidth: 400,
+      imageHeight: 200,
+      imageAlt: 'Custom image',
+    });
   }
 
   //#endregion
