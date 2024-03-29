@@ -14,9 +14,7 @@ export class HomeComponent {
   zoom: number;
 
   markers: any[] = [];
-  @ViewChild(MapMarker, { static: false }) markerElem!: MapMarker;
-
-  @ViewChild(MapInfoWindow, { static: false }) infoWindow!: MapInfoWindow;
+  @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
 
   constructor(public homeService: HomeService) {
 
@@ -33,9 +31,19 @@ export class HomeComponent {
       info: "Descrizione Headquarter"
     });
 
-    // Get Perizie
-    this.homeService.getPerizie();
+  }
 
+  async ngOnInit() {
+    // Get Perizie
+    await this.homeService.getPerizie();
+    // Load markers
+    for (let perizia of this.homeService.perizie) {
+      this.markers.push({
+        position: perizia.coords,
+        title: perizia.description,
+        info: perizia.description
+      })
+    }
   }
 
   //#region MAP & MARKERS EVENTS
@@ -50,8 +58,9 @@ export class HomeComponent {
       this.display = event.latLng.toJSON();
   }
 
-  openInfo() {
-    this.infoWindow.open(this.markerElem);
+  openInfo(marker: any) {
+    console.log(marker)
+    this.infoWindow.open(marker);
   }
 
   //#endregion

@@ -16,21 +16,18 @@ export class HomeService {
 
   constructor(private dataStorage: DataStorageService, private decimalPipe: DecimalPipe) { }
 
-  getPerizie() {
-    this.dataStorage.sendRequest("GET", "/perizie")
-      .catch(this.dataStorage.error)
-      .then((response) => {
-        this.perizie = response.data;
-      })
-  }
-
-  sendNewPassword() {
-    let mail = {
-      "to": "e.pizzorno.2293@vallauri.edu",
-      "subject": "Prova",
-      "message": "Messaggio"
-  };
-    this.dataStorage.sendRequest("POST", "/sendNewPassword", mail)
+  getPerizie(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.dataStorage.sendRequest("GET", "/perizie")
+        .catch(error => {
+          this.dataStorage.error(error);
+          reject(error);
+        })
+        .then(response => {
+          this.perizie = response.data;
+          resolve();
+        });
+    });
   }
 
 }
