@@ -25,7 +25,6 @@ export class HomeComponent {
   }
 
   async ngOnInit() {
-    // Get Perizie
     await this.homeService.getPerizie();
   }
 
@@ -56,7 +55,7 @@ export class HomeComponent {
     Swal.fire({
       title: perizia.description,
       html: `
-        <b>Data:</b> ${perizia.date} - ${perizia.time}<br>
+        <b>Data:</b> ${perizia.date} alle ${perizia.time}<br>
         <b>Descrizione:</b> ${perizia.description}<br>
         <br>
         <div>
