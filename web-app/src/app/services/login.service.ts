@@ -24,4 +24,12 @@ export class LoginService {
       });
   }
 
+  checkToken() {
+    let token = localStorage.getItem("ASSICURAZIONI_TOKEN");
+    if (!token || token === "undefined") {
+      window.location.href = "/login";
+    }
+    return true;
+  }
+
 }

@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { HomeService } from '../../services/home.service';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'home',
@@ -16,9 +17,9 @@ export class HomeComponent {
   markers: any[] = [];
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
 
-  constructor(public homeService: HomeService) {
+  constructor(public homeService: HomeService, private loginService: LoginService) {
 
-    this.checkToken();
+    this.loginService.checkToken();
 
     // Set map
     this.center = this.homeService.headQuarter;
@@ -61,17 +62,6 @@ export class HomeComponent {
   openInfo(marker: any) {
     console.log(marker)
     this.infoWindow.open(marker);
-  }
-
-  //#endregion
-
-  //#region AUTHORIZATION
-
-  checkToken() {
-    let token = localStorage.getItem("ASSICURAZIONI_TOKEN");
-    if (!token || token === "undefined") {
-      window.location.href = "/login";
-    }
   }
 
   //#endregion
