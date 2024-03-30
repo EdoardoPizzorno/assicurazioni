@@ -288,6 +288,16 @@ app.post("/api/user", async (req, res, next) => {
     rq.finally(() => client.close());
 })
 
+app.get("/api/user/:id", async (req, res, next) => {
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("UTENTI");
+    let rq = collection.findOne({ "_id": new ObjectId(req.params.id) }, { "projection": { "password": 0 } });
+    rq.then((data) => { res.send(data) });
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    rq.finally(() => client.close());
+})
+
 //#endregion
 
 //#region INTERNAL FUNCTIONS

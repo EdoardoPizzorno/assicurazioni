@@ -1,1 +1,21 @@
-<p>user works!</p>
+<div class="container text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card text-left">
+                <div class="card-body p-5">
+                    <h2 class="card-title"><b>{{ userService.selectedUser.username }}</b>'s details</h2>
+                    <hr>
+                    <p><strong>Name:</strong> {{ userService.selectedUser.name }}</p>
+                    <p><strong>Surname:</strong> {{ userService.selectedUser.surname }}</p>
+                    <p><strong>Email:</strong> {{ userService.selectedUser.email }}</p>
+                    <p><strong>Username:</strong> {{ userService.selectedUser.username }}</p>
+                    <p><strong>Role:</strong> {{ userService.selectedUser.role }}</p>
+                    <p><strong>Created at:</strong> {{ userService.selectedUser.createdAt.date }} at
+                        {{userService.selectedUser.createdAt.time}}</p>
+                    <hr>
+                    <a [routerLink]="'/users'" class="btn btn-primary">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

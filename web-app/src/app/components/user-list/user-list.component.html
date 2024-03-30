@@ -5,6 +5,7 @@
                 <th>Name</th>
                 <th>Surname</th>
                 <th>Email</th>
+                <th>Visualizza dettagli</th>
             </tr>
         </thead>
         <tbody>
@@ -12,6 +13,7 @@
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
                 <td>{{user.email}}</td>
+                <td><a [routerLink]="'/user/' + user._id">Dettagli</a></td>
             </tr>
         </tbody>
     </table>

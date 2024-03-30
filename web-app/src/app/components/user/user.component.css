@@ -1,0 +1,11 @@
+.container {
+    margin-top: 5%;
+}
+
+.card {
+    background-color: aliceblue;
+}
+
+.container p, h2 {
+    margin: 8px;
+}
