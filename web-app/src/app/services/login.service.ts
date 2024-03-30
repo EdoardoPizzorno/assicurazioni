@@ -9,6 +9,7 @@ export class LoginService {
 
   email: string = "";
   password: string = "";
+  loginError: boolean = false;
 
   constructor(private dataStorage: DataStorageService, private router: Router) { }
 
@@ -20,7 +21,9 @@ export class LoginService {
         }
       })
       .catch((error: any) => {
-        console.error(error);
+        if (error.response.status == 401) {
+          this.loginError = true;
+        }
       });
   }
 

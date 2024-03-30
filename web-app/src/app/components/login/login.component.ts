@@ -11,7 +11,7 @@ export class LoginComponent {
   email: string = "";
   password: string = "";
 
-  constructor(private loginService: LoginService) { }
+  constructor(public loginService: LoginService) { }
 
   login() {
     this.loginService.checkLogin(this.email, this.password);
