@@ -7,8 +7,9 @@
 
 <div class="container p-1">
     <google-map height="450px" width="100%" [center]="center" [zoom]="zoom" (mapClick)="moveMap($event)">
-        <map-marker *ngFor="let marker of homeService.perizie; index as i" [position]="marker.coords" [title]="marker.description"
-            (mapClick)="openInfo(marker)">
+        <!-- ALL MARKERS -->
+        <map-marker *ngFor="let marker of homeService.perizie; index as i" [position]="marker.coords" [icon]="marker.icon" [title]="marker.description"
+            (mapClick)="openInfo(marker)" [options]="markerOptions">
         </map-marker>
     </google-map>
 </div>

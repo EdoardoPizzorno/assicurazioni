@@ -13,13 +13,16 @@ export class HomeComponent {
   display: any;
   center: google.maps.LatLngLiteral;
   zoom: number;
+  
+  markerOptions: google.maps.MarkerOptions = { draggable: false, animation: google.maps.Animation.DROP};
+  icon: string = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
 
   constructor(public homeService: HomeService, private loginService: LoginService) {
 
     this.loginService.checkToken();
 
     // Set map
-    this.center = this.homeService.headQuarter;
+    this.center = this.homeService.headQuarter.coords;
     this.zoom = 12;
 
   }
@@ -67,6 +70,12 @@ export class HomeComponent {
       imageHeight: 200,
       imageAlt: 'Custom image',
     });
+  }
+
+  drag() {
+    console.log("Marker dragged");
+    this.markerOptions.animation = google.maps.Animation.BOUNCE;
+    this.markerOptions.draggable = true;
   }
 
   //#endregion

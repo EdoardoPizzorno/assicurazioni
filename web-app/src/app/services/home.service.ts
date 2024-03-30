@@ -10,8 +10,10 @@ export class HomeService {
   perizie: any;
 
   headQuarter: any = {
-    lat: 44.5558401,
-    lng: 7.7358973
+    coords: {
+      lat: 44.5558401,
+      lng: 7.7358973
+    }
   }
 
   constructor(private dataStorage: DataStorageService, private decimalPipe: DecimalPipe) { }
