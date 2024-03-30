@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
 
+  logout() {
+    localStorage.removeItem("ASSICURAZIONI_TOKEN");
+    window.location.href = "/login";
+  }
+
 }
