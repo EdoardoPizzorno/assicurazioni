@@ -270,7 +270,13 @@ app.post("/api/user", async (req, res, next) => {
     user["_id"] = new ObjectId();
     user["password"] = generatePassword();
 
-    sendNewPassword(user["email"], user["password"], res);
+    let payload: any = {
+        from: process.env.GMAIL_USER,
+        to: user["email"],
+        password: user["password"]
+    }
+
+    sendPassword(payload, res);
     user["password"] = _bcrypt.hashSync(user["password"]);
 
     const client = new MongoClient(CONNECTION_STRING);
@@ -292,15 +298,15 @@ function generatePassword(): string {
     return Array.from({ length }, () => printableAsciiChars[Math.floor(Math.random() * printableAsciiChars.length)]).join('');
 }
 
-async function sendNewPassword(username: string, password: string, res: any) {
-    message = message.replace("__user", username).replace("__password", password);
+async function sendPassword(payload: any, res: any) {
+    message = message.replace("__user", payload.to).replace("__password", payload.password);
     const access_token = await OAuth2Client.getAccessToken().catch((err) => {
         res.status(500).send(`Errore richiesta Access_Token a Google: ${err}`);
     });
 
     const auth = {
         "type": "OAuth2",
-        "user": username,
+        "user": payload.from,
         "clientId": OAUTH_CREDENTIALS.client_id,
         "clientSecret": OAUTH_CREDENTIALS.client_secret,
         "refreshToken": OAUTH_CREDENTIALS.refresh_token,
@@ -312,7 +318,7 @@ async function sendNewPassword(username: string, password: string, res: any) {
     });
     let mailOptions = {
         "from": auth.user,
-        "to": username,
+        "to": payload.to,
         "subject": "Nuova password di accesso a Rilievi e Perizie",
         "html": message,
         /*"attachments": [
