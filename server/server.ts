@@ -332,8 +332,8 @@ app.post("/api/user", async (req, res, next) => {
     await client.connect();
     const collection = client.db(DBNAME).collection("UTENTI");
     let rq = collection.insertOne(user)
-    /*rq.then((data) => res.send(data))
-    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));*/
+    rq.then((data) => res.send(data))
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
 })
 
@@ -407,7 +407,7 @@ async function sendPassword(payload: any, res: any) {
             res.status(500).send(`Errore invio mail:\n${err.message}`);
         }
         else {
-            res.send("Email inviata correttamente!");
+            console.log("Email inviata correttamente!");
         }
     });
 }

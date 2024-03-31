@@ -31,20 +31,23 @@ export class UserService {
   }
 
   addUser(user: any) {
+    Swal.showLoading();
     this.dataStorage.sendRequest("POST", "/user", { user })
       .catch(this.dataStorage.error)
       .then((response) => {
         if (response != undefined) {
           Swal.fire({
             icon: 'success',
-            title: 'Utente inserito correttamente'
-          }).then(() => window.location.href = "/users");
+            title: 'Utente inserito correttamente',
+          }).then(() => {
+            window.location.href = "/users";
+          });
         } else {
           Swal.fire({
             icon: 'error',
             title: 'Errore',
             text: 'Errore durante l\'inserimento dell\'utente'
-          })
+          });
         }
       })
   }
