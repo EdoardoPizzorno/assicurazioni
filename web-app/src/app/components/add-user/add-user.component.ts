@@ -13,14 +13,14 @@ export class AddUserComponent {
   email: string = "";
 
   newUser: any = {
-    name: "prova",
-    surname: "prova",
-    email: "e.pizzorno.2293@vallauri.edu",
-    username: "edopiz",
-    role: "user",
-    city: "Fossano",
-    gender: "m",
-    age: 0,
+    name: "",
+    surname: "",
+    email: "",
+    username: "",
+    role: "",
+    city: "",
+    gender: "",
+    age: 18,
     createdAt: new Date()
   };
 
