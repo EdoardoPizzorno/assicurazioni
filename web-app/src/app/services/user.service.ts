@@ -43,4 +43,15 @@ export class UserService {
       })
   }
 
+  searchUser(searchText: string) {
+    if (searchText != "" && searchText != null) {
+      this.dataStorage.sendRequest("GET", "/users/search/" + searchText)
+        .catch(this.dataStorage.error)
+        .then((response) => {
+          this.users = response.data;
+        })
+    }
+    else this.getUsers();
+  }
+
 }

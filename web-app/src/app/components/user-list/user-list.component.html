@@ -1,11 +1,31 @@
 <div class="container text-center p-5">
     <h2>Lista Utenti</h2>
     <br>
+
+    <!--FILTERS-->
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Cerca utente" [(ngModel)]="searchText" (change)="search()">
+                <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search" (click)="search()"></i></button>
+            </div>
+        </div>
+        <div class="input-group-append justify-content-end" style="height: 38px">
+            <select class="form-select" [(ngModel)]="roleFilter">
+                <option value="all">Tutti</option>
+                <option value="admin">Amministratore</option>
+                <option value="user">Utente</option>
+            </select>
+        </div>
+    </div>
+    <br>
+
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Surname</th>
+                <th>Role</th>
                 <th>Email</th>
                 <th>Visualizza dettagli</th>
             </tr>
@@ -14,9 +34,11 @@
             <tr *ngFor="let user of userService.users">
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
+                <td>{{user.role}}</td>
                 <td>{{user.email}}</td>
                 <td><a [routerLink]="'/user/' + user._id">Dettagli</a></td>
             </tr>
         </tbody>
     </table>
+    <a class="btn btn-success" [routerLink]="['/user/new']">AGGIUNGI UTENTE <i class="bi bi-plus"></i> </a>
 </div>

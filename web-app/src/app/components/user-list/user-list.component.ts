@@ -8,8 +8,15 @@ import { UserService } from '../../services/user.service';
 })
 export class UserListComponent {
 
+  searchText: string = "";
+  roleFilter: string = "";
+
   constructor(public userService: UserService) {
     userService.getUsers();
+  }
+
+  search() {
+    this.userService.searchUser(this.searchText);
   }
 
 }
