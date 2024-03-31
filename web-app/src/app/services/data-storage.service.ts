@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import _axios from "axios";
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -50,16 +51,32 @@ export class DataStorageService {
 
   public error(err: any) {
     if (!err.response)
-      alert("Connection Refused or Server timeout");
+      Swal.fire({
+        icon: 'error',
+        title: 'Connection Refused or Server timeout'
+      });
     else if (err.response.status == 200)
-      alert("Formato dei dati non corretto : " + err.response.data);
+      Swal.fire({
+        icon: 'error',
+        title: 'Formato dei dati non corretto',
+        text: err.response.data
+      });
     else if (err.response.status == 403) {
-      alert("Sessione scaduta");
-      localStorage.removeItem("ASSICURAZIONI_TOKEN")
-      window.location.href = "/login"
+      Swal.fire({
+        icon: 'error',
+        title: 'Sessione scaduta',
+        text: 'Effettua nuovamente il login'
+      }).then(() => {
+        localStorage.removeItem("ASSICURAZIONI_TOKEN");
+        window.location.href = "/login";
+      });
     }
     else {
-      alert("Server Error: " + err.response.status + " - " + err.response.data);
+      Swal.fire({
+        icon: 'error',
+        title: 'Server Error: ' + err.response.status,
+        text: err.response.data
+      });
     }
   }
 

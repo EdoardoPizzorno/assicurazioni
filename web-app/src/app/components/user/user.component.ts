@@ -15,4 +15,8 @@ export class UserComponent {
     });
   }
 
+  back() {
+    window.history.back();
+  }
+
 }

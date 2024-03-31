@@ -13,7 +13,7 @@
                     <p><strong>Created at:</strong> {{ userService.selectedUser.createdAt.date }} at
                         {{userService.selectedUser.createdAt.time}}</p>
                     <hr>
-                    <a [routerLink]="'/users'" class="btn btn-primary">Back</a>
+                    <button class="btn btn-primary" (click)="back()">Back</button>
                 </div>
             </div>
         </div>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
 import { ParserService } from './parser.service';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +36,10 @@ export class UserService {
     this.dataStorage.sendRequest("POST", "/user", { user })
       .catch(this.dataStorage.error)
       .then((response) => {
-        alert("Utente inserito correttamente")
-        window.location.href = "/users"
+        Swal.fire({
+          icon: 'success',
+          title: 'Utente inserito correttamente'
+        }).then(() => window.location.href = "/users");
       })
   }
 
