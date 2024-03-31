@@ -12,15 +12,23 @@ export class AddUserComponent {
   surname: string = "";
   email: string = "";
 
-  constructor(private userService: UserService) {}
+  newUser: any = {
+    name: "",
+    surname: "",
+    email: "",
+    username: "",
+    role: "",
+    city: "",
+    gender: "",
+    age: 0,
+    createdAt: new Date()
+  };
+
+  constructor(private userService: UserService) { }
 
   onAddUser() {
-    const newUser: any = {
-      name: this.name,
-      surname: this.surname,
-      email: this.email
-    };
-    this.userService.addUser(newUser);
+    console.log(this.newUser)
+    this.userService.addUser(this.newUser);
   }
 
 }

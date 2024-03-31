@@ -1,18 +1,52 @@
 <div class="container p-5">
     <h2>Aggiungi Nuovo Utente</h2>
+    <hr>
     <form>
         <div class="form-group">
             <label for="name">Nome:</label>
-            <input type="text" name="name" class="form-control" id="name" placeholder="Inserisci il nome" [(ngModel)]="name" required>
+            <input type="text" name="name" class="form-control" id="name" placeholder="Inserisci il nome"
+                [(ngModel)]="newUser.name" required>
         </div>
         <div class="form-group">
             <label for="surname">Cognome:</label>
-            <input type="text" name="surname" class="form-control" id="surname" placeholder="Inserisci il cognome" [(ngModel)]="surname" required>
+            <input type="text" name="surname" class="form-control" id="surname" placeholder="Inserisci il cognome"
+                [(ngModel)]="newUser.surname" required>
         </div>
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" name="email" class="form-control" id="email" placeholder="Inserisci l'email" [(ngModel)]="email" required>
+            <input type="email" name="email" class="form-control" id="email" placeholder="Inserisci l'email"
+                [(ngModel)]="newUser.email" required>
         </div>
-        <button type="submit" class="btn btn-primary" (click)="onAddUser()" >Aggiungi Utente</button>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" name="username" class="form-control" id="username" placeholder="Inserisci lo username"
+                [(ngModel)]="newUser.username" required>
+        </div>
+        <div class="form-group">
+            <label for="role">Ruolo:</label>
+            <select name="role" class="form-control" id="role" [(ngModel)]="newUser.role" required>
+                <option value="admin">Amministratore</option>
+                <option value="user">Utente</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="city">Città:</label>
+            <input type="text" name="city" class="form-control" id="city" placeholder="Inserisci la tua città"
+                [(ngModel)]="newUser.city" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Genere:</label>
+            <select name="role" class="form-control" id="role" [(ngModel)]="newUser.gender" required>
+                <option value="m">Maschio</option>
+                <option value="f">Femmina</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="age">Età:</label>
+            <input type="text" name="age" class="form-control" id="age" placeholder="Inserisci l'età"
+                [(ngModel)]="newUser.age" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" (click)="onAddUser()">Aggiungi Utente</button>
     </form>
 </div>
