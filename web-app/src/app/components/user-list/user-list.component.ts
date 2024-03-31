@@ -19,4 +19,8 @@ export class UserListComponent {
     this.userService.searchUser(this.searchText);
   }
 
+  filterByRole() {
+    this.userService.filterByRole(this.roleFilter);
+  }
+
 }

@@ -301,16 +301,28 @@ app.post("/api/user", async (req, res, next) => {
 
 // FILTERS
 
-app.get("/api/users/search/:text", async (req, res, next) => {
+app.get("/api/users/search", async (req, res, next) => {
+    console.log(req.query)
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
     const collection = client.db(DBNAME).collection("UTENTI");
-    let regex = new RegExp(req.params.text, "i");
+    let regex = new RegExp(req.query.text, "i");
     let rq = collection.find({ "name": regex }).toArray();
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
 })
+
+app.get("/api/users/filter", async (req, res, next) => {
+    console.log(req.query)
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("UTENTI");
+    let rq = collection.find({ "role": req.query.role }).toArray();
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    rq.finally(() => client.close());
+});
 
 //#endregion
 

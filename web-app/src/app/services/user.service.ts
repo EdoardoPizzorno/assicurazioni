@@ -45,7 +45,18 @@ export class UserService {
 
   searchUser(searchText: string) {
     if (searchText != "" && searchText != null) {
-      this.dataStorage.sendRequest("GET", "/users/search/" + searchText)
+      this.dataStorage.sendRequest("GET", "/users/search?text=" + searchText)
+        .catch(this.dataStorage.error)
+        .then((response) => {
+          this.users = response.data;
+        })
+    }
+    else this.getUsers();
+  }
+
+  filterByRole(role: string) {
+    if (role != "" && role != null && role != "all") {
+      this.dataStorage.sendRequest("GET", "/users/filter?role=" + role)
         .catch(this.dataStorage.error)
         .then((response) => {
           this.users = response.data;

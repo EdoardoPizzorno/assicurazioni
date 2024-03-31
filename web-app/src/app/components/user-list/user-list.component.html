@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="input-group-append justify-content-end" style="height: 38px">
-            <select class="form-select" [(ngModel)]="roleFilter">
+            <select class="form-select" [(ngModel)]="roleFilter" (change)="filterByRole()">
                 <option value="all">Tutti</option>
                 <option value="admin">Amministratore</option>
                 <option value="user">Utente</option>
