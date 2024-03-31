@@ -76,7 +76,7 @@ export class DataStorageService {
         icon: 'error',
         title: 'Server Error: ' + err.response.status,
         text: err.response.data
-      });
+      }).then(() => window.history.back());
     }
   }
 

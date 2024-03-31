@@ -12,6 +12,7 @@ import _bcrypt from "bcryptjs";
 import _jwt from "jsonwebtoken";
 import { google } from "googleapis";
 import _nodemailer from "nodemailer";
+import Replicate from "replicate";
 
 import { MongoClient, ObjectId } from "mongodb";
 
@@ -30,8 +31,11 @@ const DBNAME = process.env.DBNAME;
 const CONNECTION_STRING: string = process.env.CONNECTION_STRING;
 const app = _express();
 
-let error_page;
+const replicate = new Replicate({
+    auth: process.env.REPLICATE_API_TOKEN,
+});
 
+let error_page;
 
 // HTTPS
 /*
@@ -270,7 +274,14 @@ app.get("/api/user/:id", async (req, res, next) => {
     await client.connect();
     const collection = client.db(DBNAME).collection("UTENTI");
     let rq = collection.findOne({ "_id": new ObjectId(req.params.id) }, { "projection": { "password": 0 } });
-    rq.then((data) => { res.send(data) });
+    rq.then((data) => {
+        if (!data) {
+            res.status(404).send("Utente non trovato");
+        }
+        else {
+            res.send(data);
+        }
+    });
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
 })
@@ -289,15 +300,42 @@ app.post("/api/user", async (req, res, next) => {
     sendPassword(payload, res);
     user["password"] = _bcrypt.hashSync(user["password"]);
 
+    // Load profile picture
+    try {
+        console.log("Running the model...");
+        const input = {
+            width: 768,
+            height: 768,
+            prompt: "random " + (user["gender"] == "m" ? "male" : "female") + " profile realistic picture",
+            refine: "expert_ensemble_refiner",
+            scheduler: "K_EULER",
+            lora_scale: 0.6,
+            num_outputs: 1,
+            guidance_scale: 7.5,
+            apply_watermark: false,
+            high_noise_frac: 0.8,
+            negative_prompt: "",
+            prompt_strength: 0.8,
+            num_inference_steps: 25
+        };
+        const output = await replicate.run(
+            "stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b",
+            { input }
+        );
+        user["avatar"] = output[0];
+    } catch (err) {
+        console.log("--REPLICATE.COM ERROR--");
+        console.log(err);
+    }
+
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
     const collection = client.db(DBNAME).collection("UTENTI");
     let rq = collection.insertOne(user)
-    rq.then((data) => res.send(data))
-    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    /*rq.then((data) => res.send(data))
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));*/
     rq.finally(() => client.close());
 })
-
 
 // FILTERS
 

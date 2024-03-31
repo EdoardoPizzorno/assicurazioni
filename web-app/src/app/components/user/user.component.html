@@ -5,6 +5,11 @@
                 <div class="card-body p-5">
                     <h2 class="card-title"><b>{{ userService.selectedUser.username }}</b>'s details</h2>
                     <hr>
+                    <div class="text-center">
+                        <img src="{{ userService.selectedUser.avatar }}" class="rounded-circle" alt="avatar"
+                            style="width: 100px; height: 100px;">
+                    </div>
+                    <hr>
                     <p><strong>Username:</strong> {{ userService.selectedUser.username }}</p>
                     <p><strong>Name:</strong> {{ userService.selectedUser.name }}</p>
                     <p><strong>Surname:</strong> {{ userService.selectedUser.surname }}</p>

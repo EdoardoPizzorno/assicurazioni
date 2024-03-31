@@ -13,13 +13,13 @@ export class AddUserComponent {
   email: string = "";
 
   newUser: any = {
-    name: "",
-    surname: "",
-    email: "",
-    username: "",
-    role: "",
-    city: "",
-    gender: "",
+    name: "prova",
+    surname: "prova",
+    email: "e.pizzorno.2293@vallauri.edu",
+    username: "edopiz",
+    role: "user",
+    city: "Fossano",
+    gender: "m",
     age: 0,
     createdAt: new Date()
   };
@@ -27,7 +27,6 @@ export class AddUserComponent {
   constructor(private userService: UserService) { }
 
   onAddUser() {
-    console.log(this.newUser)
     this.userService.addUser(this.newUser);
   }
 

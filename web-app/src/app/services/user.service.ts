@@ -26,9 +26,7 @@ export class UserService {
       .catch(this.dataStorage.error)
       .then((response) => {
         this.selectedUser = response.data;
-
-        this.selectedUser["createdAt"] = this.parser.parseDate(this.selectedUser["createdAt"])
-        console.log(this.selectedUser)
+        this.selectedUser["createdAt"] = this.parser.parseDate(this.selectedUser["createdAt"]);
       })
   }
 
@@ -36,10 +34,18 @@ export class UserService {
     this.dataStorage.sendRequest("POST", "/user", { user })
       .catch(this.dataStorage.error)
       .then((response) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Utente inserito correttamente'
-        }).then(() => window.location.href = "/users");
+        if (response != undefined) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Utente inserito correttamente'
+          }).then(() => window.location.href = "/users");
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Errore',
+            text: 'Errore durante l\'inserimento dell\'utente'
+          })
+        }
       })
   }
 
