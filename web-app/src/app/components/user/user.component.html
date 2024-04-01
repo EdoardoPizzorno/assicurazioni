@@ -1,23 +1,29 @@
-<div class="card text-center">
-    <div class="card-body">
-        <h2 class="card-title"><b>{{ userService.selectedUser.username }}</b>'s details</h2>
-        <hr>
-        <div>
-            <img src="{{ userService.selectedUser.avatar }}" class="rounded-circle" alt="avatar"
-                style="width: 100px; height: 100px;">
+<div class="container text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card text-left">
+                <div class="card-body">
+                    <h2 class="card-title"><b>{{ userService.selectedUser.username }}</b>'s details</h2>
+                    <hr>
+                    <div class="text-center">
+                        <img src="{{ userService.selectedUser.avatar }}" class="rounded-circle" alt="avatar"
+                            style="width: 100px; height: 100px;">
+                    </div>
+                    <hr>
+                    <p><strong>Username:</strong> {{ userService.selectedUser.username }}</p>
+                    <p><strong>Name:</strong> {{ userService.selectedUser.name }}</p>
+                    <p><strong>Surname:</strong> {{ userService.selectedUser.surname }}</p>
+                    <p><strong>Email:</strong> {{ userService.selectedUser.email }}</p>
+                    <p><strong>Age:</strong> {{ userService.selectedUser.age }}</p>
+                    <p><strong>Role:</strong> {{ userService.selectedUser.role }}</p>
+                    <p><strong>Gender:</strong> {{ userService.selectedUser.gender == "m" ? "Male" : "Female" }}</p>
+                    <p><strong>City:</strong> {{ userService.selectedUser.city }}</p>
+                    <p><strong>Created at:</strong> {{ userService.selectedUser.createdAt.date }} at
+                        {{userService.selectedUser.createdAt.time}}</p>
+                    <hr>
+                    <button class="btn btn-primary" (click)="back()">Back</button>
+                </div>
+            </div>
         </div>
-        <hr>
-        <p><strong>Username:</strong> {{ userService.selectedUser.username }}</p>
-        <p><strong>Name:</strong> {{ userService.selectedUser.name }}</p>
-        <p><strong>Surname:</strong> {{ userService.selectedUser.surname }}</p>
-        <p><strong>Email:</strong> {{ userService.selectedUser.email }}</p>
-        <p><strong>Age:</strong> {{ userService.selectedUser.age }}</p>
-        <p><strong>Role:</strong> {{ userService.selectedUser.role }}</p>
-        <p><strong>Gender:</strong> {{ userService.selectedUser.gender == "m" ? "Male" : "Female" }}</p>
-        <p><strong>City:</strong> {{ userService.selectedUser.city }}</p>
-        <p><strong>Created at:</strong> {{ userService.selectedUser.createdAt.date }} at
-            {{userService.selectedUser.createdAt.time}}</p>
-        <hr>
-        <button class="btn btn-primary" (click)="back()">Back</button>
     </div>
 </div>
