@@ -155,7 +155,7 @@ app.post("/api/login", async (req, res, next) => {
     await client.connect();
     const collection = client.db(DBNAME).collection("UTENTI");
     let regex = new RegExp(`^${email}$`, "i");
-    let rq = collection.findOne({ "email": regex }, { "projection": { "email": 1, "password": 1 } });
+    let rq = collection.findOne({ "email": regex }, { "projection": { "_id": 1, "email": 1, "password": 1, "avatar": 1 } });
     rq.then((dbUser) => {
         if (!dbUser) {
             res.status(401).send("Username non valido");
@@ -173,7 +173,7 @@ app.post("/api/login", async (req, res, next) => {
                         let token = createToken(dbUser);
                         res.setHeader("authorization", token);
                         res.setHeader("access-control-expose-headers", "authorization");
-                        res.send({ "status": "ok" });
+                        res.send({ "user_picture": dbUser.avatar, "_id": dbUser._id });
                     }
                 }
             })

@@ -17,6 +17,11 @@ export class LoginService {
     this.dataStorage.sendRequest('POST', '/login', { email, password })
       .then((response: any) => {
         if (response.status == 200) {
+          let currentUser: any = {
+            _id: response.data._id,
+            user_picture: response.data.user_picture
+          }
+          localStorage.setItem("ASSICURAZIONI", JSON.stringify({ token: response.headers.authorization, currentUser: currentUser }));
           this.router.navigateByUrl('/home');
         }
       })
@@ -28,11 +33,13 @@ export class LoginService {
   }
 
   checkToken() {
-    let token = localStorage.getItem("ASSICURAZIONI_TOKEN");
-    if (!token || token === "undefined") {
-      window.location.href = "/login";
+    let cache: any = localStorage.getItem("ASSICURAZIONI");
+    if (cache) {
+      let parsedCache: any = JSON.parse(cache);
+      if (parsedCache.token === "undefined") {
+        localStorage.removeItem("ASSICURAZIONI");
+      }
     }
-    return true;
   }
 
 }

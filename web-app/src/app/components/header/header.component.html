@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">RILIEVI E PERIZIE</a>
+    <a class="navbar-brand" [routerLink]="['/home']">RILIEVI E PERIZIE</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -16,6 +16,19 @@
                 <a class="nav-link" [routerLink]="['/user/new']" routerLinkActive="router-link-active">Add User</a>
             </li>
         </ul>
-        <button class="btn btn-primary ml-auto" (click)="logout()">Logout</button>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <img src="{{currentUser.user_picture}}" alt="Profile Image" class="profile-image">
+                </a>
+                <ul class="dropdown-menu">
+                    <a class="dropdown-item" [routerLink]="['/user', currentUser._id]" routerLinkActive="router-link-active">Profile</a>
+                    <a class="dropdown-item" [routerLink]="['/user', currentUser._id, 'edit']" routerLinkActive="router-link-active">Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" [routerLink]="['/login']" (click)="logout()">Logout</a>
+                </ul>
+            </li>
+        </ul>
     </div>
 </nav>

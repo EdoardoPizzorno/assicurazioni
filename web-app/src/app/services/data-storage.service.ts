@@ -11,19 +11,23 @@ export class DataStorageService {
   constructor() {
 
     _axios.interceptors.response.use((response: any) => {
-      let token = response.headers["authorization"];
-      if (token != undefined && token != null)
-        localStorage.setItem("ASSICURAZIONI_TOKEN", token);
+      let token: any = response.headers["authorization"];
+      let cache: any = localStorage.getItem("ASSICURAZIONI");
+      if (token != undefined && token != null && cache != null) {
+        let parsedCache: any = JSON.parse(cache);
+        localStorage.setItem("ASSICURAZIONI", JSON.stringify({ token, currentUser: parsedCache.currentUser}));
+      }
       return response;
     });
 
     _axios.interceptors.request.use((config: any) => {
-      let token = localStorage.getItem("ASSICURAZIONI_TOKEN");
-      if (token) {
-        if (token === "undefined") {
-          localStorage.removeItem("ASSICURAZIONI_TOKEN");
+      let cache: any = localStorage.getItem("ASSICURAZIONI");
+      if (cache) {
+        let parsedCache: any = JSON.parse(cache);
+        if (parsedCache.token === "undefined") {
+          localStorage.removeItem("ASSICURAZIONI");
         } else {
-          config.headers["authorization"] = token;
+          config.headers["authorization"] = parsedCache.token;
         }
       }
       return config;
@@ -67,7 +71,7 @@ export class DataStorageService {
         title: 'Sessione scaduta',
         text: 'Effettua nuovamente il login'
       }).then(() => {
-        localStorage.removeItem("ASSICURAZIONI_TOKEN");
+        localStorage.removeItem("ASSICURAZIONI");
         window.location.href = "/login";
       });
     }
