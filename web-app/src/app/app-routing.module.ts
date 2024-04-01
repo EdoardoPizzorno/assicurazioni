@@ -5,6 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 import { UserComponent } from './components/user/user.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { UserListComponent } from './components/user-list/user-list.component';
+import { EditUserComponent } from './components/edit-user/edit-user.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -15,7 +16,8 @@ const routes: Routes = [
     path: 'user',
     children: [
       { path: 'new', component: AddUserComponent },
-      { path: ':id', component: UserComponent }
+      { path: ':id', component: UserComponent },
+      { path: ':id/edit', component: EditUserComponent }
     ]
   }
 ];
