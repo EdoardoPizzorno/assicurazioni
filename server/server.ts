@@ -253,7 +253,7 @@ app.get("/api/perizie", async (req, res, next) => {
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
     const collection = client.db(DBNAME).collection("PERIZIE");
-    let rq = collection.find().toArray();
+    let rq = collection.find().sort({ "_id": 1 }).toArray();
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
