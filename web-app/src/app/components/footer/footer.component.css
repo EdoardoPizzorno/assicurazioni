@@ -3,5 +3,10 @@ footer {
     padding: 20px 0;
     bottom: 0;
     width: 100%;
-    margin-top: 20px;
+    position: fixed;
+}
+
+.mt-4 {
+    margin-top: 1.5rem !important;
+    height: 150px;
 }
