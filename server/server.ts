@@ -300,7 +300,7 @@ app.post("/api/user", async (req, res, next) => {
     sendPassword(payload, res);
     user["password"] = _bcrypt.hashSync(user["password"]);
 
-    loadProfilePicture(user);
+    await loadProfilePicture(user);
 
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
@@ -402,7 +402,7 @@ async function loadProfilePicture(user: any) {
         const input = {
             width: 768,
             height: 768,
-            prompt: "random " + (user["gender"] == "m" ? "male" : "female") + " profile realistic picture (only a face)",
+            prompt: "a " + (user["gender"] == "m" ? "male" : "female") + " realistic picture",
             refine: "expert_ensemble_refiner",
             scheduler: "K_EULER",
             lora_scale: 0.6,
@@ -422,6 +422,7 @@ async function loadProfilePicture(user: any) {
     } catch (err) {
         console.log("--REPLICATE.COM ERROR--");
         console.log(err);
+        user["avatar"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Error.svg/1200px-Error.svg.png"
     }
 }
 
