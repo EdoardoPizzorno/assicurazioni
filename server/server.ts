@@ -300,33 +300,7 @@ app.post("/api/user", async (req, res, next) => {
     sendPassword(payload, res);
     user["password"] = _bcrypt.hashSync(user["password"]);
 
-    // Load profile picture
-    try {
-        console.log("Running the model...");
-        const input = {
-            width: 768,
-            height: 768,
-            prompt: "random " + (user["gender"] == "m" ? "male" : "female") + " profile realistic picture",
-            refine: "expert_ensemble_refiner",
-            scheduler: "K_EULER",
-            lora_scale: 0.6,
-            num_outputs: 1,
-            guidance_scale: 7.5,
-            apply_watermark: false,
-            high_noise_frac: 0.8,
-            negative_prompt: "",
-            prompt_strength: 0.8,
-            num_inference_steps: 25
-        };
-        const output = await replicate.run(
-            "stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b",
-            { input }
-        );
-        user["avatar"] = output[0];
-    } catch (err) {
-        console.log("--REPLICATE.COM ERROR--");
-        console.log(err);
-    }
+    loadProfilePicture(user);
 
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
@@ -420,6 +394,35 @@ async function sendPassword(payload: any, res: any) {
             console.log("Email inviata correttamente!");
         }
     });
+}
+
+async function loadProfilePicture(user: any) {
+    try {
+        console.log("Running the model...");
+        const input = {
+            width: 768,
+            height: 768,
+            prompt: "random " + (user["gender"] == "m" ? "male" : "female") + " profile realistic picture (only a face)",
+            refine: "expert_ensemble_refiner",
+            scheduler: "K_EULER",
+            lora_scale: 0.6,
+            num_outputs: 1,
+            guidance_scale: 7.5,
+            apply_watermark: false,
+            high_noise_frac: 0.8,
+            negative_prompt: "",
+            prompt_strength: 0.8,
+            num_inference_steps: 25
+        };
+        const output = await replicate.run(
+            "stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b",
+            { input }
+        );
+        user["avatar"] = output[0];
+    } catch (err) {
+        console.log("--REPLICATE.COM ERROR--");
+        console.log(err);
+    }
 }
 
 //#endregion
