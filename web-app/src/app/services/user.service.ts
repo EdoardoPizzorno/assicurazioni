@@ -31,7 +31,6 @@ export class UserService {
   }
 
   addUser(user: any) {
-    Swal.showLoading();
     this.dataStorage.sendRequest("POST", "/user", { user })
       .catch(this.dataStorage.error)
       .then((response) => {

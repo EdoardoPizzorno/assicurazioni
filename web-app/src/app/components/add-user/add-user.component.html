@@ -24,19 +24,19 @@
         </div>
         <div class="form-group">
             <label for="role">Ruolo:</label>
-            <select name="role" class="form-control" id="role" [(ngModel)]="newUser.role" required>
-                <option value="admin">Amministratore</option>
+            <select name="role" class="form-control" id="role" [(ngModel)]="newUser.role">
                 <option value="user">Utente</option>
+                <option value="admin">Amministratore</option>
             </select>
         </div>
         <div class="form-group">
             <label for="city">Città:</label>
             <input type="text" name="city" class="form-control" id="city" placeholder="Inserisci la tua città"
-                [(ngModel)]="newUser.city" required>
+                [(ngModel)]="newUser.city">
         </div>
         <div class="form-group">
             <label for="address">Genere:</label>
-            <select name="role" class="form-control" id="role" [(ngModel)]="newUser.gender" required>
+            <select name="role" class="form-control" id="role" [(ngModel)]="newUser.gender">
                 <option value="m">Maschio</option>
                 <option value="f">Femmina</option>
             </select>
