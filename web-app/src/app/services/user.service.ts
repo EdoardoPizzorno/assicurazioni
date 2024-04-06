@@ -55,7 +55,7 @@ export class UserService {
     Swal.fire({
       title: 'Sei sicuro di voler eliminare l\'utente?',
       showCancelButton: true,
-      confirmButtonText: `Si`,
+      confirmButtonText: `Conferma`,
       confirmButtonColor: '#d33',
       cancelButtonText: `Cancella`,
     }).then((result) => {
