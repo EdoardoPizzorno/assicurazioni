@@ -9,7 +9,7 @@ import { UserService } from '../../services/user.service';
 export class UserListComponent {
 
   searchText: string = "";
-  roleFilter: string = "";
+  roleFilter: string = "all";
 
   constructor(public userService: UserService) {
     userService.getUsers();
