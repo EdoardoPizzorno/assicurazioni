@@ -300,7 +300,7 @@ app.post("/api/user", async (req, res, next) => {
     sendPassword(payload, res);
     user["password"] = _bcrypt.hashSync(user["password"]);
 
-    await loadProfilePicture(user);
+    //await loadProfilePicture(user);
 
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
