@@ -1,16 +1,10 @@
-.login-form {
-    max-width: 300px;
-    margin: 0 auto;
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10% auto;
 }
 
 .form-group {
     margin-bottom: 20px;
-}
-
-.has-error input {
-    border-color: #a94442;
-}
-
-.has-error .help-block {
-    color: #a94442;
 }
