@@ -14,7 +14,7 @@ export class AddUserComponent {
     surname: "",
     email: "",
     username: "",
-    role: "role",
+    role: "user",
     city: "",
     gender: "m",
     age: 18,

@@ -18,9 +18,9 @@
                 [(ngModel)]="newUser.email" required>
         </div>
         <div class="form-group">
-            <label for="username">Username:</label>
+            <label for="username">Username (facoltativo):</label>
             <input type="text" name="username" class="form-control" id="username" placeholder="Inserisci lo username"
-                [(ngModel)]="newUser.username" required>
+                [(ngModel)]="newUser.username">
         </div>
         <div class="form-group">
             <label for="role">Ruolo:</label>
@@ -30,13 +30,13 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="city">Città:</label>
-            <input type="text" name="city" class="form-control" id="city" placeholder="Inserisci la tua città"
+            <label for="city">Città (facoltativo):</label>
+            <input type="text" name="city" class="form-control" id="city" placeholder="Inserisci la città"
                 [(ngModel)]="newUser.city">
         </div>
         <div class="form-group">
-            <label for="address">Genere:</label>
-            <select name="role" class="form-control" id="role" [(ngModel)]="newUser.gender">
+            <label for="gender">Genere:</label>
+            <select name="gender" class="form-control" id="gender" [(ngModel)]="newUser.gender">
                 <option value="m">Maschio</option>
                 <option value="f">Femmina</option>
             </select>
@@ -44,7 +44,7 @@
         <div class="form-group">
             <label for="age">Età:</label>
             <input type="number" name="age" class="form-control" id="age" placeholder="Inserisci l'età"
-                [(ngModel)]="newUser.age" required>
+                [(ngModel)]="newUser.age" min="18" max="120" required>
         </div>
 
         <button type="submit" class="btn btn-primary" (click)="onAddUser()">Aggiungi Utente</button>
