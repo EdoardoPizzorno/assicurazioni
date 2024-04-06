@@ -56,6 +56,8 @@ export class UserService {
       title: 'Sei sicuro di voler eliminare l\'utente?',
       showCancelButton: true,
       confirmButtonText: `Si`,
+      confirmButtonColor: '#d33',
+      cancelButtonText: `Cancella`,
     }).then((result) => {
       if (result.isConfirmed) {
         this.dataStorage.sendRequest("DELETE", "/user/" + id)

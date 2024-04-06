@@ -35,7 +35,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let user of userService.users">
-                <td><img [src]="user.picture" alt="user picture" width="50" height="50"></td>
+                <td><img src="{{user.avatar}}" alt="user picture" width="50" height="50"></td>
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
                 <td>{{user.username}}</td>
