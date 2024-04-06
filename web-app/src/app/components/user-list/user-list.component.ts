@@ -23,4 +23,8 @@ export class UserListComponent {
     this.userService.filterByRole(this.roleFilter);
   }
 
+  onDeleteUser(id: any) {
+    this.userService.deleteUser(id);
+  }
+
 }

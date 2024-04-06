@@ -51,6 +51,35 @@ export class UserService {
       })
   }
 
+  deleteUser(id: any) {
+    Swal.fire({
+      title: 'Sei sicuro di voler eliminare l\'utente?',
+      showCancelButton: true,
+      confirmButtonText: `Si`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dataStorage.sendRequest("DELETE", "/user/" + id)
+          .catch(this.dataStorage.error)
+          .then((response) => {
+            if (response != undefined) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Utente eliminato correttamente',
+              }).then(() => {
+                window.location.href = "/users";
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Errore',
+                text: 'Errore durante l\'eliminazione dell\'utente'
+              });
+            }
+          })
+      }
+    })
+  }
+
   searchUser(searchText: string) {
     if (searchText != "" && searchText != null) {
       this.dataStorage.sendRequest("GET", "/users/search?text=" + searchText)
