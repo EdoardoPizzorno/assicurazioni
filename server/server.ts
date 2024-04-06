@@ -263,7 +263,7 @@ app.get("/api/users", async (req, res, next) => {
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
     const collection = client.db(DBNAME).collection("UTENTI");
-    let rq = collection.find().project({ "name": 1, "surname": 1, "role": 1, "email": 1 }).sort({ "role": 1, "name": 1 }).toArray();
+    let rq = collection.find().project({ "password": 0 }).sort({ "role": 1, "name": 1 }).toArray();
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
@@ -333,6 +333,16 @@ app.post("/api/user", async (req, res, next) => {
     const collection = client.db(DBNAME).collection("UTENTI");
     let rq = collection.insertOne(user)
     rq.then((data) => res.send(data))
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    rq.finally(() => client.close());
+})
+
+app.delete("/api/user/:id", async (req, res, next) => {
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("UTENTI");
+    let rq = collection.deleteOne({ "_id": new ObjectId(req.params.id) });
+    rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
 })
