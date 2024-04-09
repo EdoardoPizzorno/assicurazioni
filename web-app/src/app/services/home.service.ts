@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
-import { DecimalPipe } from '@angular/common';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class HomeService {
     }
   }
 
-  constructor(private dataStorage: DataStorageService, private decimalPipe: DecimalPipe) { }
+  constructor(private dataStorage: DataStorageService, private userService: UserService) { }
 
   getPerizie(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -25,8 +25,12 @@ export class HomeService {
           this.dataStorage.error(error);
           reject(error);
         })
-        .then(response => {
+        .then(async (response) => {
           this.perizie = response.data;
+          for (let perizia of this.perizie) {
+            perizia["operator"] = this.userService.users.find((user: any) => user._id === perizia.operator).username;
+          }
+          console.log(this.perizie)
           resolve();
         });
     });

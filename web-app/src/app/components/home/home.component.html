@@ -1,20 +1,19 @@
-<h1 class="text-center p-3">Dashboard Amministratore</h1>
+<h1 class="text-center pt-3">Dashboard Amministratore</h1>
 
-<div class="container p-1">
+<div class="m-3">
     <google-map height="450px" width="100%" [center]="center" [zoom]="zoom" (mapClick)="moveMap($event)">
-        <!-- ALL MARKERS -->
-        <map-marker *ngFor="let marker of homeService.perizie; index as i" [position]="marker.coords" [icon]="marker.icon" [title]="marker.description"
-            (mapClick)="openInfo(marker)" [options]="markerOptions">
+        <map-marker *ngFor="let marker of homeService.perizie; index as i" [position]="marker.coords"
+            [icon]="marker.icon" [title]="marker.description" (mapClick)="openInfo(marker)" [options]="markerOptions">
         </map-marker>
     </google-map>
-</div>
 
-<div class="container text-center">
-    <table class="table table-striped">
+    <table class="table table-striped text-center">
         <thead>
             <tr>
                 <th>ID Perizia</th>
+                <th>Operatore</th>
                 <th>Data</th>
+                <th>Ora</th>
                 <th>Oggetto</th>
                 <th>Dettagli</th>
             </tr>
@@ -22,9 +21,11 @@
         <tbody>
             <tr *ngFor="let perizia of homeService.perizie">
                 <td>{{perizia._id}}</td>
+                <td>{{perizia.operator}}</td>
                 <td>{{perizia.date}}</td>
+                <td>{{perizia.time}}</td>
                 <td>{{perizia.description}}</td>
-                <td><a class="btn btn-primary" href="#">Dettagli</a></td>
+                <td><button class="btn btn-primary" href="#" (click)="openInfo(perizia)">Dettagli</button></td>
             </tr>
         </tbody>
     </table>

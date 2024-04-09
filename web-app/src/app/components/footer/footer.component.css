@@ -7,6 +7,9 @@ footer {
 }
 
 .mt-4 {
-    margin-top: 1.5rem !important;
-    height: 150px;
+    height: 50px;
+}
+
+a {
+    color: #0a95ff;
 }

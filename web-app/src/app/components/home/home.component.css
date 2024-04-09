@@ -1,4 +1,4 @@
-.bi-plus::before {
-    font-weight: bold;
-    font-size: 15pt
+td,
+th {
+    vertical-align: middle;
 }

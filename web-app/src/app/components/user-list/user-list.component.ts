@@ -11,9 +11,7 @@ export class UserListComponent {
   searchText: string = "";
   roleFilter: string = "all";
 
-  constructor(public userService: UserService) {
-    userService.getUsers();
-  }
+  constructor(public userService: UserService) { }
 
   search() {
     this.userService.searchUser(this.searchText);

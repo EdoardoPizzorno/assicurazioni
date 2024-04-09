@@ -13,12 +13,12 @@ export class UserService {
 
   constructor(private dataStorage: DataStorageService, private parser: ParserService) { }
 
-  getUsers() {
-    this.dataStorage.sendRequest("GET", "/users")
+  async getUsers(): Promise<any> {
+    return this.dataStorage.sendRequest("GET", "/users")
       .catch(this.dataStorage.error)
       .then((response) => {
         this.users = response.data;
-      })
+      });
   }
 
   getUser(id: any) {
