@@ -3,6 +3,7 @@ import { PeriziaService } from '../../services/perizia.service';
 import { LoginService } from '../../services/login.service';
 import Swal from 'sweetalert2';
 import { UserService } from '../../services/user.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'home',
@@ -14,23 +15,48 @@ export class HomeComponent {
   display: any;
   center: google.maps.LatLngLiteral;
   zoom: number;
-  
-  markerOptions: google.maps.MarkerOptions = { draggable: false, animation: google.maps.Animation.DROP};
+
+  markerOptions: google.maps.MarkerOptions = { draggable: false, animation: google.maps.Animation.DROP };
   icon: string = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
 
-  constructor(public homeService: PeriziaService, private loginService: LoginService, private userService: UserService) {
+  selectedOperator: string = "all";
+
+  constructor(public periziaService: PeriziaService, private loginService: LoginService, private userService: UserService, private activatedRoute: ActivatedRoute, private router: Router) {
 
     this.loginService.checkToken();
 
     // Set map
-    this.center = this.homeService.headQuarter.coords;
+    this.center = this.periziaService.headQuarter.coords;
     this.zoom = 12;
 
   }
 
   async ngOnInit() {
     await this.userService.getUsers();
-    await this.homeService.getPerizie();
+    await this.periziaService.getPerizie();
+    await this.periziaService.getOperators();
+
+    this.checkParams();
+  }
+
+  checkParams() {
+    this.activatedRoute.params.subscribe(async () => {
+      const params = this.activatedRoute.snapshot.queryParams;
+      const currentOperator = params["operator"];
+
+      if (currentOperator != undefined) {
+        if (currentOperator != "all") {
+          this.selectedOperator = currentOperator;
+          this.periziaService.filterByOperator(currentOperator);
+        } else
+          await this.periziaService.getPerizie();
+      }
+    });
+  }
+
+  async changeOperator() {
+    await this.router.navigateByUrl("/home?operator=" + this.selectedOperator);
+    window.location.reload();
   }
 
   //#region MAP & MARKERS EVENTS

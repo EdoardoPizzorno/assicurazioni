@@ -8,6 +8,7 @@ import { UserService } from './user.service';
 export class PeriziaService {
 
   perizie: any;
+  operators: any[] = [];
 
   headQuarter: any = {
     coords: {
@@ -30,9 +31,23 @@ export class PeriziaService {
           for (let perizia of this.perizie) {
             perizia["operator"] = this.userService.users.find((user: any) => user._id === perizia.operator).username;
           }
-          console.log(this.perizie)
           resolve();
         });
+    });
+  }
+
+  filterByOperator(operator: any) {
+    this.perizie = this.perizie.filter((perizia: any) => perizia.operator === operator);
+  }
+
+  getOperators(): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      this.perizie.forEach((perizia: any) => {
+        if (!this.operators.includes(perizia.operator)) {
+          this.operators.push(perizia.operator);
+        }
+      });
+      resolve(this.operators);
     });
   }
 
