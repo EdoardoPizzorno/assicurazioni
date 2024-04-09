@@ -5,7 +5,7 @@ import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root'
 })
-export class HomeService {
+export class PeriziaService {
 
   perizie: any;
 

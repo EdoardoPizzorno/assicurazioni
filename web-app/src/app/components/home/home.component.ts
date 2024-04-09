@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HomeService } from '../../services/home.service';
+import { PeriziaService } from '../../services/perizia.service';
 import { LoginService } from '../../services/login.service';
 import Swal from 'sweetalert2';
 import { UserService } from '../../services/user.service';
@@ -18,7 +18,7 @@ export class HomeComponent {
   markerOptions: google.maps.MarkerOptions = { draggable: false, animation: google.maps.Animation.DROP};
   icon: string = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
 
-  constructor(public homeService: HomeService, private loginService: LoginService, private userService: UserService) {
+  constructor(public homeService: PeriziaService, private loginService: LoginService, private userService: UserService) {
 
     this.loginService.checkToken();
 
