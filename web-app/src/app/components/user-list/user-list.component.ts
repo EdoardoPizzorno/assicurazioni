@@ -13,6 +13,10 @@ export class UserListComponent {
 
   constructor(public userService: UserService) { }
 
+  ngOnInit() {
+    this.userService.getUsers();
+  }
+
   search() {
     this.userService.searchUser(this.searchText);
   }

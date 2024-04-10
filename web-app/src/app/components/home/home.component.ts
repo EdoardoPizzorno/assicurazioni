@@ -21,9 +21,7 @@ export class HomeComponent {
 
   selectedOperator: string = "all";
 
-  constructor(public periziaService: PeriziaService, private loginService: LoginService, private userService: UserService, private activatedRoute: ActivatedRoute, private router: Router) {
-
-    this.loginService.checkToken();
+  constructor(public periziaService: PeriziaService, private userService: UserService, private activatedRoute: ActivatedRoute, private router: Router) {
 
     // Set map
     this.center = this.periziaService.headQuarter.coords;

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoginService } from './services/login.service';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,10 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
 
-  constructor(public router: Router) { }
+  constructor(public router: Router, private loginService: LoginService) { }
+
+  ngOnInit() {
+    this.loginService.checkToken();
+  }
 
 }
