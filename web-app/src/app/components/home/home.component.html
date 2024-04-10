@@ -34,7 +34,8 @@
         <tbody>
             <tr *ngFor="let perizia of periziaService.perizie">
                 <td>{{perizia._id}}</td>
-                <td>{{perizia.operator == undefined ? "Utente eliminato" : perizia.operator}}</td>
+                <td [ngClass]="{deleted: perizia.operator==undefined}">{{perizia.operator == undefined ? "Utente
+                    eliminato" : perizia.operator}}</td>
                 <td>{{perizia.date}}</td>
                 <td>{{perizia.time}}</td>
                 <td>{{perizia.description}}</td>

@@ -6,3 +6,8 @@
     background-color: #0a95ff;
     color: #ffffff;
 }
+
+td,
+th {
+    vertical-align: middle;
+}

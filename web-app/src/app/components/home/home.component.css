@@ -1,4 +1,6 @@
-td,
-th {
-    vertical-align: middle;
+
+
+.deleted {
+    text-decoration: line-through;
+    color: red;
 }
