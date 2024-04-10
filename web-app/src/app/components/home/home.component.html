@@ -6,7 +6,7 @@
         <div class="col-md-2 form-group justify-content-end">
             <label for="operatorFilter">Filtra per operatore:</label>
             <select class="form-control" id="operatorFilter" [(ngModel)]="selectedOperator" (change)="changeOperator()">
-                <option value="all">All Operators</option>
+                <option value="all">Tutti</option>
                 <option *ngFor="let operator of periziaService.operators" value="{{operator}}">{{operator}}</option>
             </select>
         </div>
@@ -34,7 +34,7 @@
         <tbody>
             <tr *ngFor="let perizia of periziaService.perizie">
                 <td>{{perizia._id}}</td>
-                <td>{{perizia.operator}}</td>
+                <td>{{perizia.operator == undefined ? "Utente eliminato" : perizia.operator}}</td>
                 <td>{{perizia.date}}</td>
                 <td>{{perizia.time}}</td>
                 <td>{{perizia.description}}</td>

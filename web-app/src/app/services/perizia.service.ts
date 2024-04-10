@@ -29,7 +29,8 @@ export class PeriziaService {
         .then(async (response) => {
           this.perizie = response.data;
           for (let perizia of this.perizie) {
-            perizia["operator"] = this.userService.users.find((user: any) => user._id === perizia.operator).username;
+            const operator = this.userService.users.find((user: any) => user._id === perizia.operator);
+            perizia["operator"] = operator ? operator.username : undefined;
           }
           resolve();
         });
@@ -43,7 +44,7 @@ export class PeriziaService {
   getOperators(): Promise<any[]> {
     return new Promise((resolve, reject) => {
       this.perizie.forEach((perizia: any) => {
-        if (!this.operators.includes(perizia.operator)) {
+        if (!this.operators.includes(perizia.operator) && perizia.operator != undefined) {
           this.operators.push(perizia.operator);
         }
       });
