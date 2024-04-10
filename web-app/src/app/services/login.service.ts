@@ -22,7 +22,7 @@ export class LoginService {
             user_picture: response.data.user_picture
           }
           localStorage.setItem("ASSICURAZIONI", JSON.stringify({ token: response.headers.authorization, currentUser: currentUser }));
-          this.router.navigateByUrl('/home');
+          this.router.navigateByUrl('/dashboard');
         }
       })
       .catch((error: any) => {

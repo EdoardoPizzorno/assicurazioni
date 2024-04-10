@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
 import { PeriziaService } from '../../services/perizia.service';
-import { LoginService } from '../../services/login.service';
 import Swal from 'sweetalert2';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'home',
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.css'
 })
-export class HomeComponent {
+export class DashboardComponent {
 
   display: any;
   center: google.maps.LatLngLiteral;
@@ -53,7 +52,7 @@ export class HomeComponent {
   }
 
   async changeOperator() {
-    await this.router.navigateByUrl("/home?operator=" + this.selectedOperator);
+    await this.router.navigateByUrl("/dashboard?operator=" + this.selectedOperator);
     window.location.reload();
   }
 
