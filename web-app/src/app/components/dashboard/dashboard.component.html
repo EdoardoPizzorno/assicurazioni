@@ -7,7 +7,7 @@
             <label for="operatorFilter">Filtra per operatore:</label>
             <select class="form-control" id="operatorFilter" [(ngModel)]="selectedOperator" (change)="changeOperator()">
                 <option value="all">Tutti</option>
-                <option *ngFor="let operator of periziaService.getOperators()" value="{{operator}}">{{operator}}</option>
+                <option *ngFor="let operator of periziaService.operators" value="{{operator}}">{{operator}}</option>
             </select>
         </div>
     </div>

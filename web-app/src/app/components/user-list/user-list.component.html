@@ -13,8 +13,7 @@
         <div class="col-md-2 input-group-append justify-content-end">
             <select class="form-select" [(ngModel)]="roleFilter" (change)="filterByRole()">
                 <option value="all">Tutti</option>
-                <option value="admin">Amministratore</option>
-                <option value="user">Utente</option>
+                <option *ngFor="let role of userService.roles" value="{{role}}">{{role}}</option>
             </select>
         </div>
     </div>

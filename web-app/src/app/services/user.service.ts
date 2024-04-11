@@ -10,6 +10,7 @@ export class UserService {
 
   users: any;
   selectedUser: any;
+  roles: any[] = [];
 
   constructor(private dataStorage: DataStorageService, private parser: ParserService) { }
 
@@ -80,6 +81,17 @@ export class UserService {
           })
       }
     })
+  }
+
+  getRoles(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.users.forEach((user: any) => {
+        if (!this.roles.includes(user.role) && user.role != undefined) {
+          this.roles.push(user.role);
+        }
+      });
+      resolve(this.roles.sort());
+    });
   }
 
   searchUser(searchText: string) {
