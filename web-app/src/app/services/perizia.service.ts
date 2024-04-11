@@ -32,6 +32,7 @@ export class PeriziaService {
             const operator = this.userService.users.find((user: any) => user._id === perizia.operator);
             perizia["operator"] = operator ? operator.username : undefined;
           }
+          await this.getOperators();
           resolve();
         });
     });

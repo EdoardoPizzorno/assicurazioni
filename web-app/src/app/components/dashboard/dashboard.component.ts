@@ -30,9 +30,7 @@ export class DashboardComponent {
 
   async ngOnInit() {
     await this.userService.getUsers();
-    await this.userService.getRoles();
     await this.periziaService.getPerizie();
-    await this.periziaService.getOperators();
 
     this.checkParams();
   }
@@ -42,12 +40,12 @@ export class DashboardComponent {
       const params = this.activatedRoute.snapshot.queryParams;
       const currentOperator = params["operator"];
 
-      if (currentOperator != undefined) {
-        if (currentOperator != "all") {
-          this.selectedOperator = currentOperator;
-          this.periziaService.filterByOperator(currentOperator);
-        } else
-          await this.periziaService.getPerizie();
+      if (currentOperator != undefined && currentOperator != "all") {
+        this.selectedOperator = currentOperator;
+        this.periziaService.filterByOperator(currentOperator);
+      } else {
+        await this.userService.getUsers();
+        await this.periziaService.getPerizie();
       }
     });
   }

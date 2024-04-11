@@ -17,8 +17,9 @@ export class UserService {
   async getUsers(): Promise<any> {
     return this.dataStorage.sendRequest("GET", "/users")
       .catch(this.dataStorage.error)
-      .then((response) => {
+      .then(async (response) => {
         this.users = response.data;
+        await this.getRoles();
       });
   }
 
