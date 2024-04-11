@@ -31,7 +31,6 @@ export class DashboardComponent {
   async ngOnInit() {
     await this.userService.getUsers();
     await this.periziaService.getPerizie();
-    await this.periziaService.getOperators();
 
     this.checkParams();
   }

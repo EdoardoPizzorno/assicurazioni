@@ -3,17 +3,15 @@
 <div class="m-3">
     <!--FILTERS-->
     <div class="row justify-content-center">
-        <div class="col-md-2 form-group justify-content-end">
+        <div class="col-md-6">
             <label for="operatorFilter">Filtra per operatore:</label>
             <select class="form-control" id="operatorFilter" [(ngModel)]="selectedOperator" (change)="changeOperator()">
                 <option value="all">Tutti</option>
-                <option *ngFor="let operator of periziaService.operators" value="{{operator}}">{{operator}}</option>
+                <option *ngFor="let operator of periziaService.getOperators()" value="{{operator}}">{{operator}}</option>
             </select>
         </div>
     </div>
-
     <br>
-
     <google-map height="450px" width="100%" [center]="center" [zoom]="zoom" (mapClick)="moveMap($event)">
         <map-marker *ngFor="let marker of periziaService.perizie; index as i" [position]="marker.coords"
             [icon]="marker.icon" [title]="marker.description" (mapClick)="openInfo(marker)" [options]="markerOptions">
