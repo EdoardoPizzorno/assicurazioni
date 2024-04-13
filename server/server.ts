@@ -250,20 +250,60 @@ function createToken(data) {
 //#region ROUTES
 
 app.get("/api/perizie", async (req, res, next) => {
+    const operator = req.query.operator;
+    let query: any = {};
+
+    if (operator && operator != "all") {
+        query = { "operator": operator };
+    }
+
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
     const collection = client.db(DBNAME).collection("PERIZIE");
-    let rq = collection.find().sort({ "_id": 1 }).toArray();
+    let rq = collection.find(query).sort({ "_id": 1 }).toArray();
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    rq.finally(() => client.close());
+});
+
+app.get("/api/operators", async (req, res, next) => {
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("UTENTI");
+    let rq = collection.find().project({ "username": 1, "_id": 1 }).toArray();
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    rq.finally(() => client.close());
+});
+
+app.get("/api/roles", async (req, res, next) => {
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("UTENTI");
+    let rq = collection.distinct("role");
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
 });
 
 app.get("/api/users", async (req, res, next) => {
+    const role = req.query.role;
+    const searchText = req.query.search;
+
+    let query: any = {};
+
+    if (role && role != "all")
+        query = { "role": role };
+
+    if (searchText) {
+        let regex = new RegExp(`^${searchText}`, "i");
+        query = { "$or": [{ "name": regex }, { "surname": regex }, { "email": regex }] }
+    }
+
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
     const collection = client.db(DBNAME).collection("UTENTI");
-    let rq = collection.find().project({ "password": 0 }).sort({ "role": 1, "name": 1 }).toArray();
+    let rq = collection.find(query).project({ "password": 0 }).sort({ "role": 1, "name": 1 }).toArray();
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
@@ -320,30 +360,6 @@ app.delete("/api/user/:id", async (req, res, next) => {
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
 })
-
-// FILTERS
-
-app.get("/api/users/search", async (req, res, next) => {
-    const client = new MongoClient(CONNECTION_STRING);
-    await client.connect();
-    const collection = client.db(DBNAME).collection("UTENTI");
-    let regex = new RegExp(req.query.text, "i");
-    let rq = collection.find({ "$or": [{ "name": regex }, { "surname": regex }, { "email": regex }] }).toArray();
-    rq.then((data) => res.send(data));
-    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
-    rq.finally(() => client.close());
-})
-
-app.get("/api/users/filter", async (req, res, next) => {
-    console.log(req.query)
-    const client = new MongoClient(CONNECTION_STRING);
-    await client.connect();
-    const collection = client.db(DBNAME).collection("UTENTI");
-    let rq = collection.find({ "role": req.query.role }).toArray();
-    rq.then((data) => res.send(data));
-    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
-    rq.finally(() => client.close());
-});
 
 //#endregion
 

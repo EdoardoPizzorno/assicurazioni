@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="col-md-2 input-group-append justify-content-end">
-            <select class="form-select" [(ngModel)]="selectedRole" (change)="changeRole()">
+            <select class="form-select" [(ngModel)]="selectedRole" (change)="filterByRole()">
                 <option value="all">Tutti</option>
                 <option *ngFor="let role of userService.roles" value="{{role}}">{{role}}</option>
             </select>
@@ -41,7 +41,7 @@
                 <td>{{user.role}}</td>
                 <td>{{user.email}}</td>
                 <td><a class="btn btn-primary" [routerLink]="'/user/' + user._id">Dettagli</a></td>
-                <td><button class="btn btn-danger" (click)="onDeleteUser(user._id)"><i class="bi bi-trash"></i></button></td>
+                <td><button class="btn btn-danger" (click)="deleteUser(user._id)"><i class="bi bi-trash"></i></button></td>
             </tr>
         </tbody>
     </table>

@@ -16,33 +16,21 @@ export class UserListComponent {
 
   async ngOnInit() {
     await this.userService.getUsers();
-
-    this.checkParams();
   }
 
-  async checkParams() {
-    this.activatedRoute.params.subscribe(async () => {
-      const params = this.activatedRoute.snapshot.queryParams;
-      const currentRole = params["role"];
-
-      if (currentRole != undefined && currentRole != "all") {
-        this.selectedRole = currentRole;
-        this.userService.filterByRole(currentRole);
-      } else
-        await this.userService.getUsers();
-    });
+  async search() {
+    await this.router.navigateByUrl("/users?search=" + this.searchText);
+    this.userService.getUsers();
+    this.selectedRole = "all";
   }
 
-  search() {
-    this.userService.searchUser(this.searchText);
-  }
-
-  async changeRole() {
+  async filterByRole() {
     await this.router.navigateByUrl("/users?role=" + this.selectedRole);
-    window.location.reload();
+    this.userService.getUsers();
+    this.searchText = "";
   }
 
-  onDeleteUser(id: any) {
+  deleteUser(id: any) {
     this.userService.deleteUser(id);
   }
 

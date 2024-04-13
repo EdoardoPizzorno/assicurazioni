@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
 import { ParserService } from './parser.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,10 @@ export class UserService {
   selectedUser: any;
   roles: any[] = [];
 
-  constructor(private dataStorage: DataStorageService, private parser: ParserService) { }
+  constructor(private dataStorage: DataStorageService, private parser: ParserService, private router: Router) { }
 
   async getUsers(): Promise<any> {
-    return this.dataStorage.sendRequest("GET", "/users")
+    return this.dataStorage.sendRequest("GET", this.router.url)
       .catch(this.dataStorage.error)
       .then(async (response) => {
         this.users = response.data;
@@ -84,37 +85,15 @@ export class UserService {
     })
   }
 
-  getRoles(): Promise<any> {
+  getRoles(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.users.forEach((user: any) => {
-        if (!this.roles.includes(user.role) && user.role != undefined) {
-          this.roles.push(user.role);
-        }
-      });
-      resolve(this.roles.sort());
+      this.dataStorage.sendRequest("GET", "/roles")
+        .catch(this.dataStorage.error)
+        .then((response) => {
+          this.roles = response.data;
+          resolve();
+        });
     });
-  }
-
-  searchUser(searchText: string) {
-    if (searchText != "" && searchText != null) {
-      this.dataStorage.sendRequest("GET", "/users/search?text=" + searchText)
-        .catch(this.dataStorage.error)
-        .then((response) => {
-          this.users = response.data;
-        })
-    }
-    else this.getUsers();
-  }
-
-  filterByRole(role: string) {
-    if (role != "" && role != null && role != "all") {
-      this.dataStorage.sendRequest("GET", "/users/filter?role=" + role)
-        .catch(this.dataStorage.error)
-        .then((response) => {
-          this.users = response.data;
-        })
-    }
-    else this.getUsers();
   }
 
 }

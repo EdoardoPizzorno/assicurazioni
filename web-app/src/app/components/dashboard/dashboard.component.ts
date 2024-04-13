@@ -21,38 +21,18 @@ export class DashboardComponent {
   selectedOperator: string = "all";
 
   constructor(public periziaService: PeriziaService, private userService: UserService, private activatedRoute: ActivatedRoute, private router: Router) {
-
     // Set map
     this.center = this.periziaService.headQuarter.coords;
     this.zoom = 12;
-
   }
 
   async ngOnInit() {
-    await this.userService.getUsers();
-    await this.periziaService.getPerizie();
-
-    this.checkParams();
+    this.periziaService.getPerizie();
   }
 
-  checkParams() {
-    this.activatedRoute.params.subscribe(async () => {
-      const params = this.activatedRoute.snapshot.queryParams;
-      const currentOperator = params["operator"];
-
-      if (currentOperator != undefined && currentOperator != "all") {
-        this.selectedOperator = currentOperator;
-        this.periziaService.filterByOperator(currentOperator);
-      } else {
-        await this.userService.getUsers();
-        await this.periziaService.getPerizie();
-      }
-    });
-  }
-
-  async changeOperator() {
-    await this.router.navigateByUrl("/dashboard?operator=" + this.selectedOperator);
-    window.location.reload();
+  async filterByOperator() {
+    await this.router.navigateByUrl("/perizie?operator=" + this.selectedOperator);
+    this.periziaService.getPerizie();
   }
 
   //#region MAP & MARKERS EVENTS
