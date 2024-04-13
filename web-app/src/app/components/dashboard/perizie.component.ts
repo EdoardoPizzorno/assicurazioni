@@ -6,10 +6,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'home',
-  templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  templateUrl: './perizie.component.html',
+  styleUrl: './perizie.component.css'
 })
-export class DashboardComponent {
+export class PerizieComponent {
 
   display: any;
   center: google.maps.LatLngLiteral;
