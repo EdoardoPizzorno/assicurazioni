@@ -254,7 +254,7 @@ app.get("/api/perizie", async (req, res, next) => {
     let query: any = {};
 
     if (operator && operator != "all") {
-        query = { "operator": operator };
+        query = { "operator._id": operator };
     }
 
     const client = new MongoClient(CONNECTION_STRING);
@@ -347,6 +347,21 @@ app.post("/api/user", async (req, res, next) => {
     const collection = client.db(DBNAME).collection("UTENTI");
     let rq = collection.insertOne(user)
     rq.then((data) => res.send(data))
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    rq.finally(() => client.close());
+})
+
+app.patch("/api/perizia/:id", async (req, res, next) => {
+    const perizia = req["body"]["body"].perizia;
+    console.log(perizia)
+    let _id = perizia._id;
+    delete perizia._id;
+
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("PERIZIE");
+    let rq = collection.updateOne({ "_id": _id }, { "$set": perizia });
+    rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
 })

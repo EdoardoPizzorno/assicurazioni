@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
 import { UserService } from './user.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -30,9 +31,6 @@ export class PeriziaService {
         .then(async (response) => {
           this.perizie = response.data;
           await this.getOperators();
-          this.perizie.forEach((perizia: any) => {
-            perizia.operator = this.operators.filter((operator: any) => { return operator._id == perizia.operator })[0] || { "username": "Utente eliminato" };
-          });
           resolve();
         });
     });
@@ -44,6 +42,22 @@ export class PeriziaService {
         this.operators = response.data;
         resolve(this.operators);
       });
+    });
+  }
+
+  edit(perizia: any): Promise<void> {
+    console.log(perizia)
+    return new Promise((resolve, reject) => {
+      this.dataStorage.sendRequest("PATCH", "/perizia/" + perizia._id, {perizia})
+        .catch(error => {
+          this.dataStorage.error(error);
+          reject(error);
+        })
+        .then(async (response) => {
+          Swal.fire("Perizia modificata", "", "success");
+          await this.getPerizie();
+          resolve();
+        });
     });
   }
 

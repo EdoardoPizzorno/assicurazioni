@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { PeriziaService } from '../../services/perizia.service';
 import Swal from 'sweetalert2';
-import { UserService } from '../../services/user.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'home',
@@ -20,7 +19,7 @@ export class PerizieComponent {
 
   selectedOperator: string = "all";
 
-  constructor(public periziaService: PeriziaService, private userService: UserService, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(public periziaService: PeriziaService, private router: Router) {
     // Set map
     this.center = this.periziaService.headQuarter.coords;
     this.zoom = 12;
@@ -33,6 +32,42 @@ export class PerizieComponent {
   async filterByOperator() {
     await this.router.navigateByUrl("/perizie?operator=" + this.selectedOperator);
     this.periziaService.getPerizie();
+  }
+
+  async editPerizia(perizia: any) {
+    Swal.fire({
+      title: "Modifica perizia",
+      html: `
+        <div class="form-group">
+          <label for="description">Descrizione</label>
+          <input type="text" class="form-control" id="description" value="${perizia.description}">
+        </div>
+        <div class="form-group">
+          <label for="date">Data</label>
+          <input type="date" class="form-control" id="date" value="${perizia.date}">
+        </div>
+        <div class="form-group">
+          <label for="time">Ora</label>
+          <input type="time" class="form-control" id="time" value="${perizia.time}">
+        </div>
+      `,
+      showCancelButton: true,
+      confirmButtonText: "Salva",
+      cancelButtonText: "Annulla"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const description = (<HTMLInputElement>document.getElementById("description")).value;
+        const date = (<HTMLInputElement>document.getElementById("date")).value;
+        const time = (<HTMLInputElement>document.getElementById("time")).value;
+        
+        perizia.description = description;
+        perizia.date = date;
+        perizia.time = time;
+
+        await this.periziaService.edit(perizia);
+        this.periziaService.getPerizie();
+      }
+    });
   }
 
   //#region MAP & MARKERS EVENTS
@@ -60,7 +95,7 @@ export class PerizieComponent {
           ${imagesHtml}
         </div>
       `,
-      width: "60%",
+      width: "60%"
     });
 
   }

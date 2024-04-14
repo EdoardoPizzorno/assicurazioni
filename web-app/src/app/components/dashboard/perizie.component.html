@@ -11,7 +11,7 @@
     </div>
     <div class="col-md-5">
         <div class="m-3">
-            
+
             <!--FILTERS-->
             <div class="row">
                 <div class="col-md-2 align-self-center">
@@ -36,6 +36,7 @@
                             <th>Data</th>
                             <th>Oggetto</th>
                             <th>Dettagli</th>
+                            <th>Modifica</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,7 +45,11 @@
                                 {{perizia.operator.username}}</td>
                             <td>{{perizia.date}}</td>
                             <td>{{perizia.description}}</td>
-                            <td><button class="btn btn-primary" href="#" (click)="openInfo(perizia)">Dettagli</button>
+                            <td>
+                                <button class="btn btn-primary" (click)="openInfo(perizia)">Dettagli</button>
+                            </td>
+                            <td>
+                                <button class="btn btn-warning" (click)="editPerizia(perizia)">Modifica</button>
                             </td>
                         </tr>
                     </tbody>
