@@ -12,3 +12,8 @@ td,
 th {
     vertical-align: middle !important;
 }
+
+.deleted {
+    text-decoration: line-through;
+    color: red;
+}

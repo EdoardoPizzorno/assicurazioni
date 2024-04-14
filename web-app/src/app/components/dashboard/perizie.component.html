@@ -11,6 +11,8 @@
     </div>
     <div class="col-md-5">
         <div class="m-3">
+            
+            <!--FILTERS-->
             <div class="row">
                 <div class="col-md-2 align-self-center">
                     <label for="operatorFilter">Operatore:</label>
@@ -24,6 +26,8 @@
                     </select>
                 </div>
             </div>
+
+            <!--TABLE-->
             <div class="table-responsive mt-3">
                 <table class="table table-striped text-center">
                     <thead>
@@ -40,7 +44,8 @@
                                 {{perizia.operator.username}}</td>
                             <td>{{perizia.date}}</td>
                             <td>{{perizia.description}}</td>
-                            <td><button class="btn btn-primary" href="#" (click)="openInfo(perizia)">Dettagli</button></td>
+                            <td><button class="btn btn-primary" href="#" (click)="openInfo(perizia)">Dettagli</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
