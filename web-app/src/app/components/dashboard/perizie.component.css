@@ -2,3 +2,8 @@
     text-decoration: line-through;
     color: red;
 }
+
+.col-md-2 label {
+    vertical-align: middle;
+    margin: 0px;
+}

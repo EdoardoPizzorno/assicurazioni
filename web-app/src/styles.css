@@ -1,6 +1,6 @@
 * {
     font-family: 'Poppins', 'Montserrat', Verdana, Geneva, Tahoma, sans-serif;
-    vertical-align: middle;
+    vertical-align: middle !important;
 }
 
 ::selection {
@@ -10,5 +10,5 @@
 
 td,
 th {
-    vertical-align: middle;
+    vertical-align: middle !important;
 }

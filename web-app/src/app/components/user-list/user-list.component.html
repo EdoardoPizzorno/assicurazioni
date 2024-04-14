@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="col-md-2 input-group-append justify-content-end">
-            <select class="form-select" [(ngModel)]="selectedRole" (change)="filterByRole()">
+            <select class="form-control" [(ngModel)]="selectedRole" (change)="filterByRole()">
                 <option value="all">Tutti</option>
                 <option *ngFor="let role of userService.roles" value="{{role}}">{{role}}</option>
             </select>
@@ -34,7 +34,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let user of userService.users">
-                <td><img src="{{user.avatar}}" alt="user picture" width="50" height="50"></td>
+                <td><img src="{{user.avatar}}" alt="user picture" class="profile-picture"></td>
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
                 <td>{{user.username}}</td>
