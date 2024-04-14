@@ -1,43 +1,61 @@
 <h1 class="text-center pt-3">Dashboard Amministratore</h1>
 
-<div class="m-3">
-    <!--FILTERS-->
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <label for="operatorFilter">Filtra per operatore:</label>
-            <select class="form-control" id="operatorFilter" [(ngModel)]="selectedOperator" (change)="filterByOperator()">
-                <option value="all">Tutti</option>
-                <option *ngFor="let operator of periziaService.operators" value="{{operator._id}}">{{operator.username}}</option>
-            </select>
+<div class="row m-3">
+    <div class="col-md-7">
+        <google-map height="600px" width="100%" [center]="center" [zoom]="zoom" (mapClick)="moveMap($event)">
+            <map-marker *ngFor="let marker of periziaService.perizie; index as i" [position]="marker.coords"
+                [icon]="marker.icon" [title]="marker.description" (mapClick)="openInfo(marker)"
+                [options]="markerOptions">
+            </map-marker>
+        </google-map>
+    </div>
+    <div class="col-md-5">
+        <div class="m-3">
+
+            <!--FILTERS-->
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="operatorFilter" class="align-middle">Filtra per operatore:</label>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-control" id="operatorFilter" [(ngModel)]="selectedOperator"
+                        (change)="filterByOperator()">
+                        <option value="all">Tutti</option>
+                        <option *ngFor="let operator of periziaService.operators" value="{{operator._id}}">
+                            {{operator.username}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <!--TABLE-->
+            <table class="table table-striped text-center mt-3">
+                <thead>
+                    <tr>
+                        <th>ID Perizia</th>
+                        <th>Operatore</th>
+                        <th>Data</th>
+                        <th>Ora</th>
+                        <th>Descrizione</th>
+                        <th>Dettagli</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let perizia of periziaService.perizie">
+                        <td>{{perizia._id}}</td>
+                        <td [ngClass]="{deleted: perizia.operator.username=='Utente eliminato'}">
+                            {{perizia.operator.username}}</td>
+                        <td>{{perizia.date}}</td>
+                        <td>{{perizia.time}}</td>
+                        <td>{{perizia.description}}</td>
+                        <td><button class="btn btn-primary" href="#" (click)="openInfo(perizia)">Dettagli</button></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    <br>
-    <google-map height="450px" width="100%" [center]="center" [zoom]="zoom" (mapClick)="moveMap($event)">
-        <map-marker *ngFor="let marker of periziaService.perizie; index as i" [position]="marker.coords"
-            [icon]="marker.icon" [title]="marker.description" (mapClick)="openInfo(marker)" [options]="markerOptions">
-        </map-marker>
-    </google-map>
+</div>
+<div class="row mt-3">
+    <div class="col-md-12">
 
-    <table class="table table-striped text-center">
-        <thead>
-            <tr>
-                <th>ID Perizia</th>
-                <th>Operatore</th>
-                <th>Data</th>
-                <th>Ora</th>
-                <th>Oggetto</th>
-                <th>Dettagli</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let perizia of periziaService.perizie">
-                <td>{{perizia._id}}</td>
-                <td [ngClass]="{deleted: perizia.operator.username=='Utente eliminato'}">{{perizia.operator.username}}</td>
-                <td>{{perizia.date}}</td>
-                <td>{{perizia.time}}</td>
-                <td>{{perizia.description}}</td>
-                <td><button class="btn btn-primary" href="#" (click)="openInfo(perizia)">Dettagli</button></td>
-            </tr>
-        </tbody>
-    </table>
+    </div>
 </div>
