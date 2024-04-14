@@ -55,7 +55,7 @@ export class PerizieComponent {
       html: `
         <b>Data:</b> ${perizia.date} alle ${perizia.time}<br>
         <b>Descrizione:</b> ${perizia.description}<br>
-        <b>Creata da:</b> <p class="${this.checkOperatorDeleted(perizia.operator.username)}"> ${perizia.operator.username} </p> <br>
+        <b>Creata da:</b> <span class="${this.checkOperatorDeleted(perizia.operator.username)}"> ${perizia.operator.username} </span> <br>
         <div class="row container">
           ${imagesHtml}
         </div>
@@ -85,14 +85,14 @@ export class PerizieComponent {
           <div class="card m-3">
               <img src="${image.url}" class="card-img-top" alt="...">
               <div class="card-body">
-                  <p class="card-title">Fotografata da <b class="${this.checkOperatorDeleted(image.photographer)}">${image.photographer}</b></p>
+                  <p class="card-title">Immagine fotografata da <b class="${this.checkOperatorDeleted(image.photographer)}">${image.photographer}</b></p>
                   <a class="text-decoration-none" data-bs-toggle="collapse" href="#comments-${cardId}" role="button" aria-expanded="false" aria-controls="comments-${cardId}">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
                           <path d="M7.646 10.646a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1-.708.708L8 11.707l-3.646 3.647a.5.5 0 1 1-.708-.708l4-4a.5.5 0 0 1 0-.708z"/>
                       </svg>
                   </a>
                   <div class="collapse" id="comments-${cardId}">
-                      <div class="card card-body" style="font-size: 10pt; margin: 0px !important; vertical-align: middle !important;">
+                      <div class="card card-body text-center" style="font-size: 10pt; vertical-align: middle !important;">
                           ${this.generateCommentsHtml(image.comments)}
                       </div>
                   </div>
@@ -107,12 +107,11 @@ export class PerizieComponent {
   generateCommentsHtml(comments: any[]): string {
     let commentsHtml = "";
     if (comments == undefined || comments.length == 0)
-      commentsHtml += `<p>Nessun commento</p>`;
+      commentsHtml += `<p class="text-center comment">Nessun commento</p>`;
     else {
       comments.forEach((comment: any) => {
-        commentsHtml += `<div class="row mt-1">
-        <b class='${comment.writer == "Utente eliminato" ? "deleted" : ""}'>${comment.writer}</b>:
-        <p> &nbsp; ${comment.text}</p>
+        commentsHtml += `<div class="text-center">
+        <p class="comment"> &nbsp; ${comment}</p>
         </div>
         `;
       });

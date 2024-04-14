@@ -17,3 +17,7 @@ th {
     text-decoration: line-through;
     color: red;
 }
+
+.comment {
+    margin: 0px !important
+}
