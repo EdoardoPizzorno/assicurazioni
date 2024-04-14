@@ -24,13 +24,15 @@ export class UserService {
       });
   }
 
-  getUser(id: any) {
-    this.dataStorage.sendRequest("GET", "/user/" + id)
-      .catch(this.dataStorage.error)
-      .then((response) => {
-        this.selectedUser = response.data;
-        this.selectedUser["createdAt"] = this.parser.parseDate(this.selectedUser["createdAt"]);
-      })
+  async getUser(id: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.dataStorage.sendRequest("GET", "/user/" + id)
+        .catch(this.dataStorage.error)
+        .then((response) => {
+          this.selectedUser = response.data;
+          resolve();
+        });
+    });
   }
 
   addUser(user: any) {

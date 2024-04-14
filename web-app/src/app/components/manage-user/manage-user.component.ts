@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-user',
-  templateUrl: './add-user.component.html',
-  styleUrl: './add-user.component.css'
+  templateUrl: './manage-user.component.html',
+  styleUrl: './manage-user.component.css'
 })
-export class AddUserComponent {
+export class ManageUserComponent {
 
   newUser: any = {
     name: "",
@@ -21,7 +22,15 @@ export class AddUserComponent {
     createdAt: new Date()
   };
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private router: ActivatedRoute) {
+    this.router.params.subscribe((params: any) => {
+      if (params.id) {
+        this.userService.getUser(params.id).then(() => {
+          this.newUser = this.userService.selectedUser;
+        });
+      }
+    });
+  }
 
   onAddUser() {
     Swal.showLoading();
