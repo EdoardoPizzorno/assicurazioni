@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -9,14 +9,26 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class UserComponent {
 
-  constructor(public userService: UserService, private router: ActivatedRoute) {
-    this.router.params.subscribe((params: any) => {
-      this.userService.getUser(params.id);
+  currentId: any;
+
+  constructor(public userService: UserService, private activatedRouter: ActivatedRoute, private router: Router) {
+    this.activatedRouter.params.subscribe((params: any) => {
+      this.currentId = params.id;
+      this.userService.getUser(this.currentId);
     });
   }
 
+  edit() {
+    this.router.navigateByUrl("user/" + this.currentId + "/edit");
+  }
+
+  delete() {
+    this.userService.deleteUser(this.currentId);
+    this.router.navigate(["/users"]);
+  }
+
   back() {
-    window.history.back();
+    this.router.navigate(["/users"]);
   }
 
 }

@@ -30,6 +30,7 @@ export class UserService {
         .catch(this.dataStorage.error)
         .then((response) => {
           this.selectedUser = response.data;
+          this.selectedUser.createdAt = this.parser.parseDate(this.selectedUser.createdAt);
           resolve();
         });
     });
@@ -56,6 +57,27 @@ export class UserService {
       })
   }
 
+  updateUser(user: any) {
+    this.dataStorage.sendRequest("PATCH", "/user/" + user.id, { user })
+      .catch(this.dataStorage.error)
+      .then((response) => {
+        if (response.data.modifiedCount != undefined && response.data.modifiedCount != 0) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Utente modificato correttamente',
+          }).then(() => {
+            window.location.href = "/users";
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Errore',
+            text: 'Errore durante la modifica dell\'utente'
+          });
+        }
+      })
+  }
+
   deleteUser(id: any) {
     Swal.fire({
       title: 'Sei sicuro di voler eliminare l\'utente?',
@@ -75,13 +97,13 @@ export class UserService {
               }).then(() => {
                 window.location.href = "/users";
               });
-            } else {
+            }/* else {
               Swal.fire({
                 icon: 'error',
                 title: 'Errore',
                 text: 'Errore durante l\'eliminazione dell\'utente'
               });
-            }
+            }*/
           })
       }
     })

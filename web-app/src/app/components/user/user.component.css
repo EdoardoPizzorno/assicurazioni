@@ -9,3 +9,7 @@
 .container p, h2 {
     margin: 8px;
 }
+
+.col-md-1 button {
+    margin: 8px;
+}

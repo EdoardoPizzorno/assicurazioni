@@ -351,12 +351,32 @@ app.post("/api/user", async (req, res, next) => {
     rq.finally(() => client.close());
 })
 
+app.patch("/api/user/:id", async (req, res, next) => {
+    const user = req["body"]["body"].user;
+    const _id = new ObjectId(user._id);
+    delete user._id;
+
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("UTENTI");
+    let rq = collection.updateOne({ "_id": _id }, { "$set": user });
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    rq.finally(() => client.close());
+})
+
 app.delete("/api/user/:id", async (req, res, next) => {
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
     const collection = client.db(DBNAME).collection("UTENTI");
-    let rq = collection.deleteOne({ "_id": new ObjectId(req.params.id) });
-    rq.then((data) => res.send(data));
+    let rq = collection.deleteOne({ "_id": new ObjectId(req.params.id), "role": { "$ne": "superadmin" } });
+    rq.then((data) => {
+        if (data.deletedCount === 0) {
+            res.status(401).send("Impossibile eliminare l'utente superadmin");
+        } else {
+            res.send(data);
+        }
+    });
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
 })

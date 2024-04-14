@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ManageUserComponent {
 
+  editMode: boolean = false;
   newUser: any = {
     name: "",
     surname: "",
@@ -25,6 +26,7 @@ export class ManageUserComponent {
   constructor(private userService: UserService, private router: ActivatedRoute) {
     this.router.params.subscribe((params: any) => {
       if (params.id) {
+        this.editMode = true;
         this.userService.getUser(params.id).then(() => {
           this.newUser = this.userService.selectedUser;
         });
@@ -32,10 +34,14 @@ export class ManageUserComponent {
     });
   }
 
-  onAddUser() {
+  submit() {
     Swal.showLoading();
-    if (this.validateUser())
-      this.userService.addUser(this.newUser);
+    if (this.validateUser()) {
+      if (this.editMode)
+        this.userService.updateUser(this.newUser);
+      else
+        this.userService.addUser(this.newUser);
+    }
     else Swal.fire({
       icon: 'error',
       title: 'Errore',
