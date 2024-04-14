@@ -1,6 +1,6 @@
 <h1 class="text-center pt-3">Dashboard Amministratore</h1>
 
-<div class="row m-3">
+<div class="row m-1">
     <div class="col-md-7">
         <google-map height="600px" width="100%" [center]="center" [zoom]="zoom" (mapClick)="moveMap($event)">
             <map-marker *ngFor="let marker of periziaService.perizie; index as i" [position]="marker.coords"
@@ -10,7 +10,7 @@
         </google-map>
     </div>
     <div class="col-md-5">
-        <div class="m-3">
+        <div class="m-1">
 
             <!--FILTERS-->
             <div class="row">
