@@ -47,12 +47,6 @@ export class UserService {
           }).then(() => {
             window.location.href = "/users";
           });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Errore',
-            text: 'Errore durante l\'inserimento dell\'utente'
-          });
         }
       })
   }
@@ -67,12 +61,6 @@ export class UserService {
             title: 'Utente modificato correttamente',
           }).then(() => {
             window.location.href = "/users";
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Errore',
-            text: 'Errore durante la modifica dell\'utente'
           });
         }
       })
@@ -97,13 +85,7 @@ export class UserService {
               }).then(() => {
                 window.location.href = "/users";
               });
-            }/* else {
-              Swal.fire({
-                icon: 'error',
-                title: 'Errore',
-                text: 'Errore durante l\'eliminazione dell\'utente'
-              });
-            }*/
+            }
           })
       }
     })

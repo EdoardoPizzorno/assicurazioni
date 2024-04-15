@@ -360,7 +360,7 @@ app.post("/api/user", async (req, res, next) => {
 
     const existingUser = await collection.findOne({ $or: [{ email: user.email }, { username: user.username }] });
     if (existingUser) {
-        res.status(400).send("Email or username already exists");
+        res.status(409).send("Email o username già utilizzati");
     } else {
         let payload: any = {
             from: process.env.GMAIL_USER,
