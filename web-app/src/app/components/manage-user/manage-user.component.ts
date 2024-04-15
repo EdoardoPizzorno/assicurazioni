@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
+import { RoleService } from '../../services/role.service';
 
 @Component({
   selector: 'app-add-user',
@@ -23,10 +24,10 @@ export class ManageUserComponent {
     createdAt: new Date()
   };
 
-  constructor(public userService: UserService, private router: ActivatedRoute) { }
+  constructor(public userService: UserService, public roleService: RoleService, private router: ActivatedRoute) { }
 
   async ngOnInit() {
-    await this.userService.getRoles();
+    await this.roleService.getRoles();
     this.router.params.subscribe((params: any) => {
       if (params.id) {
         this.editMode = true;

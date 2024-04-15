@@ -14,6 +14,7 @@ import { UserListComponent } from './components/user-list/user-list.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PerizieTableComponent } from './components/perizie-table/perizie-table.component';
+import { RoleComponent } from './components/role/role.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { PerizieTableComponent } from './components/perizie-table/perizie-table.
     HeaderComponent,
     FooterComponent,
     PerizieTableComponent,
+    RoleComponent,
   ],
   imports: [
     BrowserModule,

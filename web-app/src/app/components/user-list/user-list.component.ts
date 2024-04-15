@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RoleService } from '../../services/role.service';
 
 @Component({
   selector: 'app-user-list',
@@ -12,7 +13,7 @@ export class UserListComponent {
   searchText: string = "";
   selectedRole: string = "all";
 
-  constructor(public userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(public userService: UserService, public roleService: RoleService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   async ngOnInit() {
     await this.userService.getUsers();

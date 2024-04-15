@@ -3,6 +3,7 @@ import { DataStorageService } from './data-storage.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { UtilsService } from './utils/utils.service';
+import { RoleService } from './role.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +12,15 @@ export class UserService {
 
   users: any;
   selectedUser: any;
-  roles: any[] = [];
 
-  constructor(private dataStorage: DataStorageService, private utils: UtilsService, private router: Router) { }
+  constructor(private dataStorage: DataStorageService, private roleService: RoleService, private utils: UtilsService, private router: Router) { }
 
   async getUsers(): Promise<any> {
     return this.dataStorage.sendRequest("GET", this.router.url)
       .catch(this.dataStorage.error)
       .then(async (response) => {
         this.users = response.data;
-        await this.getRoles();
+        await this.roleService.getRoles();
       });
   }
 
@@ -107,17 +107,6 @@ export class UserService {
           })
       }
     })
-  }
-
-  getRoles(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.dataStorage.sendRequest("GET", "/roles")
-        .catch(this.dataStorage.error)
-        .then((response) => {
-          this.roles = response.data;
-          resolve();
-        });
-    });
   }
 
 }

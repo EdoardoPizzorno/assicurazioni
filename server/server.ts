@@ -135,7 +135,7 @@ app.use("/", _cors(corsOptions));
 
 //#region AUTHENTICATION
 
-let message = _fs.readFileSync("./message.html", "utf8");
+let message = "";
 
 const OAUTH_CREDENTIALS = JSON.parse(process.env.OAUTH_CREDENTIALS as any)
 const OAuth2 = google.auth.OAuth2;
@@ -284,9 +284,17 @@ app.get("/api/perizie", async (req, res, next) => {
 app.get("/api/operators", async (req, res, next) => {
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
-    const collection = client.db(DBNAME).collection("UTENTI");
-    let rq = collection.find().project({ "username": 1, "_id": 1 }).toArray();
-    rq.then((data) => res.send(data));
+    const collection = client.db(DBNAME).collection("PERIZIE");
+    let rq = collection.find().project({ "operator._id": 1, "operator.username": 1, "_id": 0 }).toArray();
+    rq.then((data) => {
+        let operators = [];
+        data.forEach((item) => {
+            if (!operators.find((op) => op.username === item.operator.username)) {
+                operators.push(item.operator);
+            }
+        });
+        res.send(operators);
+    });
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
 });
@@ -294,8 +302,8 @@ app.get("/api/operators", async (req, res, next) => {
 app.get("/api/roles", async (req, res, next) => {
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
-    const collection = client.db(DBNAME).collection("UTENTI");
-    let rq = collection.distinct("role");
+    const collection = client.db(DBNAME).collection("RUOLI");
+    let rq = collection.find().toArray();
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
@@ -366,6 +374,18 @@ app.post("/api/user", async (req, res, next) => {
     rq.finally(() => client.close());
 })
 
+app.post("/api/role", async (req, res, next) => {
+    const role = req["body"]["body"];
+    console.log(role)
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("RUOLI");
+
+    role._id = await collection.countDocuments();
+    console.log(role._id)
+    findRoleWithSameId(collection, role, res);
+})
+
 app.patch("/api/perizia/:id", async (req, res, next) => {
     const perizia = req["body"]["body"].perizia;
     console.log(perizia)
@@ -422,6 +442,7 @@ function generatePassword(): string {
 }
 
 async function sendPassword(payload: any, res: any) {
+    message = _fs.readFileSync("./message.html", "utf8")
     message = message.replace("__user", payload.to).replace("__password", payload.password);
     const access_token = await OAuth2Client.getAccessToken().catch((err) => {
         res.status(500).send(`Errore richiesta Access_Token a Google: ${err}`);
@@ -489,6 +510,29 @@ async function loadProfilePicture(user: any) {
         console.log(err);
         user["avatar"] = "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Error.svg/1200px-Error.svg.png"
     }
+}
+
+async function findRoleWithSameId(collection: any, role: any, res: any) {
+    collection.find({ "_id": new ObjectId(role._id) }).toArray().then((data) => {
+        console.log(data)
+        if (data || data.length == 0) {
+            let regex = new RegExp(`^${role.name}$`, "i");
+            collection.findOne({ "name": regex }).then((data) => {
+                if (data) {
+                    res.status(409).send("Ruolo già presente");
+                }
+                else {
+                    let rq = collection.insertOne(role);
+                    rq.then((data) => res.send(data));
+                    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+                }
+            });
+        }
+        else {
+            role._id++;
+            findRoleWithSameId(collection, role, res);
+        }
+    });
 }
 
 //#endregion

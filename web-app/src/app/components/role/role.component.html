@@ -1,0 +1,23 @@
+<div class="container text-center mt-5">
+
+    <h1 class="mb-4">Lista Ruoli</h1>
+
+    <table class="table text-center">
+        <thead>
+            <tr>
+                <th>Livello</th>
+                <th>Nome</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let role of roleService.roles">
+                <td>{{role._id}}</td>
+                <td>{{role.name}}</td>
+            </tr>
+            <tr *ngIf="roleService.roles.length == 0">
+                <td colspan="3" class="text-muted">Nessun ruolo trovato</td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="btn btn-success" (click)="addRole()">AGGIUNGI RUOLO</button>
+</div>
