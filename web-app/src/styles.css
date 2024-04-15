@@ -25,3 +25,8 @@ hr.divider {
     background-color: var(--divider-background-color);
     margin: 30px auto;
 }
+
+.deleted {
+    text-decoration: line-through;
+    color: #ff0000;
+}

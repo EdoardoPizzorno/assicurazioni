@@ -148,14 +148,17 @@ OAuth2Client.setCredentials({
 });
 
 app.post("/api/login", async (req, res, next) => {
-    let email = req["body"]["body"].email;
+    let user = req["body"]["body"].email;
     let pwd = req["body"]["body"].password;
 
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
     const collection = client.db(DBNAME).collection("UTENTI");
-    let regex = new RegExp(`^${email}$`, "i");
-    let rq = collection.findOne({ "email": regex }, { "projection": { "_id": 1, "email": 1, "password": 1, "avatar": 1 } });
+    let regex = new RegExp(`^${user}$`, "i");
+    let rq = collection.findOne(
+        { $or: [{ "email": regex }, { "username": regex }] },
+        { "projection": { "_id": 1, "email": 1, "password": 1, "avatar": 1 } }
+    );
     rq.then((dbUser) => {
         if (!dbUser) {
             res.status(401).send("Username non valido");

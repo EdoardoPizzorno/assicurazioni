@@ -7,8 +7,6 @@ import { Router } from '@angular/router';
 })
 export class LoginService {
 
-  email: string = "";
-  password: string = "";
   loginError: boolean = false;
 
   constructor(private dataStorage: DataStorageService, private router: Router) { }
