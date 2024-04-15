@@ -23,7 +23,10 @@ export class ManageUserComponent {
     createdAt: new Date()
   };
 
-  constructor(public userService: UserService, private router: ActivatedRoute) {
+  constructor(public userService: UserService, private router: ActivatedRoute) { }
+
+  async ngOnInit() {
+    await this.userService.getRoles();
     this.router.params.subscribe((params: any) => {
       if (params.id) {
         this.editMode = true;

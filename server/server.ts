@@ -464,7 +464,7 @@ async function loadProfilePicture(user: any) {
         const input = {
             width: 768,
             height: 768,
-            prompt: "a " + (user["gender"] == "m" ? "male" : "female") + " realistic picture",
+            prompt: `a ${user["gender"] == "m" ? "male" : "female"} of ${user["age"]} age (realistic picture)`,
             refine: "expert_ensemble_refiner",
             scheduler: "K_EULER",
             lora_scale: 0.6,
