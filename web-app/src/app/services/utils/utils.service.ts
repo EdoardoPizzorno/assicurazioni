@@ -116,7 +116,6 @@ export class UtilsService {
     if (comments == undefined || comments.length == 0)
       commentsHtml += `<p class="text-center comment">Nessun commento</p>`;
     else {
-      console.log(comments)
       comments.forEach((comment: any) => {
         commentsHtml += `<div class="text-center m-1">
           <div contenteditable="true" class="comment border" role="textbox" aria-multiline="true">${comment}</div>

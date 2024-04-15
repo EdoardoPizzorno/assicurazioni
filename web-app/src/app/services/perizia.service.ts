@@ -54,6 +54,7 @@ export class PeriziaService {
           reject(error);
         })
         .then(async (response) => {
+          console.log(response);
           Swal.fire("Perizia modificata", "", "success");
           await this.getPerizie();
           resolve();

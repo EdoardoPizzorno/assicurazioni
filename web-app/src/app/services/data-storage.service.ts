@@ -15,7 +15,7 @@ export class DataStorageService {
       let cache: any = localStorage.getItem("ASSICURAZIONI");
       if (token != undefined && token != null && cache != null) {
         let parsedCache: any = JSON.parse(cache);
-        localStorage.setItem("ASSICURAZIONI", JSON.stringify({ token, currentUser: parsedCache.currentUser}));
+        localStorage.setItem("ASSICURAZIONI", JSON.stringify({ token, currentUser: parsedCache.currentUser }));
       }
       return response;
     });
@@ -54,33 +54,44 @@ export class DataStorageService {
   }
 
   public error(err: any) {
-    if (!err.response)
-      Swal.fire({
-        icon: 'error',
-        title: 'Connection Refused or Server timeout'
-      });
-    else if (err.response.status == 200)
-      Swal.fire({
-        icon: 'error',
-        title: 'Formato dei dati non corretto',
-        text: err.response.data
-      });
-    else if (err.response.status == 403) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Sessione scaduta',
-        text: 'Effettua nuovamente il login'
-      }).then(() => {
-        localStorage.removeItem("ASSICURAZIONI");
-        window.location.href = "/login";
-      });
-    }
-    else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Server Error: ' + err.response.status,
-        text: err.response.data
-      }).then(() => window.history.back());
+    switch (err.response.status) {
+      case undefined:
+        Swal.fire({
+          icon: 'error',
+          title: 'Connection Refused or Server timeout'
+        });
+        break;
+      case 200:
+        Swal.fire({
+          icon: 'error',
+          title: 'Formato dei dati non corretto',
+          text: err.response.data
+        });
+        break;
+      case 403:
+        Swal.fire({
+          icon: 'error',
+          title: 'Sessione scaduta',
+          text: 'Effettua nuovamente il login'
+        }).then(() => {
+          localStorage.removeItem("ASSICURAZIONI");
+          window.location.href = "/login";
+        });
+        break;
+      case 409:
+        Swal.fire({
+          icon: 'error',
+          title: 'Elemento già presente',
+          text: err.response.data
+        });
+        break;
+      default:
+        Swal.fire({
+          icon: 'error',
+          title: 'Server Error: ' + err.response.status,
+          text: err.response.data
+        }).then(() => window.history.back());
+        break;
     }
   }
 
