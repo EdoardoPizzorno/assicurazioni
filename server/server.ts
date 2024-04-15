@@ -354,24 +354,32 @@ app.post("/api/user", async (req, res, next) => {
     user["_id"] = new ObjectId();
     user["password"] = generatePassword();
 
-    let payload: any = {
-        from: process.env.GMAIL_USER,
-        to: user["email"],
-        password: user["password"]
-    }
-
-    sendPassword(payload, res);
-    user["password"] = _bcrypt.hashSync(user["password"]);
-
-    //await loadProfilePicture(user);
-
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
     const collection = client.db(DBNAME).collection("UTENTI");
-    let rq = collection.insertOne(user)
-    rq.then((data) => res.send(data))
-    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
-    rq.finally(() => client.close());
+
+    const existingUser = await collection.findOne({ $or: [{ email: user.email }, { username: user.username }] });
+    if (existingUser) {
+        res.status(400).send("Email or username already exists");
+    } else {
+        let payload: any = {
+            from: process.env.GMAIL_USER,
+            to: user["email"],
+            password: user["password"]
+        }
+
+        sendPassword(payload, res);
+        user["password"] = _bcrypt.hashSync(user["password"]);
+
+        user["avatar"] = "https://www.civictheatre.ie/wp-content/uploads/2016/05/blank-profile-picture-973460_960_720.png"
+        //await loadProfilePicture(user);
+
+        let rq = collection.insertOne(user)
+        rq.then((data) => res.send(data))
+        rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+        rq.finally(() => client.close());
+    }
+
 })
 
 app.post("/api/role", async (req, res, next) => {

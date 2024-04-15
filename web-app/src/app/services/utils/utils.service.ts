@@ -22,7 +22,6 @@ export class UtilsService {
   }
 
   parseDate(date: any) {
-    console.log(date)
     if (typeof date == "string") {
       date = date.toString();
       let aux = date.split("T");
