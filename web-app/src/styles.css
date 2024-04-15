@@ -21,3 +21,12 @@ th {
 .comment {
     margin: 0px !important
 }
+
+hr {
+    border: none;
+    height: 8px;
+    width: 5%;
+    border-radius: 10px;
+    background-color: #0077cc;
+    margin: 30px auto;
+}

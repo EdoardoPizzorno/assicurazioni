@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
-import { UserService } from './user.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { UtilsService } from './utils/utils.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +19,11 @@ export class PeriziaService {
     }
   }
 
-  constructor(private dataStorage: DataStorageService, private router: Router) { }
+  constructor(private dataStorage: DataStorageService, private router: Router, private utils: UtilsService, private activatedRoute: ActivatedRoute) { }
 
   getPerizie(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.dataStorage.sendRequest("GET", this.router.url)
+      this.dataStorage.sendRequest("GET", "/perizie" + window.location.search)
         .catch(error => {
           this.dataStorage.error(error);
           reject(error);
@@ -59,6 +59,24 @@ export class PeriziaService {
           resolve();
         });
     });
+  }
+
+  openInfo(perizia: any) {
+    let imagesHtml = this.utils.generatePhotosHtml(perizia.photos);
+
+    Swal.fire({
+      title: perizia.description,
+      html: `
+        <b>Data:</b> ${perizia.date} alle ${perizia.time}<br>
+        <b>Descrizione:</b> ${perizia.description}<br>
+        <b>Creata da:</b> <span class="${this.utils.checkOperatorDeleted(perizia.operator.username)}"> ${perizia.operator.username} </span> <br>
+        <div class="row container">
+          ${imagesHtml}
+        </div>
+      `,
+      width: "60%"
+    });
+
   }
 
 }

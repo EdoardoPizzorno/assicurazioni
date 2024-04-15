@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PerizieComponent } from './components/dashboard/perizie.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { GoogleMapsModule } from '@angular/google-maps';
@@ -13,17 +13,19 @@ import { ManageUserComponent } from './components/manage-user/manage-user.compon
 import { UserListComponent } from './components/user-list/user-list.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { PerizieTableComponent } from './components/perizie-table/perizie-table.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PerizieComponent,
+    DashboardComponent,
     LoginComponent,
     UserComponent,
     ManageUserComponent,
     UserListComponent,
     HeaderComponent,
     FooterComponent,
+    PerizieTableComponent,
   ],
   imports: [
     BrowserModule,

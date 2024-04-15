@@ -1,0 +1,19 @@
+<h1 class="text-center pt-3">Dashboard Amministratore</h1>
+
+<div class="m-5">
+
+    <google-map height="800px" width="100%" [center]="center" [zoom]="zoom" (mapClick)="moveMap($event)">
+        <map-marker *ngFor="let marker of periziaService.perizie; index as i" [position]="marker.coords"
+            [icon]="marker.icon" [title]="marker.description" (mapClick)="periziaService.openInfo(marker)"
+            [options]="markerOptions">
+        </map-marker>
+    </google-map>
+    <hr>
+    <perizie-table></perizie-table>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-12">
+
+    </div>
+</div>

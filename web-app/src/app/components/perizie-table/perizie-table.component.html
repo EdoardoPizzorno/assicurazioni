@@ -1,0 +1,78 @@
+<div class="container">
+
+    <!--FILTERS-->
+    <div class="row">
+
+        <div class="col-md-4 mt-3">
+            <label for="operatorFilter">Operatore:</label>
+            <select class="form-control" id="operatorFilter" [(ngModel)]="selectedOperator"
+                (change)="filter()">
+                <option value="all">Tutti</option>
+                <option *ngFor="let operator of periziaService.operators" [value]="operator.username">
+                    {{operator.username}}
+                </option>
+            </select>
+        </div>
+
+        <div class="col-md-4 align-self-center mt-3">
+            <label for="dateFilter">Data:</label>
+            <input type="date" class="form-control" id="dateFilter" [(ngModel)]="selectedDate"
+                (change)="filter()">
+        </div>
+
+        <div class="col-md-4 mt-3">
+            <label for="descriptionFilter">Oggetto:</label>
+            <input type="text" class="form-control" id="descriptionFilter" [(ngModel)]="selectedDescription"
+                (change)="filter()">
+        </div>
+
+        <div class="filter-box">
+            <div *ngIf="selectedOperator != '' && selectedOperator != 'all'" class="filter-label">
+                <span class="filter-value">{{selectedOperator}}</span>
+                <button class="close-btn" (click)="removeFilter('operator')">×</button>
+            </div>
+            <div *ngIf="selectedDate != ''" class="filter-label">
+                <span class="filter-value">{{selectedDate}}</span>
+                <button class="close-btn" (click)="removeFilter('date')">×</button>
+            </div>
+            <div *ngIf="selectedDescription != ''" class="filter-label">
+                <span class="filter-value">{{selectedDescription}}</span>
+                <button class="close-btn" (click)="removeFilter('description')">×</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!--TABLE-->
+    <div class="table-responsive mt-3">
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th>Operatore</th>
+                    <th>Data</th>
+                    <th>Oggetto</th>
+                    <th>Dettagli</th>
+                    <th>Modifica</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let perizia of periziaService.perizie">
+                    <td [ngClass]="{deleted: perizia.operator.username=='Utente eliminato'}">
+                        {{perizia.operator.username}}</td>
+                    <td>{{perizia.date}}</td>
+                    <td>{{perizia.description}}</td>
+                    <td>
+                        <button class="btn btn-primary" (click)="periziaService.openInfo(perizia)">Dettagli</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-warning" (click)="editPerizia(perizia)">Modifica</button>
+                    </td>
+                </tr>
+                <tr *ngIf="periziaService.perizie.length == 0">
+                    <td colspan="5" class="text-muted">Nessuna perizia trovata</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

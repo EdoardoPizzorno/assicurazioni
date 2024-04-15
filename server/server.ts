@@ -251,10 +251,22 @@ function createToken(data) {
 
 app.get("/api/perizie", async (req, res, next) => {
     const operator = req.query.operator;
+    const date = req.query.date;
+    const search = req.query.search;
+
     let query: any = {};
 
     if (operator && operator != "all") {
-        query = { "operator._id": operator };
+        query = { "operator.username": operator };
+    }
+
+    if (date) {
+        query["date"] = date;
+    }
+
+    if (search) {
+        let regex = new RegExp(`^${search}`, "i");
+        query["description"] = regex;
     }
 
     const client = new MongoClient(CONNECTION_STRING);

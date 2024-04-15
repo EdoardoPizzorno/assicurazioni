@@ -1,122 +1,11 @@
-import { Component } from '@angular/core';
-import { PeriziaService } from '../../services/perizia.service';
-import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
+import { Injectable } from '@angular/core';
 
-@Component({
-  selector: 'home',
-  templateUrl: './perizie.component.html',
-  styleUrl: './perizie.component.css'
+@Injectable({
+  providedIn: 'root'
 })
-export class PerizieComponent {
+export class UtilsService {
 
-  display: any;
-  center: google.maps.LatLngLiteral;
-  zoom: number;
-
-  markerOptions: google.maps.MarkerOptions = { draggable: false, animation: google.maps.Animation.DROP };
-  icon: string = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-
-  selectedOperator: string = "all";
-
-  constructor(public periziaService: PeriziaService, private router: Router) {
-    // Set map
-    this.center = this.periziaService.headQuarter.coords;
-    this.zoom = 12;
-  }
-
-  async ngOnInit() {
-    this.periziaService.getPerizie();
-  }
-
-  async filterByOperator() {
-    await this.router.navigateByUrl("/perizie?operator=" + this.selectedOperator);
-    this.periziaService.getPerizie();
-  }
-
-  async editPerizia(perizia: any) {
-    let imagesHtml = this.generatePhotosHtmlForEdit(perizia.photos);
-
-    Swal.fire({
-      title: "Modifica perizia",
-      html: `
-      <form id="editForm" class="container">
-        <div class="form-group">
-          <label for="description">Descrizione</label>
-          <input type="text" class="form-control" id="description" value="${perizia.description}">
-        </div>
-        <div class="form-group">
-          <label for="date">Data</label>
-          <input type="date" class="form-control" id="date" value="${perizia.date}">
-        </div>
-        <div class="form-group">
-          <label for="time">Ora</label>
-          <input type="time" class="form-control" id="time" value="${perizia.time}">
-        </div>
-        <div class="row">
-          ${imagesHtml}
-        </div>
-      </form>
-    `,
-      showCancelButton: true,
-      confirmButtonText: "Salva",
-      cancelButtonText: "Annulla",
-      width: "80%"
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const description = (<HTMLInputElement>document.getElementById("description")).value;
-        const date = (<HTMLInputElement>document.getElementById("date")).value;
-        const time = (<HTMLInputElement>document.getElementById("time")).value;
-
-        perizia.description = description;
-        perizia.date = date;
-        perizia.time = time;
-
-        await this.periziaService.edit(perizia);
-        this.periziaService.getPerizie();
-      }
-    });
-  }
-
-  //#region MAP & MARKERS EVENTS
-
-  moveMap(event: google.maps.MapMouseEvent) {
-    if (event.latLng != null)
-      this.center = (event.latLng.toJSON());
-  }
-
-  move(event: google.maps.MapMouseEvent) {
-    if (event.latLng != null)
-      this.display = event.latLng.toJSON();
-  }
-
-  openInfo(perizia: any) {
-    let imagesHtml = this.generatePhotosHtml(perizia.photos);
-
-    Swal.fire({
-      title: perizia.description,
-      html: `
-        <b>Data:</b> ${perizia.date} alle ${perizia.time}<br>
-        <b>Descrizione:</b> ${perizia.description}<br>
-        <b>Creata da:</b> <span class="${this.checkOperatorDeleted(perizia.operator.username)}"> ${perizia.operator.username} </span> <br>
-        <div class="row container">
-          ${imagesHtml}
-        </div>
-      `,
-      width: "60%"
-    });
-
-  }
-
-  drag() {
-    console.log("Marker dragged");
-    this.markerOptions.animation = google.maps.Animation.BOUNCE;
-    this.markerOptions.draggable = true;
-  }
-
-  //#endregion
-
-  //#region UTILS
+  constructor() { }
 
   generatePhotosHtml(images: any[]): string {
     let imagesHtml = "";
@@ -190,7 +79,7 @@ export class PerizieComponent {
     });
     return imagesHtml;
   }
-  
+
   generateCommentsHtmlForEdit(comments: any[]): string {
     let commentsHtml = "";
     if (comments == undefined || comments.length == 0)
@@ -213,6 +102,18 @@ export class PerizieComponent {
     return operator == "Utente eliminato" ? "deleted" : "";
   }
 
-  //#endregion
+  createUrl(selectedOperator: string, selectedDate: string, selectedDescription: string): string {
+    let url = window.location.pathname + "?";
+    if (selectedOperator !== "") {
+      url += "operator=" + selectedOperator + "&";
+    }
+    if (selectedDate !== "") {
+      url += "date=" + selectedDate + "&";
+    }
+    if (selectedDescription !== "") {
+      url += "search=" + selectedDescription + "&";
+    }
+    return url;
+  }
 
 }
