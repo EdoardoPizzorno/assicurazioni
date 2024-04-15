@@ -1,5 +1,5 @@
 <div class="container">
-
+    
     <!--FILTERS-->
     <div class="row">
 
@@ -50,6 +50,7 @@
                 <tr>
                     <th>Operatore</th>
                     <th>Data</th>
+                    <th>Ora</th>
                     <th>Oggetto</th>
                     <th>Dettagli</th>
                     <th>Modifica</th>
@@ -60,6 +61,7 @@
                     <td [ngClass]="{deleted: perizia.operator.username=='Utente eliminato'}">
                         {{perizia.operator.username}}</td>
                     <td>{{perizia.date}}</td>
+                    <td>{{perizia.time}}</td>
                     <td>{{perizia.description}}</td>
                     <td>
                         <button class="btn btn-primary" (click)="periziaService.openInfo(perizia)">Dettagli</button>

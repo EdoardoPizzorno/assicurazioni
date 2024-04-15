@@ -1,5 +1,5 @@
 footer {
-    background-color: #f8f9fa;
+    background-color: var(--primary-color);
     padding: 20px 0;
     bottom: 0;
     width: 100%;
@@ -8,8 +8,4 @@ footer {
 
 .mt-4 {
     height: 50px;
-}
-
-a {
-    color: #0a95ff;
 }

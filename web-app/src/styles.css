@@ -3,30 +3,25 @@
     vertical-align: middle !important;
 }
 
+:root {
+    --primary-color: #9bd2fc;
+    --secondary-color: #005693;
+    --divider-height: 8px;
+    --divider-width: 10%;
+    --divider-border-radius: 10px;
+    --divider-background-color: #0077cc;
+}
+
 ::selection {
-    background-color: #0a95ff;
-    color: #ffffff;
-}
-
-td,
-th {
-    vertical-align: middle !important;
-}
-
-.deleted {
-    text-decoration: line-through;
-    color: red;
-}
-
-.comment {
-    margin: 0px !important
+    background-color: #e3f3ff;
+    color: var(--secondary-color);
 }
 
 hr.divider {
     border: none;
-    height: 8px;
-    width: 5%;
-    border-radius: 10px;
-    background-color: #0077cc;
+    height: var(--divider-height);
+    width: var(--divider-width);
+    border-radius: var(--divider-border-radius);
+    background-color: var(--divider-background-color);
     margin: 30px auto;
 }
