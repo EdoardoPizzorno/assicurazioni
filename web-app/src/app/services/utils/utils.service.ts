@@ -100,7 +100,7 @@ export class UtilsService {
               </a>
               <div class="collapse" id="comments-${cardId}">
                 <div class="card card-body text-center" style="font-size: 10pt; vertical-align: middle !important;">
-                  ${this.generateCommentsHtmlForEdit(image.comments)}
+                  ${this.generateCommentsHtmlForEdit(image.comments, index)}
                   </div>
               </div>
             </div>
@@ -111,14 +111,14 @@ export class UtilsService {
     return imagesHtml;
   }
 
-  generateCommentsHtmlForEdit(comments: any[]): string {
+  generateCommentsHtmlForEdit(comments: any[], index: number): string {
     let commentsHtml = "";
     if (comments == undefined || comments.length == 0)
       commentsHtml += `<p class="text-center comment">Nessun commento</p>`;
     else {
       comments.forEach((comment: any) => {
         commentsHtml += `<div class="text-center m-1">
-          <div contenteditable="true" class="comment border" role="textbox" aria-multiline="true">${comment}</div>
+          <div contenteditable="true" class="comment border" id=${index} role="textbox" aria-multiline="true">${comment}</div>
           </div>
           `;
       });

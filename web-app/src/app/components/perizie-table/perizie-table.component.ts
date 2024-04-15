@@ -78,10 +78,28 @@ export class PerizieTableComponent {
         const date = (<HTMLInputElement>document.getElementById("date")).value;
         const time = (<HTMLInputElement>document.getElementById("time")).value;
 
+        const _comments: any = (document.getElementsByClassName("comment"));
+        let comments: any = [];
+
+        for (let i = 0; i < _comments.length; i++) {
+          comments.push({ "text": _comments[i].innerHTML, "imageIndex": _comments[i].id });
+        }
+
         perizia.description = description;
         perizia.date = date;
         perizia.time = time;
 
+        let count = 0;
+        let prevImageIndex = 0;
+        comments.forEach((comment: any) => {
+          if (comment.imageIndex != prevImageIndex) {
+            count = 0;
+            prevImageIndex = comment.imageIndex;
+          }
+          perizia.photos[comment.imageIndex].comments[count++] = comment.text;
+        });
+
+        console.log(perizia)
         await this.periziaService.edit(perizia);
         this.periziaService.getPerizie();
       }

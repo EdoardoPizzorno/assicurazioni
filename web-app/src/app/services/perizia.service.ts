@@ -46,7 +46,6 @@ export class PeriziaService {
   }
 
   edit(perizia: any): Promise<void> {
-    console.log(perizia)
     return new Promise((resolve, reject) => {
       this.dataStorage.sendRequest("PATCH", "/perizia/" + perizia._id, {perizia})
         .catch(error => {
