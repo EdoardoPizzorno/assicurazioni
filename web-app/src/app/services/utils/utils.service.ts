@@ -22,7 +22,7 @@ export class UtilsService {
   }
 
   parseDate(date: any) {
-    if (date.typeof === "string" && date.typeof != undefined) {
+    if (typeof date) {
       date = date.toString();
       let aux = date.split("T");
       let dateObj = { date: "", time: "" };
