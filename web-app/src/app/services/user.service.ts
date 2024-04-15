@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
-import { ParserService } from './parser.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { UtilsService } from './utils/utils.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class UserService {
   selectedUser: any;
   roles: any[] = [];
 
-  constructor(private dataStorage: DataStorageService, private parser: ParserService, private router: Router) { }
+  constructor(private dataStorage: DataStorageService, private utils: UtilsService, private router: Router) { }
 
   async getUsers(): Promise<any> {
     return this.dataStorage.sendRequest("GET", this.router.url)
@@ -30,7 +30,7 @@ export class UserService {
         .catch(this.dataStorage.error)
         .then((response) => {
           this.selectedUser = response.data;
-          this.selectedUser.createdAt = this.parser.parseDate(this.selectedUser.createdAt);
+          this.selectedUser.createdAt = this.utils.parseDate(this.selectedUser.createdAt);
           resolve();
         });
     });

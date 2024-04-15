@@ -2,8 +2,10 @@
 Progetto Assicurazioni
 
 TO DO - admin:
-Gestione perizie (modifiche per commenti immagini, descrizione, ...)
+MODIFICA IMMAGINE MARKER
 SPOSTAMENTO MARKER (con eventuale log)
 TEMPO DI PERCORRENZA DAL VALLAURI AL LUOGO DELLA PERIZIA
+EMAIL DUPLICATA
+GESTIONE RUOLI
 
 TO DO - mobile:

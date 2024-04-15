@@ -7,6 +7,37 @@ export class UtilsService {
 
   constructor() { }
 
+  createUrl(selectedOperator: string, selectedDate: string, selectedDescription: string): string {
+    let url = window.location.pathname + "?";
+    if (selectedOperator !== "") {
+      url += "operator=" + selectedOperator + "&";
+    }
+    if (selectedDate !== "") {
+      url += "date=" + selectedDate + "&";
+    }
+    if (selectedDescription !== "") {
+      url += "search=" + selectedDescription + "&";
+    }
+    return url;
+  }
+
+  parseDate(date: any) {
+    if (date.typeof === "string" && date.typeof != undefined) {
+      date = date.toString();
+      let aux = date.split("T");
+      let dateObj = { date: "", time: "" };
+      dateObj["date"] = aux[0];
+      dateObj["time"] = aux[1].split(".")[0];
+      return dateObj;
+    } else return date;
+  }
+
+  checkOperatorDeleted(operator: string) {
+    if (operator == undefined)
+      return "";
+    return operator == "Utente eliminato" ? "deleted" : "";
+  }
+
   generatePhotosHtml(images: any[]): string {
     let imagesHtml = "";
     images.forEach((image: any, index: number) => {
@@ -94,26 +125,6 @@ export class UtilsService {
       });
     }
     return commentsHtml;
-  }
-
-  checkOperatorDeleted(operator: string) {
-    if (operator == undefined)
-      return "";
-    return operator == "Utente eliminato" ? "deleted" : "";
-  }
-
-  createUrl(selectedOperator: string, selectedDate: string, selectedDescription: string): string {
-    let url = window.location.pathname + "?";
-    if (selectedOperator !== "") {
-      url += "operator=" + selectedOperator + "&";
-    }
-    if (selectedDate !== "") {
-      url += "date=" + selectedDate + "&";
-    }
-    if (selectedDescription !== "") {
-      url += "search=" + selectedDescription + "&";
-    }
-    return url;
   }
 
 }
