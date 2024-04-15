@@ -22,7 +22,7 @@ th {
     margin: 0px !important
 }
 
-hr {
+hr.divider {
     border: none;
     height: 8px;
     width: 5%;
