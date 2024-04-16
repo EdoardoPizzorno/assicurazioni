@@ -32,7 +32,7 @@ export class UserListComponent {
   }
 
   deleteUser(id: any) {
-    this.userService.deleteUser(id);
+    this.userService.delete(id);
   }
 
 }

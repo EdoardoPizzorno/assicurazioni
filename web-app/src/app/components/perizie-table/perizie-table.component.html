@@ -53,7 +53,6 @@
                     <th>Ora</th>
                     <th>Oggetto</th>
                     <th>Dettagli</th>
-                    <th>Modifica</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,13 +63,10 @@
                     <td>{{perizia.time}}</td>
                     <td>{{perizia.description}}</td>
                     <td>
-                        <button class="btn btn-primary" (click)="periziaService.openInfo(perizia)">Dettagli</button>
-                    </td>
-                    <td>
-                        <button class="btn btn-warning" (click)="editPerizia(perizia)">Modifica</button>
+                        <button class="btn btn-primary" (click)="periziaService.editModal(perizia)">Dettagli</button>
                     </td>
                 </tr>
-                <tr *ngIf="periziaService.perizie.length == 0">
+                <tr *ngIf="!periziaService.perizie">
                     <td colspan="5" class="text-muted">Nessuna perizia trovata</td>
                 </tr>
             </tbody>

@@ -126,4 +126,28 @@ export class UtilsService {
     return commentsHtml;
   }
 
+
+  substituteFields(perizia: any, fields: any) {
+    let comments: any = [];
+
+    for (let i = 0; i < fields.comments.length; i++) {
+      comments.push({ "text": fields.comments[i].innerHTML, "imageIndex": fields.comments[i].id });
+    }
+
+    perizia.description = fields.description;
+    perizia.date = fields.date;
+    perizia.time = fields.time;
+
+    let count = 0;
+    let prevImageIndex = 0;
+    comments.forEach((comment: any) => {
+      if (comment.imageIndex != prevImageIndex) {
+        count = 0;
+        prevImageIndex = comment.imageIndex;
+      }
+      perizia.photos[comment.imageIndex].comments[count++] = comment.text;
+    });
+    return perizia;
+  }
+
 }

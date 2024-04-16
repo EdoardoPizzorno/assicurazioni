@@ -42,9 +42,9 @@ export class ManageUserComponent {
     Swal.showLoading();
     if (this.validateUser()) {
       if (this.editMode)
-        this.userService.updateUser(this.newUser);
+        this.userService.update(this.newUser);
       else
-        this.userService.addUser(this.newUser);
+        this.userService.add(this.newUser);
     }
     else Swal.fire({
       icon: 'error',

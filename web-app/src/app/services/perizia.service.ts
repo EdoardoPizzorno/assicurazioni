@@ -45,15 +45,14 @@ export class PeriziaService {
     });
   }
 
-  edit(perizia: any): Promise<void> {
+  update(perizia: any): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.dataStorage.sendRequest("PATCH", "/perizia/" + perizia._id, {perizia})
+      this.dataStorage.sendRequest("PATCH", "/perizia/" + perizia._id, { perizia })
         .catch(error => {
           this.dataStorage.error(error);
           reject(error);
         })
         .then(async (response) => {
-          console.log(response);
           Swal.fire("Perizia modificata", "", "success");
           await this.getPerizie();
           resolve();
@@ -67,16 +66,59 @@ export class PeriziaService {
     Swal.fire({
       title: perizia.description,
       html: `
-        <b>Data:</b> ${perizia.date} alle ${perizia.time}<br>
-        <b>Descrizione:</b> ${perizia.description}<br>
-        <b>Creata da:</b> <span class="${this.utils.checkOperatorDeleted(perizia.operator.username)}"> ${perizia.operator.username} </span> <br>
-        <div class="row container">
-          ${imagesHtml}
-        </div>
+      <b>Data:</b> ${perizia.date} alle ${perizia.time}<br>
+      <b>Descrizione:</b> ${perizia.description}<br>
+      <b>Creata da:</b> <span class="${this.utils.checkOperatorDeleted(perizia.operator.username)}"> ${perizia.operator.username} </span> <br>
+      <div class="row container">
+        ${imagesHtml}
+      </div>
       `,
       width: "60%"
     });
 
+  }
+
+  async editModal(perizia: any) {
+    let imagesHtml = this.utils.generatePhotosHtmlForEdit(perizia.photos);
+
+    Swal.fire({
+      title: "Modifica perizia",
+      html: `
+      <form id="editForm" class="container">
+        <div class="form-group">
+          <label for="description">Descrizione</label>
+          <input type="text" class="form-control" id="description" value="${perizia.description}">
+        </div>
+        <div class="form-group">
+          <label for="date">Data</label>
+          <input type="date" class="form-control" id="date" value="${perizia.date}">
+        </div>
+        <div class="form-group">
+          <label for="time">Ora</label>
+          <input type="time" class="form-control" id="time" value="${perizia.time}">
+        </div>
+        <div class="row">
+          ${imagesHtml}
+        </div>
+      </form>
+    `,
+      showCancelButton: true,
+      confirmButtonText: "Salva",
+      cancelButtonText: "Annulla",
+      width: "80%"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        let fields: any = {
+          description: (<HTMLInputElement>document.getElementById("description")).value,
+          date: (<HTMLInputElement>document.getElementById("date")).value,
+          time: (<HTMLInputElement>document.getElementById("time")).value,
+          comments: (document.getElementsByClassName("comment"))
+        }
+        this.utils.substituteFields(perizia, fields);
+        await this.update(perizia);
+        this.getPerizie();
+      }
+    });
   }
 
 }

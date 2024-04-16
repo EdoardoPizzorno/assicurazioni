@@ -36,7 +36,7 @@ export class UserService {
     });
   }
 
-  addUser(user: any) {
+  add(user: any) {
     this.dataStorage.sendRequest("POST", "/user", { user })
       .catch(this.dataStorage.error)
       .then((response) => {
@@ -51,7 +51,7 @@ export class UserService {
       })
   }
 
-  updateUser(user: any) {
+  update(user: any) {
     this.dataStorage.sendRequest("PATCH", "/user/" + user.id, { user })
       .catch(this.dataStorage.error)
       .then((response) => {
@@ -66,7 +66,7 @@ export class UserService {
       })
   }
 
-  deleteUser(id: any) {
+  delete(id: any) {
     Swal.fire({
       title: 'Sei sicuro di voler eliminare l\'utente?',
       showCancelButton: true,

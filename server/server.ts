@@ -325,28 +325,41 @@ app.get("/api/users", async (req, res, next) => {
 
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
-    const collection = client.db(DBNAME).collection("UTENTI");
-    let rq = collection.find(query).project({ "password": 0 }).sort({ "role": 1, "name": 1 }).toArray();
-    rq.then((data) => res.send(data));
-    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
-    rq.finally(() => client.close());
+    const userCollection = client.db(DBNAME).collection("UTENTI");
+    const roleCollection = client.db(DBNAME).collection("RUOLI");
+
+    try {
+        let users = await userCollection.find(query).project({ "password": 0 }).sort({ "role": 1, "name": 1 }).toArray();
+        for (let i = 0; i < users.length; i++) {
+            await manageRole(users[i], roleCollection);
+        }
+        res.send(users);
+    } catch (err) {
+        res.status(500).send(`Errore durante la ricerca degli utenti: ${err.message}`);
+    } finally {
+        client.close();
+    }
 })
 
 app.get("/api/user/:id", async (req, res, next) => {
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
-    const collection = client.db(DBNAME).collection("UTENTI");
-    let rq = collection.findOne({ "_id": new ObjectId(req.params.id) }, { "projection": { "password": 0 } });
-    rq.then((data) => {
+    const userCollection = client.db(DBNAME).collection("UTENTI");
+    const roleCollection = client.db(DBNAME).collection("RUOLI");
+
+    try {
+        let data = await userCollection.findOne({ "_id": new ObjectId(req.params.id) }, { "projection": { "password": 0 } });
         if (!data) {
             res.status(404).send("Utente non trovato");
-        }
-        else {
+        } else {
+            await manageRole(data, roleCollection);
             res.send(data);
         }
-    });
-    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
-    rq.finally(() => client.close());
+    } catch (err) {
+        res.status(500).send(`Errore esecuzione query: ${err.message}`);
+    } finally {
+        client.close();
+    }
 })
 
 app.post("/api/user", async (req, res, next) => {
@@ -423,6 +436,21 @@ app.patch("/api/user/:id", async (req, res, next) => {
     rq.finally(() => client.close());
 })
 
+app.patch("/api/role/:id", async (req, res, next) => {
+    const roleName = req["body"]["body"].name;
+    const _id = new ObjectId(req.params.id);
+    console.log(_id)
+    console.log(roleName)
+
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("RUOLI");
+    let rq = collection.updateOne({ "_id": _id }, { "$set": { "name": roleName } });
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    rq.finally(() => client.close());
+})
+
 app.delete("/api/user/:id", async (req, res, next) => {
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
@@ -435,6 +463,16 @@ app.delete("/api/user/:id", async (req, res, next) => {
             res.send(data);
         }
     });
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    rq.finally(() => client.close());
+})
+
+app.delete("/api/role/:id", async (req, res, next) => {
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("RUOLI");
+    let rq = collection.deleteOne({ "_id": new ObjectId(req.params.id) });
+    rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
 })
@@ -541,6 +579,11 @@ async function findRoleWithSameId(collection: any, role: any, res: any) {
             findRoleWithSameId(collection, role, res);
         }
     });
+}
+
+async function manageRole(user: any, roleCollection: any) {
+    let role = await roleCollection.findOne({ "_id": new ObjectId(user.role) });
+    user.role = role.name;
 }
 
 //#endregion

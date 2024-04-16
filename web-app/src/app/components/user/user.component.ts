@@ -23,7 +23,7 @@ export class UserComponent {
   }
 
   delete() {
-    this.userService.deleteUser(this.currentId);
+    this.userService.delete(this.currentId);
     this.router.navigate(["/users"]);
   }
 

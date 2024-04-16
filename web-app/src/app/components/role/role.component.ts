@@ -15,7 +15,15 @@ export class RoleComponent {
   }
 
   addRole() {
-    this.roleService.addRole();
+    this.roleService.add();
+  }
+
+  editRole(role: any) {
+    this.roleService.update(role);
+  }
+
+  deleteRole(role: any) {
+    this.roleService.delete(role._id);
   }
 
 }

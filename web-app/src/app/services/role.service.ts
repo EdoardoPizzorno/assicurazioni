@@ -22,7 +22,7 @@ export class RoleService {
     });
   }
 
-  addRole() {
+  add() {
     Swal.fire({
       title: 'Aggiungi ruolo',
       input: 'text',
@@ -40,4 +40,38 @@ export class RoleService {
       }
     });
   }
+
+  update(role: any) {
+    Swal.fire({
+      title: 'Modifica ruolo',
+      input: 'text',
+      inputValue: role.name,
+      showCancelButton: true,
+      confirmButtonText: 'Update',
+      showLoaderOnConfirm: true,
+
+    }).then((response: any) => {
+      if (response.isConfirmed) {
+        const roleName = response.value;
+        this.dataStorage.sendRequest("PATCH", "/role/" + role._id, { "name": roleName })
+          .catch(this.dataStorage.error)
+          .then((response: any) => {
+            console.log(response.data)
+            Swal.fire('Ruolo modificato', '', 'success');
+            this.getRoles();
+          });
+      }
+
+    })
+  }
+
+  delete(_id: any) {
+    this.dataStorage.sendRequest("DELETE", "/role/" + _id)
+      .catch(this.dataStorage.error)
+      .then(() => {
+        Swal.fire('Ruolo eliminato', '', 'success');
+        this.getRoles();
+      });
+  }
+
 }
