@@ -22,6 +22,7 @@ export class PeriziaService {
   constructor(private dataStorage: DataStorageService, private utils: UtilsService) { }
 
   getPerizie(): Promise<void> {
+    this.isLoading = true;
     return new Promise((resolve, reject) => {
       this.dataStorage.sendRequest("GET", "/perizie" + window.location.search)
         .catch(error => {
@@ -31,6 +32,7 @@ export class PeriziaService {
         .then(async (response) => {
           this.perizie = response.data;
           await this.getOperators();
+          this.isLoading = false;
           resolve();
         });
     });

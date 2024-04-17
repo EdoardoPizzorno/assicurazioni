@@ -27,7 +27,6 @@ export class PerizieTableComponent {
   async filter() {
     let url = this.utils.createUrl(this.selectedOperator, this.selectedDate, this.selectedDescription)
     await this.router.navigateByUrl(url);
-    this.periziaService.isLoading = true;
     await this.periziaService.getPerizie();
   }
 
@@ -42,7 +41,6 @@ export class PerizieTableComponent {
 
     const url = this.utils.createUrl(this.selectedOperator, this.selectedDate, this.selectedDescription);
     await this.router.navigateByUrl(url);
-    this.periziaService.isLoading = true;
     await this.periziaService.getPerizie();
   }
 
