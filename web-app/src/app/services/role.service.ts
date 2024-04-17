@@ -13,13 +13,11 @@ export class RoleService {
   constructor(private dataStorage: DataStorageService) { }
 
   getRoles(): Promise<void> {
-    this.isLoading = true;
     return new Promise((resolve, reject) => {
       this.dataStorage.sendRequest("GET", "/roles")
         .catch(this.dataStorage.error)
         .then((response) => {
           this.roles = response.data;
-          this.isLoading = false;
           resolve();
         });
     });

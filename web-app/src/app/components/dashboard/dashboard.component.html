@@ -4,7 +4,7 @@
 
     <google-map height="800px" width="100%" [center]="center" [zoom]="zoom" (mapClick)="moveMap($event)">
         <map-marker *ngFor="let marker of periziaService.perizie; index as i" [position]="marker.coords"
-            [icon]="marker.icon" [title]="marker.description" (mapClick)="periziaService.openInfo(marker)"
+            [icon]="marker.icon" [title]="marker.description" (mapClick)="periziaService.editModal(marker)"
             [options]="markerOptions">
         </map-marker>
     </google-map>

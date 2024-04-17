@@ -30,7 +30,7 @@ export class LoginService {
       });
   }
 
-  checkToken() {
+  async checkToken() {
     let cache: any = localStorage.getItem("ASSICURAZIONI");
     if (cache) {
       let parsedCache: any = JSON.parse(cache);

@@ -13,6 +13,10 @@ export class LoginComponent {
 
   constructor(public loginService: LoginService) { }
 
+  async ngOnInit() {
+    await this.loginService.checkToken();
+  }
+
   login() {
     this.loginService.checkLogin(this.email, this.password);
   }

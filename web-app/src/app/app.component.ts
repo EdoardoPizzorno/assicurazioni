@@ -11,8 +11,8 @@ export class AppComponent {
 
   constructor(public router: Router, private loginService: LoginService) { }
 
-  ngOnInit() {
-    this.loginService.checkToken();
+  async ngOnInit() {
+    await this.loginService.checkToken();
   }
 
 }

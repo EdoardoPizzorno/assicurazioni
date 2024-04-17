@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { UtilsService } from './utils/utils.service';
 
@@ -20,7 +19,7 @@ export class PeriziaService {
     }
   }
 
-  constructor(private dataStorage: DataStorageService, private router: Router, private utils: UtilsService, private activatedRoute: ActivatedRoute) { }
+  constructor(private dataStorage: DataStorageService, private utils: UtilsService) { }
 
   getPerizie(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -38,11 +37,9 @@ export class PeriziaService {
   }
 
   getOperators(): Promise<any[]> {
-    this.isLoading = true;
     return new Promise((resolve, reject) => {
       this.dataStorage.sendRequest("GET", "/operators").catch(this.dataStorage.error).then((response) => {
         this.operators = response.data;
-        this.isLoading = false;
         resolve(this.operators);
       });
     });

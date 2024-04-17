@@ -18,12 +18,13 @@ export class UserService {
 
   async getUsers(): Promise<any> {
     this.isLoading = true;
-    return this.dataStorage.sendRequest("GET", this.router.url)
+    this.dataStorage.sendRequest("GET", "/users" + window.location.search)
       .catch(this.dataStorage.error)
       .then(async (response) => {
         this.users = response.data;
         this.isLoading = false;
-        await this.roleService.getRoles();
+        if (!this.roleService.roles)
+          await this.roleService.getRoles();
       });
   }
 
