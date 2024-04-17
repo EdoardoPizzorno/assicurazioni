@@ -7,16 +7,19 @@ import Swal from 'sweetalert2';
 })
 export class RoleService {
 
-  roles: any[] = [];
+  isLoading: boolean = false;
+  roles: any;
 
   constructor(private dataStorage: DataStorageService) { }
 
   getRoles(): Promise<void> {
+    this.isLoading = true;
     return new Promise((resolve, reject) => {
       this.dataStorage.sendRequest("GET", "/roles")
         .catch(this.dataStorage.error)
         .then((response) => {
           this.roles = response.data;
+          this.isLoading = false;
           resolve();
         });
     });
@@ -34,8 +37,8 @@ export class RoleService {
         const role = result.value;
         this.dataStorage.sendRequest("POST", "/role", { "name": role })
           .catch(this.dataStorage.error)
-          .then(() => {
-            this.getRoles();
+          .then(async () => {
+            await this.getRoles();
           });
       }
     });
@@ -55,10 +58,10 @@ export class RoleService {
         const roleName = response.value;
         this.dataStorage.sendRequest("PATCH", "/role/" + role._id, { "name": roleName })
           .catch(this.dataStorage.error)
-          .then((response: any) => {
+          .then(async (response: any) => {
             console.log(response.data)
-            Swal.fire('Ruolo modificato', '', 'success');
-            this.getRoles();
+            await Swal.fire('Ruolo modificato', '', 'success');
+            await this.getRoles();
           });
       }
 
@@ -68,9 +71,9 @@ export class RoleService {
   delete(_id: any) {
     this.dataStorage.sendRequest("DELETE", "/role/" + _id)
       .catch(this.dataStorage.error)
-      .then(() => {
-        Swal.fire('Ruolo eliminato', '', 'success');
-        this.getRoles();
+      .then(async () => {
+        await Swal.fire('Ruolo eliminato', '', 'success');
+        await this.getRoles();
       });
   }
 

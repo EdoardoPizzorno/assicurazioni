@@ -9,6 +9,7 @@ import { UtilsService } from './utils/utils.service';
 })
 export class PeriziaService {
 
+  isLoading: boolean = false;
   perizie: any;
   operators: any[] = [];
 
@@ -37,9 +38,11 @@ export class PeriziaService {
   }
 
   getOperators(): Promise<any[]> {
+    this.isLoading = true;
     return new Promise((resolve, reject) => {
       this.dataStorage.sendRequest("GET", "/operators").catch(this.dataStorage.error).then((response) => {
         this.operators = response.data;
+        this.isLoading = false;
         resolve(this.operators);
       });
     });

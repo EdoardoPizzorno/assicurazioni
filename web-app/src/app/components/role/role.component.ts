@@ -11,7 +11,8 @@ export class RoleComponent {
   constructor(public roleService: RoleService) { }
 
   async ngOnInit() {
-    await this.roleService.getRoles();
+    if (!this.roleService.roles)
+      await this.roleService.getRoles();
   }
 
   addRole() {

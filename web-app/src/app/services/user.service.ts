@@ -10,36 +10,43 @@ import { RoleService } from './role.service';
 })
 export class UserService {
 
+  isLoading: boolean = false;
   users: any;
   selectedUser: any;
 
   constructor(private dataStorage: DataStorageService, private roleService: RoleService, private utils: UtilsService, private router: Router) { }
 
   async getUsers(): Promise<any> {
+    this.isLoading = true;
     return this.dataStorage.sendRequest("GET", this.router.url)
       .catch(this.dataStorage.error)
       .then(async (response) => {
         this.users = response.data;
+        this.isLoading = false;
         await this.roleService.getRoles();
       });
   }
 
   async getUser(id: any): Promise<void> {
+    this.isLoading = true;
     return new Promise((resolve, reject) => {
       this.dataStorage.sendRequest("GET", "/user/" + id)
         .catch(this.dataStorage.error)
         .then((response) => {
           this.selectedUser = response.data;
           this.selectedUser.createdAt = this.utils.parseDate(this.selectedUser.createdAt);
+          this.isLoading = false;
           resolve();
         });
     });
   }
 
   add(user: any) {
+    this.isLoading = true;
     this.dataStorage.sendRequest("POST", "/user", { user })
       .catch(this.dataStorage.error)
       .then((response) => {
+        this.isLoading = false;
         if (response != undefined) {
           Swal.fire({
             icon: 'success',
@@ -52,9 +59,11 @@ export class UserService {
   }
 
   update(user: any) {
+    this.isLoading = true;
     this.dataStorage.sendRequest("PATCH", "/user/" + user.id, { user })
       .catch(this.dataStorage.error)
       .then((response) => {
+        this.isLoading = false;
         if (response.data.modifiedCount != undefined && response.data.modifiedCount != 0) {
           Swal.fire({
             icon: 'success',

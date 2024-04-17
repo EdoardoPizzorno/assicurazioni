@@ -15,6 +15,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PerizieTableComponent } from './components/perizie-table/perizie-table.component';
 import { RoleComponent } from './components/role/role.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { RoleComponent } from './components/role/role.component';
     FooterComponent,
     PerizieTableComponent,
     RoleComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,

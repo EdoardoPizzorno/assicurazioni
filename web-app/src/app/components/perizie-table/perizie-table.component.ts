@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { PeriziaService } from '../../services/perizia.service';
-import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { UtilsService } from '../../services/utils/utils.service';
 
@@ -21,13 +20,15 @@ export class PerizieTableComponent {
     this.selectedOperator = this.router.parseUrl(this.router.url).queryParams["operator"] || "all";
     this.selectedDate = this.router.parseUrl(this.router.url).queryParams["date"] || "";
     this.selectedDescription = this.router.parseUrl(this.router.url).queryParams["search"] || "";
-    await this.periziaService.getPerizie();
+    if (!this.periziaService.perizie)
+      await this.periziaService.getPerizie();
   }
 
   async filter() {
     let url = this.utils.createUrl(this.selectedOperator, this.selectedDate, this.selectedDescription)
     await this.router.navigateByUrl(url);
-    this.periziaService.getPerizie();
+    this.periziaService.isLoading = true;
+    await this.periziaService.getPerizie();
   }
 
   async removeFilter(filterType: string) {
@@ -41,7 +42,8 @@ export class PerizieTableComponent {
 
     const url = this.utils.createUrl(this.selectedOperator, this.selectedDate, this.selectedDescription);
     await this.router.navigateByUrl(url);
-    this.periziaService.getPerizie();
+    this.periziaService.isLoading = true;
+    await this.periziaService.getPerizie();
   }
 
 }

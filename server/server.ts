@@ -397,14 +397,13 @@ app.post("/api/user", async (req, res, next) => {
 
 app.post("/api/role", async (req, res, next) => {
     const role = req["body"]["body"];
-    console.log(role)
+
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
     const collection = client.db(DBNAME).collection("RUOLI");
-
-    role._id = await collection.countDocuments();
-    console.log(role._id)
-    findRoleWithSameId(collection, role, res);
+    let rq = collection.insertOne(role);
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
 })
 
 app.patch("/api/perizia/:id", async (req, res, next) => {
@@ -425,7 +424,11 @@ app.patch("/api/perizia/:id", async (req, res, next) => {
 app.patch("/api/user/:id", async (req, res, next) => {
     const user = req["body"]["body"].user;
     const _id = new ObjectId(user._id);
+    
     delete user._id;
+    const roleId = user.role._id;
+    user.role = "";
+    user.role = roleId;
 
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
@@ -558,32 +561,11 @@ async function loadProfilePicture(user: any) {
     }
 }
 
-async function findRoleWithSameId(collection: any, role: any, res: any) {
-    collection.find({ "_id": new ObjectId(role._id) }).toArray().then((data) => {
-        console.log(data)
-        if (data || data.length == 0) {
-            let regex = new RegExp(`^${role.name}$`, "i");
-            collection.findOne({ "name": regex }).then((data) => {
-                if (data) {
-                    res.status(409).send("Ruolo già presente");
-                }
-                else {
-                    let rq = collection.insertOne(role);
-                    rq.then((data) => res.send(data));
-                    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
-                }
-            });
-        }
-        else {
-            role._id++;
-            findRoleWithSameId(collection, role, res);
-        }
-    });
-}
-
-async function manageRole(user: any, roleCollection: any) {
+async function      manageRole(user: any, roleCollection: any) {
     let role = await roleCollection.findOne({ "_id": new ObjectId(user.role) });
-    user.role = role.name;
+    user.role = {};
+    user.role._id = role._id;
+    user.role.name = role.name;
 }
 
 //#endregion

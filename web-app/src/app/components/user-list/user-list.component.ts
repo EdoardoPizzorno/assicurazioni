@@ -16,18 +16,21 @@ export class UserListComponent {
   constructor(public userService: UserService, public roleService: RoleService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   async ngOnInit() {
-    await this.userService.getUsers();
+    this.searchText = this.activatedRoute.snapshot.queryParams["search"] || "";
+    this.selectedRole = this.activatedRoute.snapshot.queryParams["role"] || "all";
+    if (!this.userService.users)
+      await this.userService.getUsers();
   }
 
   async search() {
     await this.router.navigateByUrl("/users?search=" + this.searchText);
-    this.userService.getUsers();
+    await this.userService.getUsers();
     this.selectedRole = "all";
   }
 
   async filterByRole() {
     await this.router.navigateByUrl("/users?role=" + this.selectedRole);
-    this.userService.getUsers();
+    await this.userService.getUsers();
     this.searchText = "";
   }
 

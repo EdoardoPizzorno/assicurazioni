@@ -17,7 +17,7 @@ export class ManageUserComponent {
     surname: "",
     email: "",
     username: "",
-    role: "user",
+    role: "",
     city: "",
     gender: "m",
     age: 18,
@@ -27,19 +27,18 @@ export class ManageUserComponent {
   constructor(public userService: UserService, public roleService: RoleService, private router: ActivatedRoute) { }
 
   async ngOnInit() {
-    await this.roleService.getRoles();
     this.router.params.subscribe((params: any) => {
       if (params.id) {
         this.editMode = true;
-        this.userService.getUser(params.id).then(() => {
+        this.userService.getUser(params.id).then(async () => {
           this.newUser = this.userService.selectedUser;
+          await this.roleService.getRoles();
         });
       }
     });
   }
 
   submit() {
-    Swal.showLoading();
     if (this.validateUser()) {
       if (this.editMode)
         this.userService.update(this.newUser);
