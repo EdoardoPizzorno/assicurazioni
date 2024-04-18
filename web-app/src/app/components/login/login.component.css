@@ -42,6 +42,7 @@
 .form .input:focus {
     outline: none;
     border-inline: 2px solid #12B1D1;
+    transition: all 0.4s ease-in-out;
 }
 
 .form .forgot-password {

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { PeriziaService } from '../../services/perizia.service';
 import { UserService } from '../../services/user.service';
-import { RoleService } from '../../services/role.service';
 
 @Component({
   selector: 'home',
@@ -17,16 +16,14 @@ export class DashboardComponent {
   markerOptions: google.maps.MarkerOptions = { draggable: false, animation: google.maps.Animation.DROP };
   icon: string = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
 
-  constructor(public periziaService: PeriziaService, private userService: UserService, private roleService: RoleService) {
+  constructor(public periziaService: PeriziaService, private userService: UserService) {
     // Set map
     this.center = this.periziaService.headQuarter.coords;
     this.zoom = 12;
   }
 
   async ngOnInit() {
-    await this.periziaService.getPerizie();
     await this.userService.getUsers();
-    await this.roleService.getRoles();
   }
 
   //#region MAP & MARKERS EVENTS
