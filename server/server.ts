@@ -408,7 +408,6 @@ app.post("/api/role", async (req, res, next) => {
 
 app.patch("/api/perizia/:id", async (req, res, next) => {
     const perizia = req["body"]["body"].perizia;
-    console.log(perizia)
     let _id = perizia._id;
     delete perizia._id;
 
@@ -442,8 +441,6 @@ app.patch("/api/user/:id", async (req, res, next) => {
 app.patch("/api/role/:id", async (req, res, next) => {
     const roleName = req["body"]["body"].name;
     const _id = new ObjectId(req.params.id);
-    console.log(_id)
-    console.log(roleName)
 
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();

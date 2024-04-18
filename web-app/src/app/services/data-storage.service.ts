@@ -69,14 +69,7 @@ export class DataStorageService {
         });
         break;
       case 403:
-        Swal.fire({
-          icon: 'error',
-          title: 'Sessione scaduta',
-          text: 'Effettua nuovamente il login'
-        }).then(() => {
-          localStorage.removeItem("ASSICURAZIONI");
-          window.location.href = "/login";
-        });
+        window.location.href = "/login";
         break;
       case 409:
         Swal.fire({

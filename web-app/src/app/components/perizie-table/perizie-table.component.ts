@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PeriziaService } from '../../services/perizia.service';
 import { Router } from '@angular/router';
 import { UtilsService } from '../../services/utils/utils.service';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'perizie-table',
@@ -14,7 +15,7 @@ export class PerizieTableComponent {
   selectedDescription: string = "";
   selectedDate: string = "";
 
-  constructor(public periziaService: PeriziaService, private router: Router, private utils: UtilsService) { }
+  constructor(public periziaService: PeriziaService, private router: Router, private utils: UtilsService, public loginService: LoginService) { }
 
   async ngOnInit() {
     this.selectedOperator = this.router.parseUrl(this.router.url).queryParams["operator"] || "all";
