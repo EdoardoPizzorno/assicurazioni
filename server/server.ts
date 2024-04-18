@@ -63,7 +63,7 @@ http_server.listen(PORT, () => {
 });
 
 function init() {
-    _fs.readFile("./static/error.html", function (err, data) {
+    _fs.readFile("./error.html", function (err, data) {
         if (err) {
             error_page = `<h1>Risorsa non trovata</h1>`;
         }

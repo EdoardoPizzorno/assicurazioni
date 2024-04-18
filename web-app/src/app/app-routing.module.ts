@@ -22,7 +22,8 @@ const routes: Routes = [
       { path: ':id', component: UserComponent },
       { path: ':id/edit', component: ManageUserComponent }
     ]
-  }
+  },
+  { path: '**', redirectTo: '/dashboard' }
 ];
 
 @NgModule({
