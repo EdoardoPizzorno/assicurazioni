@@ -53,6 +53,7 @@
                     <th>Data</th>
                     <th>Ora</th>
                     <th>Oggetto</th>
+                    <th>Raggiungi</th>
                     <th>Dettagli</th>
                 </tr>
             </thead>
@@ -63,6 +64,9 @@
                     <td>{{perizia.date}}</td>
                     <td>{{perizia.time}}</td>
                     <td>{{perizia.description}}</td>
+                    <td>
+                        <a href="/dashboard#map" class="btn btn-primary" (click)="googleMapsService.getDirections(dashboard.map, perizia.coords)">Raggiungi</a>
+                    </td>
                     <td>
                         <button class="btn btn-primary" (click)="periziaService.editModal(perizia)">Dettagli</button>
                     </td>

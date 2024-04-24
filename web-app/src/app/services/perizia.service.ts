@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
-import Swal from 'sweetalert2';
 import { UtilsService } from './utils/utils.service';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +11,6 @@ export class PeriziaService {
   isLoading: boolean = false;
   perizie: any;
   operators: any[] = [];
-
-  headQuarter: any = {
-    coords: {
-      lat: 44.5558401,
-      lng: 7.7358973
-    }
-  }
 
   constructor(private dataStorage: DataStorageService, private utils: UtilsService) { }
 

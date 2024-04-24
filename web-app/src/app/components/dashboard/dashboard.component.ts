@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { PeriziaService } from '../../services/perizia.service';
 import { UserService } from '../../services/user.service';
+import { GoogleMapsService } from '../../services/google-maps.service';
 
 @Component({
   selector: 'home',
@@ -9,39 +10,12 @@ import { UserService } from '../../services/user.service';
 })
 export class DashboardComponent {
 
-  display: any;
-  center: google.maps.LatLngLiteral;
-  zoom: number;
+  @ViewChild('map') map: any;
 
-  markerOptions: google.maps.MarkerOptions = { draggable: false, animation: google.maps.Animation.DROP };
-
-  constructor(public periziaService: PeriziaService, private userService: UserService) {
-    // Set map
-    this.center = this.periziaService.headQuarter.coords;
-    this.zoom = 12;
-  }
+  constructor(public periziaService: PeriziaService, public googleMapsService: GoogleMapsService, private userService: UserService) { }
 
   async ngOnInit() {
     await this.userService.getUsers();
   }
 
-  //#region MAP & MARKERS EVENTS
-
-  moveMap(event: google.maps.MapMouseEvent) {
-    if (event.latLng != null)
-      this.center = (event.latLng.toJSON());
-  }
-
-  move(event: google.maps.MapMouseEvent) {
-    if (event.latLng != null)
-      this.display = event.latLng.toJSON();
-  }
-
-  drag() {
-    console.log("Marker dragged");
-    this.markerOptions.animation = google.maps.Animation.BOUNCE;
-    this.markerOptions.draggable = true;
-  }
-
-  //#endregion
 }
