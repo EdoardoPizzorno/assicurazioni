@@ -14,7 +14,6 @@ export class DashboardComponent {
   zoom: number;
 
   markerOptions: google.maps.MarkerOptions = { draggable: false, animation: google.maps.Animation.DROP };
-  icon: string = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
 
   constructor(public periziaService: PeriziaService, private userService: UserService) {
     // Set map

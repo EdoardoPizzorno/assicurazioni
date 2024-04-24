@@ -186,7 +186,7 @@ app.post("/api/login", async (req, res, next) => {
     rq.finally(() => client.close());
 });
 
-app.post("/api/googleLogin", async (req: any, res: any, next: any) => {
+app.post("/api/google-login", async (req: any, res: any, next: any) => {
     if (!req.headers["authorization"]) {
         res.status(403).send("Token mancante");
     }
@@ -194,6 +194,7 @@ app.post("/api/googleLogin", async (req: any, res: any, next: any) => {
         let token = req.headers["authorization"];
         let payload = _jwt.decode(token);
         let email = payload.email;
+        console.log(payload)
         const client = new MongoClient(CONNECTION_STRING);
         await client.connect();
         const collection = client.db(DBNAME).collection("UTENTI");

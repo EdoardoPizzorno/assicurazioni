@@ -18,7 +18,11 @@ export class LoginComponent {
   }
 
   login() {
-    this.loginService.checkLogin(this.email, this.password);
+    this.loginService.login(this.email, this.password);
+  }
+
+  googleLogin() {
+    this.loginService.googleLogin();
   }
 
 }
