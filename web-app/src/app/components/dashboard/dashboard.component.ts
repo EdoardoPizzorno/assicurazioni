@@ -12,7 +12,9 @@ export class DashboardComponent {
 
   @ViewChild('map') map: any;
 
-  constructor(public periziaService: PeriziaService, public googleMapsService: GoogleMapsService, private userService: UserService) { }
+  constructor(public periziaService: PeriziaService, public googleMapsService: GoogleMapsService, private userService: UserService) {
+    googleMapsService.map = this.map;
+  }
 
   async ngOnInit() {
     await this.userService.getUsers();

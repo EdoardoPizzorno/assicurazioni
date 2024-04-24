@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GoogleMapsService {
 
-  isLoading: boolean = false;
-
+  map: any;
   headQuarter: any = {
     coords: {
       lat: 44.5558401,
@@ -24,7 +22,6 @@ export class GoogleMapsService {
   }
 
   getCurrentLocation() {
-    this.isLoading = true;
     navigator.geolocation.getCurrentPosition(
       (position: GeolocationPosition) => {
         const point: google.maps.LatLngLiteral = {
@@ -34,46 +31,32 @@ export class GoogleMapsService {
         this.headQuarter.coords = point;
         this.mapCenter = new google.maps.LatLng(point);
       });
-    this.isLoading = false;
   }
 
-  getDirections(map: any, destination: google.maps.LatLngLiteral) {
-    const directionsService = new google.maps.DirectionsService();
-    const directionsRenderer = new google.maps.DirectionsRenderer();
+  getDirections(map: any, destination: google.maps.LatLngLiteral, event: any = { domEvent: { shiftKey: false } }) {
+    
+    if (event.domEvent.shiftKey) { // Shift + Click
+      const directionsService = new google.maps.DirectionsService();
+      const directionsRenderer = new google.maps.DirectionsRenderer();
 
-    map.panTo(destination);
-    directionsRenderer.setMap(map.googleMap);
+      map.panTo(destination);
+      directionsRenderer.setMap(map.googleMap);
 
-    const request: google.maps.DirectionsRequest = {
-      origin: this.headQuarter.coords,
-      destination: destination,
-      travelMode: google.maps.TravelMode.DRIVING,
-      provideRouteAlternatives: true
-    };
+      const request: google.maps.DirectionsRequest = {
+        origin: this.headQuarter.coords,
+        destination: destination,
+        travelMode: google.maps.TravelMode.DRIVING,
+        provideRouteAlternatives: true
+      };
 
-    directionsService.route(request, (result, status) => {
-      if (status === google.maps.DirectionsStatus.OK) {
-        directionsRenderer.setDirections(result);
-      } else {
-        console.error('Errore durante il calcolo del percorso:', status);
-      }
-    });
-  }
-
-  moveMap(event: google.maps.MapMouseEvent) {
-    if (event.latLng != null)
-      this.mapCenter = event.latLng.toJSON();
-  }
-
-  move(event: google.maps.MapMouseEvent) {
-    if (event.latLng != null)
-      this.display = event.latLng.toJSON();
-  }
-
-  drag() {
-    console.log("Marker dragged");
-    this.markerOptions.animation = google.maps.Animation.BOUNCE;
-    this.markerOptions.draggable = true;
+      directionsService.route(request, (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+          directionsRenderer.setDirections(result);
+        } else {
+          console.error('Errore durante il calcolo del percorso:', status);
+        }
+      });
+    }
   }
 
 }

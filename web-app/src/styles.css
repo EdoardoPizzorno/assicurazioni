@@ -31,3 +31,7 @@ hr.divider {
     text-decoration: line-through;
     color: #ff0000;
 }
+
+.bi {
+    margin-bottom: 8px;
+}

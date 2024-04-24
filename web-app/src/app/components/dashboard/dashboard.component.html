@@ -2,14 +2,23 @@
 
 <div class="m-4">
     <google-map #map id="map" height="800px" width="100%" [center]="googleMapsService.mapCenter"
-        [zoom]="googleMapsService.zoom" (mapClick)="googleMapsService.moveMap($event)">
-        <map-marker *ngFor="let marker of periziaService.perizie; index as i" [position]="marker.coords"
-            [icon]="marker.icon" [title]="marker.description" (mapClick)="periziaService.editModal(marker)"
-            [options]="googleMapsService.markerOptions">
+        [zoom]="googleMapsService.zoom">
+        <map-marker *ngFor="let marker of periziaService.perizie" [position]="marker.coords" [icon]="marker.icon"
+            [title]="marker.description" [options]="googleMapsService.markerOptions"
+            (mapDblclick)="periziaService.editModal(marker)"
+            (mapClick)="googleMapsService.getDirections(map, marker.coords, $event)">
         </map-marker>
     </google-map>
 
-    <hr class="divider">
+    <div class="button-container">
+        <button class="button">
+            <i class="icon bi bi-info"></i>
+        </button>
+
+        <button class="button">
+            <i class="icon bi bi-compass"></i>
+        </button>
+    </div>
 
     <perizie-table></perizie-table>
 
