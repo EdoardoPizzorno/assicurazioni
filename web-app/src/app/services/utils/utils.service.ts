@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PeriziaService } from '../perizia.service';
 
 @Injectable({
   providedIn: 'root'
@@ -148,6 +149,14 @@ export class UtilsService {
       perizia.photos[comment.imageIndex].comments[count++] = comment.text;
     });
     return perizia;
+  }
+
+  getCoordsFromUrl(indications: string): any {
+    const aus = indications.split(',');
+    return {
+      lat: parseFloat(aus[0]),
+      lng: parseFloat(aus[1])
+    };
   }
 
 }

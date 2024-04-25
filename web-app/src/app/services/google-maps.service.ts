@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
+import { PeriziaService } from './perizia.service';
+import { ActivatedRoute } from '@angular/router';
+import { UtilsService } from './utils/utils.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +18,10 @@ export class GoogleMapsService {
   map!: GoogleMap;
   mapOptions: google.maps.MapOptions = {
     mapTypeId: 'roadmap', //roadmap, satellite, hybrid, terrain
-    scrollwheel: false,
     disableDoubleClickZoom: true,
     maxZoom: 15,
     minZoom: 8,
+    mapTypeControl: true,
     mapTypeControlOptions: {
       mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain'],
     },
@@ -32,7 +35,7 @@ export class GoogleMapsService {
     animation: google.maps.Animation.DROP
   };
 
-  constructor() {
+  constructor(private periziaService: PeriziaService, private utils: UtilsService, private activatedRoute: ActivatedRoute) {
     this.getCurrentLocation();
   }
 
@@ -48,33 +51,42 @@ export class GoogleMapsService {
       });
   }
 
-  getDirections(destination: google.maps.LatLngLiteral, event: any) {
-    if (event instanceof PointerEvent || ("domEvent" in event && event.domEvent.shiftKey)) { // Click from table or Shift + Click
-      const directionsService = new google.maps.DirectionsService();
-      const directionsRenderer = new google.maps.DirectionsRenderer();
+  async getDirections() {
+    const destination = this.utils.getCoordsFromUrl(this.activatedRoute.snapshot.queryParams["indications"]);
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer();
+    const sideBar: HTMLElement = document.getElementById("sidebar") as HTMLElement;
 
-      this.map.panTo(destination);
-      directionsRenderer.setMap(this.map.googleMap!);
+    this.periziaService.selectedPeriziaId = this.getIdFromCoords(destination);
 
-      const request: google.maps.DirectionsRequest = {
-        origin: this.headQuarter.coords,
-        destination: destination,
-        travelMode: this.getTravelMode(directionsRenderer), // BICYCLING, DRIVING, TRANSIT, WALKING
-        provideRouteAlternatives: true
-      };
+    sideBar.innerHTML = '';
 
-      directionsService.route(request, (result, status) => {
-        if (status === google.maps.DirectionsStatus.OK) {
-          directionsRenderer.setDirections(result);
-        } else {
-          console.error('Errore durante il calcolo del percorso:', status);
-        }
-      });
-    }
+    this.map.panTo(destination);
+    directionsRenderer.setMap(null);
+    directionsRenderer.setMap(this.map.googleMap!);
+    directionsRenderer.setPanel(null);
+    directionsRenderer.setPanel(sideBar);
+
+    const request: google.maps.DirectionsRequest = {
+      origin: this.headQuarter.coords,
+      destination: destination,
+      travelMode: this.getTravelMode(directionsRenderer), // BICYCLING, DRIVING, TRANSIT, WALKING
+      provideRouteAlternatives: true
+    };
+
+    directionsService.route(request, (result, status) => {
+      if (status === google.maps.DirectionsStatus.OK) {
+        directionsRenderer.setDirections(result);
+      } else {
+        console.error('Errore durante il calcolo del percorso:', status);
+      }
+    });
+
   }
 
   getTravelMode(directionsRenderer: google.maps.DirectionsRenderer): google.maps.TravelMode {
     let travelMode: google.maps.TravelMode = google.maps.TravelMode.DRIVING;
+    this.travelMode = this.activatedRoute.snapshot.queryParams["travelMode"] || "DRIVING";
     if (this.travelMode == "DRIVING") {
       travelMode = google.maps.TravelMode.DRIVING;
       directionsRenderer.setOptions({
@@ -116,6 +128,15 @@ export class GoogleMapsService {
       });
     }
     return travelMode;
+  }
+
+  getIdFromCoords(coords: any): string {
+    for (let perizia of this.periziaService.perizie) {
+      if (perizia.coords.lat == coords.lat && perizia.coords.lng == coords.lng) {
+        return perizia._id;
+      }
+    }
+    return "";
   }
 
 }

@@ -1,13 +1,12 @@
 <loader *ngIf="!periziaService.perizie || periziaService.isLoading"></loader>
 <div class="container">
-    
+
     <!--FILTERS-->
     <div class="row">
 
         <div class="col-md-4 mt-3">
             <label for="operatorFilter">Operatore:</label>
-            <select class="form-control" id="operatorFilter" [(ngModel)]="selectedOperator"
-                (change)="filter()">
+            <select class="form-control" id="operatorFilter" [(ngModel)]="selectedOperator" (change)="filter()">
                 <option value="all">Tutti</option>
                 <option *ngFor="let operator of periziaService.operators" [value]="operator.username">
                     {{operator.username}}
@@ -17,8 +16,7 @@
 
         <div class="col-md-4 align-self-center mt-3">
             <label for="dateFilter">Data:</label>
-            <input type="date" class="form-control" id="dateFilter" [(ngModel)]="selectedDate"
-                (change)="filter()">
+            <input type="date" class="form-control" id="dateFilter" [(ngModel)]="selectedDate" (change)="filter()">
         </div>
 
         <div class="col-md-4 mt-3">
@@ -58,14 +56,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let perizia of periziaService.perizie">
+                <tr *ngFor="let perizia of periziaService.perizie"
+                    [ngClass]="{selected: periziaService.selectedPeriziaId && perizia._id == periziaService.selectedPeriziaId}">
                     <td [ngClass]="{deleted: perizia.operator.username=='Utente eliminato'}">
                         {{perizia.operator.username}}</td>
                     <td>{{perizia.date}}</td>
                     <td>{{perizia.time}}</td>
                     <td>{{perizia.description}}</td>
                     <td>
-                        <a href="/dashboard#map" class="btn btn-info" (click)="googleMapsService.getDirections(perizia.coords, $event)">Indicazioni</a>
+                        <button class="btn btn-info" (click)="loadIndications(perizia.coords)">Indicazioni</button>
                     </td>
                     <td>
                         <button class="btn btn-primary" (click)="periziaService.editModal(perizia)">Dettagli</button>

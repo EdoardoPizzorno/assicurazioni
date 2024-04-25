@@ -22,8 +22,14 @@ export class PerizieTableComponent {
     this.selectedOperator = this.router.parseUrl(this.router.url).queryParams["operator"] || "all";
     this.selectedDate = this.router.parseUrl(this.router.url).queryParams["date"] || "";
     this.selectedDescription = this.router.parseUrl(this.router.url).queryParams["search"] || "";
-    if (!this.periziaService.perizie)
+    this.periziaService.selectedPeriziaId = null;
+
+    if (!this.periziaService.perizie) {
       await this.periziaService.getPerizie();
+    }
+    if (this.router.url.includes("indications")) {
+      await this.googleMapsService.getDirections();
+    }
   }
 
   async filter() {
@@ -44,6 +50,12 @@ export class PerizieTableComponent {
     const url = this.utils.createUrl(this.selectedOperator, this.selectedDate, this.selectedDescription);
     await this.router.navigateByUrl(url);
     await this.periziaService.getPerizie();
+  }
+
+  async loadIndications(coords: any) {
+    await this.router.navigateByUrl('/dashboard?indications=' + coords.lat + ',' + coords.lng
+      + "&travelMode=" + this.googleMapsService.travelMode);
+    await this.googleMapsService.getDirections();
   }
 
 }

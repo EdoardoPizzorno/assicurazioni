@@ -23,3 +23,8 @@
     margin-left: 5px;
     cursor: pointer;
 }
+
+.selected {
+    background-color: #94c8ff;
+    color: rgb(0, 0, 0);
+}

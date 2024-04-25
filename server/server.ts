@@ -386,7 +386,7 @@ app.post("/api/user", async (req, res, next) => {
         user["password"] = _bcrypt.hashSync(user["password"]);
 
         user["avatar"] = "https://www.civictheatre.ie/wp-content/uploads/2016/05/blank-profile-picture-973460_960_720.png"
-        //await loadProfilePicture(user);
+        await loadProfilePicture(user);
 
         let rq = collection.insertOne(user)
         rq.then((data) => res.send(data))

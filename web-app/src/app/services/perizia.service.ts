@@ -9,6 +9,8 @@ import Swal from 'sweetalert2';
 export class PeriziaService {
 
   isLoading: boolean = false;
+
+  selectedPeriziaId: any;
   perizie: any;
   operators: any[] = [];
 
