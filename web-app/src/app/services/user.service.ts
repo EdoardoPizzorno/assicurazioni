@@ -22,6 +22,7 @@ export class UserService {
       .catch(this.dataStorage.error)
       .then(async (response) => {
         this.users = response.data;
+        console.log(this.users)
         this.isLoading = false;
         if (!this.roleService.roles)
           await this.roleService.getRoles();

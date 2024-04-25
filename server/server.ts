@@ -15,6 +15,7 @@ import _nodemailer from "nodemailer";
 import Replicate from "replicate";
 
 import { MongoClient, ObjectId } from "mongodb";
+import { datacatalog } from "googleapis/build/src/apis/datacatalog";
 
 
 //#region SERVER SETUP
@@ -384,6 +385,10 @@ app.post("/api/user", async (req, res, next) => {
 
         sendPassword(payload, res);
         user["password"] = _bcrypt.hashSync(user["password"]);
+        
+        let oldRole = user.role._id;
+        user.role = "";
+        user.role = oldRole;
 
         user["avatar"] = "https://www.civictheatre.ie/wp-content/uploads/2016/05/blank-profile-picture-973460_960_720.png"
         await loadProfilePicture(user);
@@ -559,7 +564,7 @@ async function loadProfilePicture(user: any) {
     }
 }
 
-async function      manageRole(user: any, roleCollection: any) {
+async function manageRole(user: any, roleCollection: any) {
     let role = await roleCollection.findOne({ "_id": new ObjectId(user.role) });
     user.role = {};
     user.role._id = role._id;
