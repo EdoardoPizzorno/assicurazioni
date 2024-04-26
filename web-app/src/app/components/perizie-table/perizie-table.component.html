@@ -38,6 +38,10 @@
                 <span class="filter-value">{{selectedDescription}}</span>
                 <button class="close-btn" (click)="removeFilter('description')">×</button>
             </div>
+            <div *ngIf="periziaService.selectedPeriziaId" class="filter-label">
+                <span class="filter-value">Indicazioni </span>
+                <button class="close-btn" (click)="removeFilter('indications')">×</button>
+            </div>
         </div>
 
     </div>

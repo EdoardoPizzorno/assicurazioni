@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { UtilsService } from '../../services/utils/utils.service';
 import { LoginService } from '../../services/login.service';
 import { GoogleMapsService } from '../../services/google-maps.service';
+import Swal from 'sweetalert2';
+import { GoogleMap } from '@angular/google-maps';
 
 @Component({
   selector: 'perizie-table',
@@ -45,6 +47,9 @@ export class PerizieTableComponent {
       this.selectedDate = "";
     } else if (filterType === "description") {
       this.selectedDescription = "";
+    } else if (filterType === "indications") {
+      await this.router.navigateByUrl('/dashboard');
+      window.location.reload();
     }
 
     const url = this.utils.createUrl(this.selectedOperator, this.selectedDate, this.selectedDescription);
@@ -55,7 +60,8 @@ export class PerizieTableComponent {
   async loadIndications(coords: any) {
     await this.router.navigateByUrl('/dashboard?indications=' + coords.lat + ',' + coords.lng
       + "&travelMode=" + this.googleMapsService.travelMode);
-    await this.googleMapsService.getDirections();
+    window.location.reload();
+    //await this.googleMapsService.getDirections();
   }
 
 }
