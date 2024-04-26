@@ -53,7 +53,7 @@ https_server.listen(PORT, () => {
 */
 
 // HTTP
-const PORT: number = parseInt(process.env.PORT);
+const PORT: number = parseInt(process.env.PORT) || 3000;
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
 const http_server = _http.createServer(app);
 
