@@ -57,7 +57,6 @@ export class RoleService {
         this.dataStorage.sendRequest("PATCH", "/role/" + role._id, { "name": roleName })
           .catch(this.dataStorage.error)
           .then(async (response: any) => {
-            console.log(response.data)
             await Swal.fire('Ruolo modificato', '', 'success');
             await this.getRoles();
           });

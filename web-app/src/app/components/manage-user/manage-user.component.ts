@@ -31,7 +31,6 @@ export class ManageUserComponent {
   }
 
   submit() {
-    console.log(this.userService.newUser)
     if (this.validateUser()) {
       if (this.editMode)
         this.userService.update(this.userService.newUser);
@@ -85,13 +84,7 @@ export class ManageUserComponent {
           reader.readAsDataURL(file);
         });
       }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        console.log(result)
-      }
-    }
-
-    )
+    })
   }
 
 }

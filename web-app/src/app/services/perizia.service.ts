@@ -50,8 +50,8 @@ export class PeriziaService {
           reject(error);
         })
         .then(async (response) => {
-          Swal.fire("Perizia modificata", "", "success");
           await this.getPerizie();
+          Swal.fire("Perizia modificata", "", "success");
           resolve();
         });
     });
@@ -113,7 +113,6 @@ export class PeriziaService {
         }
         this.utils.substituteFields(perizia, fields);
         await this.update(perizia);
-        this.getPerizie();
       }
     });
   }
