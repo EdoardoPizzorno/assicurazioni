@@ -1,7 +1,7 @@
 <loader *ngIf="!roleService.roles || roleService.isLoading"></loader>
 <div class="container text-center mt-5">
 
-    <h1 class="mb-4">Lista Ruoli</h1>
+    <h2 class="mb-4">Lista Ruoli</h2>
 
     <table class="table text-center">
         <thead>
@@ -12,13 +12,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let role of roleService.roles">
+            <tr *ngFor="let role of roleService.roles" >
                 <td>{{role.name}}</td>
                 <td>
-                    <button class="btn btn-primary" (click)="editRole(role)">Modifica</button>
+                    <button class="btn btn-primary" (click)="roleService.update(role)">Modifica</button>
                 </td>
                 <td>
-                    <button class="btn btn-danger" (click)="deleteRole(role)"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-danger" (click)="roleService.delete(role)">
+                        <i class="bi bi-trash"></i>
+                    </button>
                 </td>
             </tr>
             <tr *ngIf="!roleService.roles">
@@ -26,5 +28,7 @@
             </tr>
         </tbody>
     </table>
-    <button class="btn btn-success" (click)="addRole()">AGGIUNGI RUOLO</button>
+    <a class="btn btn-success" (click)="roleService.add()">
+        <i class="fa-solid fa-plus"></i>
+    </a>
 </div>

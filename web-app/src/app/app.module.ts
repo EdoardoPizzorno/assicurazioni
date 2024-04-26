@@ -15,7 +15,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { PerizieTableComponent } from './components/perizie-table/perizie-table.component';
 import { RoleComponent } from './components/role/role.component';
 import { LoaderComponent } from './components/loader/loader.component';
-import { TravelModesComponent } from './components/travel-modes/travel-modes.component';
+import { TravelModesComponent } from './components/utils/travel-modes/travel-modes.component';
 
 @NgModule({
   declarations: [

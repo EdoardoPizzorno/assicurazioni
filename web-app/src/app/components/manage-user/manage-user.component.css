@@ -1,7 +1,15 @@
 .form-group {
-    margin-top: 15px;
+    margin-top: 25px;
 }
 
 button {
     margin-top: 30px;
+}
+
+img {
+    height: 150px;
+    border-radius: 15px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    margin-top: 10px;
 }

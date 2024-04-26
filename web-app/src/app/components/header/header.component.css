@@ -14,17 +14,21 @@
 }
 
 .profile-image {
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     margin-right: 5px;
     object-fit: cover;
 }
 
+.profile-image:hover {
+    cursor: pointer;
+}
+
 .dropdown-toggle {
     background-color: var(--divider-background-color);
     border: 1px solid var(--divider-background-color);
-    border-radius: 5px;
+    border-radius: 50%;
     color: black;
     padding: 0.5rem 1rem;
 }

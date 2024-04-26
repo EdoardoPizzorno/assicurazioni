@@ -22,15 +22,13 @@ export class UtilsService {
     return url;
   }
 
-  parseDate(date: any) {
-    if (typeof date == "string") {
-      date = date.toString();
-      let aux = date.split("T");
-      let dateObj = { date: "", time: "" };
-      dateObj["date"] = aux[0];
-      dateObj["time"] = aux[1].split(".")[0];
-      return dateObj;
-    } else return date;
+  parseDate() {
+    let date = new Date().toISOString();
+    let aux = date.split("T");
+    let dateObj = { date: "", time: "" };
+    dateObj["date"] = aux[0];
+    dateObj["time"] = aux[1].split(".")[0];
+    return dateObj;
   }
 
   checkOperatorDeleted(operator: string) {

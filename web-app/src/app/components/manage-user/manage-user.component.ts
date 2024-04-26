@@ -12,19 +12,9 @@ import { RoleService } from '../../services/role.service';
 export class ManageUserComponent {
 
   editMode: boolean = false;
-  newUser: any = {
-    name: "",
-    surname: "",
-    email: "",
-    username: "",
-    role: {},
-    city: "",
-    gender: "m",
-    age: 18,
-    createdAt: new Date()
-  };
 
-  constructor(public userService: UserService, public roleService: RoleService, private router: ActivatedRoute) { }
+  constructor(public userService: UserService, public roleService: RoleService,
+    private router: ActivatedRoute) { }
 
   async ngOnInit() {
     this.userService.isLoading = false;
@@ -33,7 +23,7 @@ export class ManageUserComponent {
       if (params.id) {
         this.editMode = true;
         this.userService.getUser(params.id).then(async () => {
-          this.newUser = this.userService.selectedUser;
+          this.userService.newUser = this.userService.selectedUser;
           await this.roleService.getRoles();
         });
       }
@@ -41,12 +31,12 @@ export class ManageUserComponent {
   }
 
   submit() {
-    console.log(this.newUser)
+    console.log(this.userService.newUser)
     if (this.validateUser()) {
       if (this.editMode)
-        this.userService.update(this.newUser);
+        this.userService.update(this.userService.newUser);
       else
-        this.userService.add(this.newUser);
+        this.userService.add(this.userService.newUser);
     }
     else Swal.fire({
       icon: 'error',
@@ -56,9 +46,9 @@ export class ManageUserComponent {
   }
 
   validateUser(): boolean {
-    if (this.newUser.name && this.newUser.surname && this.validateEmail(this.newUser.email)) {
-      if (!this.newUser.username)
-        this.newUser.username = this.newUser.email.split('@')[0];
+    if (this.userService.newUser.name && this.userService.newUser.surname && this.validateEmail(this.userService.newUser.email)) {
+      if (!this.userService.newUser.username)
+        this.userService.newUser.username = this.userService.newUser.email.split('@')[0];
       return true;
     }
     return false;
@@ -67,6 +57,41 @@ export class ManageUserComponent {
   validateEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  }
+
+  openDialog() {
+    Swal.fire({
+      title: 'Carica immagine profilo',
+      input: 'file',
+      inputAttributes:
+      {
+        accept: 'image/*',
+        'aria-label': 'Upload your profile picture'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Upload',
+      cancelButtonText: 'Cancel',
+      showLoaderOnConfirm: true,
+      preConfirm: (file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (event: any) => {
+            this.userService.uploadImageProfile(event.target.result);
+            resolve(event.target.result);
+          };
+          reader.onerror = (event) => {
+            reject(new Error('Error uploading image'));
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log(result)
+      }
+    }
+
+    )
   }
 
 }

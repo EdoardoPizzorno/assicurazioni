@@ -6,7 +6,7 @@ import { OAUTH_CREDENTIALS } from './env';
 
 declare global {
   interface Window {
-      google: any;
+    google: any;
   }
 }
 
@@ -23,12 +23,7 @@ export class LoginService {
     this.dataStorage.sendRequest('POST', '/login', { email, password })
       .then((response: any) => {
         if (response.status == 200) {
-          let currentUser: any = {
-            _id: response.data._id,
-            user_picture: response.data.user_picture
-          }
-          localStorage.setItem("ASSICURAZIONI", JSON.stringify({ token: response.headers.authorization, currentUser: currentUser }));
-          this.router.navigateByUrl('/dashboard');
+          this.redirectToDashboard(response);
         }
       })
       .catch((error: any) => {
@@ -46,19 +41,12 @@ export class LoginService {
       "callback": function (response: any) {
         if (response.credential !== "") {
           let token = response.credential
-          console.log("token:", token)
           localStorage.setItem("token", token)
           this.dataStorage.sendRequest("POST", "/google-login")
             .catch(this.dataStorage.error)
             .then((response: any) => {
-              console.log(response)
               if (response.status == 200) {
-                let currentUser: any = {
-                  _id: response.data._id,
-                  user_picture: response.data.user_picture
-                }
-                localStorage.setItem("ASSICURAZIONI", JSON.stringify({ token: response.headers.authorization, currentUser: currentUser }));
-                this.router.navigateByUrl('/dashboard');
+                this.redirectToDashboard(response);
               }
             });
         } else Swal.fire("Errore", "Errore durante il login con Google", "error")
@@ -86,6 +74,16 @@ export class LoginService {
         localStorage.removeItem("ASSICURAZIONI");
       }
     }
+  }
+
+  redirectToDashboard(response: any) {
+    let currentUser: any = {
+      _id: response.data._id,
+      user_picture: response.data.user_picture,
+      username: response.data.username
+    }
+    localStorage.setItem("ASSICURAZIONI", JSON.stringify({ token: response.headers.authorization, currentUser: currentUser }));
+    this.router.navigateByUrl('/dashboard');
   }
 
 }

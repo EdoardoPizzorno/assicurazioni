@@ -6,11 +6,17 @@
     <!--FILTERS-->
     <div class="row justify-content-center">
         <div class="col-md-3">
-            <div class="input-group mb-4">
-                <input type="text" class="form-control" placeholder="Cerca utente" [(ngModel)]="searchText"
-                    (change)="search()">
-                <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"
-                        (click)="search()"></i></button>
+            <div class="input-group">
+                <div class="group">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
+                        <g>
+                            <path
+                                d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z">
+                            </path>
+                        </g>
+                    </svg>
+                    <input class="input" type="search" placeholder="Search" [(ngModel)]="searchText" (change)="search()" />
+                </div>
             </div>
         </div>
         <div class="col-md-2 input-group-append justify-content-end">
@@ -21,7 +27,45 @@
         </div>
     </div>
     <br>
-    <table class="table">
+    <table class="table table-responsive-xl">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Nominativo</th>
+                <th>Ruolo</th>
+                <!--<th>Status</th>-->
+                <th>Dettagli</th>
+                <th>Elimina</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="alert" role="alert" *ngFor="let user of userService.users">
+                <td class="d-flex align-items-center">
+                    <div class="img" style="background-image: url({{user.avatar}});"></div>
+                    <div class="pl-3 email">
+                        <span>{{user.email}}</span>
+                        <span class="text-muted"> <i> {{user.username}} </i></span>
+                        <span class="text-muted">Created at: {{user.createdAt.date}} at {{user.createdAt.time}}</span>
+                    </div>
+                </td>
+                <td>{{user.name}} {{user.surname}}</td>
+                <td>{{user.role.name}}</td>
+                <!-- <td class="status"><span class="active">Active</span></td> -->
+                <td>
+                    <button class="btn btn-primary" [routerLink]="'/user/' + user._id">Dettagli</button>
+                </td>
+                <td>
+                    <button class="btn btn-danger" (click)="deleteUser(user._id)">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+            <tr *ngIf="!userService.users || userService.users.length == 0">
+                <td colspan="6" class="text-muted">Nessun utente trovato</td>
+            </tr>
+        </tbody>
+    </table>
+    <!--<table class="table">
         <thead>
             <tr>
                 <th>Avatar</th>
@@ -36,20 +80,24 @@
         </thead>
         <tbody>
             <tr *ngFor="let user of userService.users">
-                <td><img src="{{user.avatar}}" alt="https://www.civictheatre.ie/wp-content/uploads/2016/05/blank-profile-picture-973460_960_720.png" class="profile-picture"></td>
+                <td><img src="{{user.avatar}}" alt="" class="profile-picture"></td>
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
                 <td>{{user.username}}</td>
                 <td>{{user.role.name}}</td>
                 <td>{{user.email}}</td>
-                <td><a class="btn btn-primary" [routerLink]="'/user/' + user._id">Dettagli</a></td>
-                <td><button class="btn btn-danger" (click)="deleteUser(user._id)"><i class="bi bi-trash"></i></button>
+                <td><button class="btn btn-primary" [routerLink]="'/user/' + user._id">Dettagli</button></td>
+                <td><button class="btn btn-danger" (click)="deleteUser(user._id)">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
                 </td>
             </tr>
             <tr *ngIf="!userService.users || userService.users.length == 0">
                 <td colspan="8" class="text-muted">Nessun utente trovato</td>
             </tr>
         </tbody>
-    </table>
-    <a class="btn btn-success" [routerLink]="['/user/new']">AGGIUNGI UTENTE</a>
+    </table>-->
+    <a class="btn btn-success" [routerLink]="['/user/new']">
+        <i class="fa-solid fa-plus"></i>
+    </a>
 </div>

@@ -1,5 +1,7 @@
 .container {
     margin-top: 20px;
+    font-size: 20px;
+    border-radius: 15px;
 }
 
 .card {

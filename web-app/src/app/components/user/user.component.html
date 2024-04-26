@@ -1,38 +1,36 @@
 <loader *ngIf="userService.isLoading"></loader>
-<div class="container text-center">
+<div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card text-left">
-                <div class="card-body" *ngIf="!userService.isLoading">
+        <div class="col-lg-8">
+            <div class="container shadow">
+                <div class="card-body" *ngIf="userService.selectedUser">
+                    <div class="d-flex align-items-center mb-4">
+                        <img src="{{ userService.selectedUser.avatar }}" class="rounded-circle mr-3" alt="Avatar"
+                            style="width: 120px; height: 120px;">
+                        <h2 class="card-title mb-0">{{ userService.selectedUser.username }}</h2>
+                    </div>
+                    <hr>
                     <div class="row">
-                        <div class="col-md-9">
-                            <h2 class="card-title"><b>{{ userService.selectedUser.username }}</b>'s details </h2>
+                        <div class="col-md-6">
+                            <p><strong>Name:</strong> {{ userService.selectedUser.name }}</p>
+                            <p><strong>Surname:</strong> {{ userService.selectedUser.surname }}</p>
+                            <p><strong>Email:</strong> {{ userService.selectedUser.email }}</p>
+                            <p><strong>Age:</strong> {{ userService.selectedUser.age }}</p>
                         </div>
-                        <div class="col-md-1">
-                            <button class="btn btn-primary" (click)="edit()"><i class="bi bi-pencil"></i></button>
-                        </div>
-                        <div class="col-md-1">
-                            <button class="btn btn-danger" (click)="delete()"><i class="bi bi-trash"></i></button>
+                        <div class="col-md-6">
+                            <p><strong>Role:</strong> {{ userService.selectedUser.role.name }}</p>
+                            <p><strong>Gender:</strong> {{ userService.selectedUser.gender == "m" ? "Male" : "Female" }}
+                            </p>
+                            <p><strong>City:</strong> {{ userService.selectedUser.city }}</p>
+                            <p><strong>Created at:</strong><br> {{ userService.selectedUser.createdAt.date }} at
+                                {{userService.selectedUser.createdAt.time}}</p>
                         </div>
                     </div>
                     <hr>
-                    <div class="text-center">
-                        <img src="{{ userService.selectedUser.avatar }}" class="rounded-circle" alt="avatar"
-                            style="width: 100px; height: 100px;">
+                    <div class="row text-center justify-content-center">
+                        <button class="btn btn-primary mr-2" (click)="edit()">Edit</button>
+                        <button class="btn btn-danger" (click)="delete()">Delete</button>
                     </div>
-                    <hr>
-                    <p><strong>Username:</strong> {{ userService.selectedUser.username }}</p>
-                    <p><strong>Name:</strong> {{ userService.selectedUser.name }}</p>
-                    <p><strong>Surname:</strong> {{ userService.selectedUser.surname }}</p>
-                    <p><strong>Email:</strong> {{ userService.selectedUser.email }}</p>
-                    <p><strong>Age:</strong> {{ userService.selectedUser.age }}</p>
-                    <p><strong>Role:</strong> {{ userService.selectedUser.role.name }}</p>
-                    <p><strong>Gender:</strong> {{ userService.selectedUser.gender == "m" ? "Male" : "Female" }}</p>
-                    <p><strong>City:</strong> {{ userService.selectedUser.city }}</p>
-                    <p><strong>Created at:</strong> {{ userService.selectedUser.createdAt.date }} at
-                        {{userService.selectedUser.createdAt.time}}</p>
-                    <hr>
-                    <button class="btn btn-primary" (click)="back()">Back</button>
                 </div>
             </div>
         </div>

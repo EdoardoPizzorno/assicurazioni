@@ -1,5 +1,6 @@
 <loader *ngIf="!periziaService.perizie || periziaService.isLoading"></loader>
-<div class="container">
+<div class="container mt-4 text-center">
+    <h2>Lista Perizie</h2>
 
     <!--FILTERS-->
     <div class="row">
@@ -60,8 +61,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let perizia of periziaService.perizie"
-                    [ngClass]="{selected: periziaService.selectedPeriziaId && perizia._id == periziaService.selectedPeriziaId}">
+                <tr *ngFor="let perizia of periziaService.perizie">
                     <td [ngClass]="{deleted: perizia.operator.username=='Utente eliminato'}">
                         {{perizia.operator.username}}</td>
                     <td>{{perizia.date}}</td>
@@ -75,7 +75,7 @@
                     </td>
                 </tr>
                 <tr *ngIf="!periziaService.perizie">
-                    <td colspan="5" class="text-muted">Nessuna perizia trovata</td>
+                    <td colspan="6" class="text-muted">Nessuna perizia trovata</td>
                 </tr>
             </tbody>
         </table>

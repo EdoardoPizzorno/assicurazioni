@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GoogleMapsService } from '../../services/google-maps.service';
+import { GoogleMapsService } from '../../../services/google-maps.service';
 
 @Component({
   selector: 'travel-modes',

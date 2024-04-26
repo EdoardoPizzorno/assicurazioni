@@ -15,7 +15,6 @@ import _nodemailer from "nodemailer";
 import Replicate from "replicate";
 
 import { MongoClient, ObjectId } from "mongodb";
-import { datacatalog } from "googleapis/build/src/apis/datacatalog";
 
 
 //#region SERVER SETUP
@@ -158,7 +157,7 @@ app.post("/api/login", async (req, res, next) => {
     let regex = new RegExp(`^${user}$`, "i");
     let rq = collection.findOne(
         { $or: [{ "email": regex }, { "username": regex }] },
-        { "projection": { "_id": 1, "email": 1, "password": 1, "avatar": 1 } }
+        { "projection": { "_id": 1, "email": 1, "password": 1, "avatar": 1, "username": 1 } }
     );
     rq.then((dbUser) => {
         if (!dbUser) {
@@ -177,7 +176,7 @@ app.post("/api/login", async (req, res, next) => {
                         let token = createToken(dbUser);
                         res.setHeader("authorization", token);
                         res.setHeader("access-control-expose-headers", "authorization");
-                        res.send({ "user_picture": dbUser.avatar, "_id": dbUser._id });
+                        res.send({ "user_picture": dbUser.avatar, "_id": dbUser._id, "username": dbUser.username });
                     }
                 }
             })
@@ -237,18 +236,6 @@ app.use("/api/", (req: any, res: any, next: any) => {
         });
     }
 });
-
-function createToken(data) {
-    let currentTimeSeconds = Math.floor(new Date().getTime() / 1000);
-    let payload = {
-        "_id": data._id,
-        "username": data.username,
-        "iat": data.iat || currentTimeSeconds,
-        "exp": currentTimeSeconds + parseInt(process.env.TOKEN_EXPIRE_DURATION)
-    }
-    let token = _jwt.sign(payload, ENCRYPTION_KEY);
-    return token;
-}
 
 //#endregion
 
@@ -385,7 +372,7 @@ app.post("/api/user", async (req, res, next) => {
 
         sendPassword(payload, res);
         user["password"] = _bcrypt.hashSync(user["password"]);
-        
+
         let oldRole = user.role._id;
         user.role = "";
         user.role = oldRole;
@@ -399,6 +386,38 @@ app.post("/api/user", async (req, res, next) => {
         rq.finally(() => client.close());
     }
 
+})
+
+app.post("/api/user/generateImageProfile", async (req, res, next) => {
+    const user = req["body"]["body"].user;
+    await loadProfilePicture(user);
+
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("UTENTI");
+    let rq = collection.updateOne({ "_id": new ObjectId(user._id) }, { "$set": { "avatar": user.avatar } });
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    rq.finally(() => client.close());
+})
+
+app.post("/api/user/uploadImageProfile", async (req, res, next) => {
+    let userId = req["body"]["body"].userId;
+    let imgBase64 = req["body"]["body"].imgBase64;
+
+    _cloudinary.v2.uploader.upload(imgBase64, { "folder": "rilievi_perizie.profile_pictures" })
+        .catch((err) => {
+            res.status(500).send(`Error while uploading file on Cloudinary: ${err}`);
+        })
+        .then(async function (response: UploadApiResponse) {
+            const client = new MongoClient(CONNECTION_STRING);
+            await client.connect();
+            let collection = client.db(DBNAME).collection("UTENTI");
+            let rq = collection.updateOne({"_id": new ObjectId(userId)}, { "$set": { "avatar": response.secure_url } });
+            rq.then((data) => res.send(data));
+            rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
+            rq.finally(() => client.close());
+        });
 })
 
 app.post("/api/role", async (req, res, next) => {
@@ -429,7 +448,7 @@ app.patch("/api/perizia/:id", async (req, res, next) => {
 app.patch("/api/user/:id", async (req, res, next) => {
     const user = req["body"]["body"].user;
     const _id = new ObjectId(user._id);
-    
+
     delete user._id;
     const roleId = user.role._id;
     user.role = "";
@@ -486,6 +505,18 @@ app.delete("/api/role/:id", async (req, res, next) => {
 //#endregion
 
 //#region INTERNAL FUNCTIONS
+
+function createToken(data) {
+    let currentTimeSeconds = Math.floor(new Date().getTime() / 1000);
+    let payload = {
+        "_id": data._id,
+        "username": data.username,
+        "iat": data.iat || currentTimeSeconds,
+        "exp": currentTimeSeconds + parseInt(process.env.TOKEN_EXPIRE_DURATION)
+    }
+    let token = _jwt.sign(payload, ENCRYPTION_KEY);
+    return token;
+}
 
 function generatePassword(): string {
     const length: number = 12;
@@ -557,6 +588,7 @@ async function loadProfilePicture(user: any) {
             { input }
         );
         user["avatar"] = output[0];
+        console.log("Model executed successfully!")
     } catch (err) {
         console.log("--REPLICATE.COM ERROR--");
         console.log(err);

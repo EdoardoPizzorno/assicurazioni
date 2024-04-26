@@ -62,7 +62,6 @@ export class GoogleMapsService {
     sideBar.innerHTML = '';
 
     this.map.panTo(destination);
-    directionsRenderer.setMap(null);
     directionsRenderer.setMap(this.map.googleMap!);
     directionsRenderer.setPanel(null);
     directionsRenderer.setPanel(sideBar);
@@ -81,7 +80,6 @@ export class GoogleMapsService {
         console.error('Errore durante il calcolo del percorso:', status);
       }
     });
-
   }
 
   getTravelMode(directionsRenderer: google.maps.DirectionsRenderer): google.maps.TravelMode {
