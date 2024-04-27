@@ -1,7 +1,16 @@
 {
   "name": "mobile-app",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "enterprise": {
+      "keyId": 18487,
+      "productKey": "key_c7e7bac819b6474499e5f115bb8cb766",
+      "appId": "a181b3fa",
+      "orgId": "9041b1e2-6aec-4a63-8299-53cbde79dd5c",
+      "registries": [
+        "@ionic-enterprise;https://registry.ionicframework.com/"
+      ]
+    }
   },
   "type": "angular"
 }

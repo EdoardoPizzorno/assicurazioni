@@ -1,19 +1,14 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { DashboardPage } from './pages/dashboard/dashboard.page';
+import { LoginPage } from './pages/login/login.page';
+import { UserPage } from './pages/user/user.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardPageModule)
-  },
-  {
-    path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
-  },
-  {
-    path: 'user',
-    loadChildren: () => import('./pages/user/user.module').then(m => m.UserPageModule)
-  },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: DashboardPage },
+  { path: 'login', component: LoginPage },
+  { path: 'user', component: UserPage },
   { path: '**', redirectTo: '' },
 ];
 @NgModule({
