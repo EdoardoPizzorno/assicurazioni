@@ -5,9 +5,37 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">user</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <loader *ngIf="userService.isLoading"></loader>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="container shadow">
+          <div class="card-body" *ngIf="userService.currentUser">
+            <div class="d-flex align-items-center mb-4">
+              <img src="{{ userService.currentUser.avatar }}" class="rounded-circle mr-3" alt="Avatar"
+                style="width: 120px; height: 120px;">
+              <h2 class="card-title mb-0">{{ userService.currentUser.username }}</h2>
+            </div>
+            <hr>
+            <div class="row text-center">
+                <p><strong>Name:</strong> {{ userService.currentUser.name }}</p>
+                <p><strong>Surname:</strong> {{ userService.currentUser.surname }}</p>
+                <p><strong>Email:</strong> {{ userService.currentUser.email }}</p>
+                <p><strong>Age:</strong> {{ userService.currentUser.age }}</p>
+                <p><strong>Role:</strong> {{ userService.currentUser.role.name }}</p>
+                <p><strong>Gender:</strong> {{ userService.currentUser.gender == "m" ? "Male" : "Female" }}
+                </p>
+                <p><strong>City:</strong> {{ userService.currentUser.city }}</p>
+                <p><strong>Created at:</strong><br> {{ userService.currentUser.createdAt.date }} at
+                  {{userService.currentUser.createdAt.time}}</p>
+            </div>
+            <hr>
+            <div class="row text-center justify-content-center">
+              <ion-button class="btn btn-primary mr-2" (click)="edit()">Edit</ion-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>

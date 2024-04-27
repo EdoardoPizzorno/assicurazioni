@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserPage implements OnInit {
 
-  constructor() { }
+  constructor(public userService: UserService, private activatedRouter: ActivatedRoute, private router: Router) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.userService.getUser();
+  }
+
+  edit() {
+    this.router.navigateByUrl("user/edit");
   }
 
 }

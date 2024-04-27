@@ -4,6 +4,8 @@
   </ion-toolbar>
 </ion-header>
 
+<loader *ngIf="userService.isLoading"></loader>
+
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>

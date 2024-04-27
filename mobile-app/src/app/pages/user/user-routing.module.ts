@@ -1,16 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { UserPage } from './user.page';
 
 const routes: Routes = [
   {
     path: 'user',
+    component: UserPage,
     children: [
       {
-        path: ':id',
-        loadChildren: () => import('../user/user.module').then(m => m.UserPageModule)
-      },
-      {
-        path: ':id/edit',
+        path: '/edit',
         loadChildren: () => import('../manage-user/manage-user.module').then(m => m.ManageUserPageModule)
       }
     ]

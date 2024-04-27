@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginPage implements OnInit {
 
-  constructor() { }
+  email: string = "";
+  password: string = "";
 
-  ngOnInit() {
+  constructor(public loginService: LoginService) { }
+
+  async ngOnInit() {
+    await this.loginService.checkToken();
+  }
+
+  login() {
+    this.loginService.login(this.email, this.password);
+  }
+
+  googleLogin() {
+    this.loginService.googleLogin();
   }
 
 }

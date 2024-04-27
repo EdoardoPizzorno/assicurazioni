@@ -35,3 +35,253 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+/* Theme variables */
+
+* {
+    font-family: 'Poppins', 'Montserrat', Verdana, Geneva, Tahoma, sans-serif;
+    vertical-align: middle !important;
+    font-weight: 500;
+}
+
+:root {
+    --primary-color: #9bd2fc;
+    --secondary-color: #005693;
+    --divider-height: 8px;
+    --divider-width: 10%;
+    --divider-border-radius: 10px;
+    --divider-background-color: #0077cc;
+}
+
+::selection {
+    background-color: #bcdbf3;
+    color: var(--secondary-color);
+}
+
+hr.divider {
+    border: none;
+    height: var(--divider-height);
+    width: var(--divider-width);
+    border-radius: var(--divider-border-radius);
+    background-color: var(--divider-background-color);
+    margin: 30px auto;
+}
+
+/*.deleted {
+    text-decoration: line-through;
+    color: #ff0000;
+}
+
+.bi {
+    margin-bottom: 8px;
+}
+
+.btn {
+    border: none;
+    width: auto;
+    height: 3em;
+    padding: 0 1em;
+    border-radius: 3em;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    background: #1C1A1C;
+    cursor: pointer;
+    transition: all 450ms ease-in-out;
+    color: white !important;
+}
+
+.btn-gray {
+    background: #6c757d;
+}
+
+.btn-primary {
+    background: #007bff;
+}
+
+.btn-secondary {
+    background: #6c757d;
+}
+
+.btn-danger {
+    background: #ff0000;
+}
+
+.btn-success {
+    background: #05ca30;
+    display: flex;
+}
+
+.btn-info {
+    background: #007ac0;
+}
+
+.btn:hover {
+    background: linear-gradient(0deg, var(--secondary-color), var(--primary-color));
+    box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
+        inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
+        0px 0px 0px 4px rgba(255, 255, 255, 0.2),
+        0px 0px 30px 0px #d6d6d6;
+    transform: translateY(-2px);
+}
+
+.btn-gray:hover {
+    background: linear-gradient(0deg, #6c757d, #5a6268);
+}
+
+.btn-info:hover {
+    background: linear-gradient(0deg, #005cce, #0061c9);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(0deg, #007bff, #0095ff);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(0deg, #6c757d, #5a6268);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(0deg, #ff0000, #cc0000);
+}
+
+.btn-success:hover {
+    background: linear-gradient(0deg, #00c32e, #38da5b);
+} */
+
+.table .thead-dark th {
+    color: inherit;
+    border-color: #dee2e6;
+} 
+
+.img {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.table {
+    width: 100%;
+    -webkit-box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29);
+    -moz-box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29);
+    box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29);
+    text-align: center !important;
+}
+
+.table thead th {
+    border: none;
+    padding: 30px;
+    font-size: 13px;
+    font-weight: 500;
+    color: gray;
+}
+
+.table thead tr {
+    background: #fff;
+    border-bottom: 4px solid #eceffa;
+}
+
+.table tbody tr {
+    margin-bottom: 10px;
+    border-bottom: 4px solid #f8f9fd;
+}
+
+.table tbody tr:last-child {
+    border-bottom: 0;
+}
+
+.table tbody th,
+.table tbody td {
+    border: none;
+    padding: 30px;
+    background: #fff;
+    vertical-align: middle;
+    font-size: 16px;
+}
+
+.table tbody td.status span {
+    position: relative;
+    border-radius: 30px;
+    padding: 4px 10px 4px 25px;
+}
+
+.table tbody td.status span:after {
+    position: absolute;
+    top: 9px;
+    left: 10px;
+    width: 10px;
+    height: 10px;
+    content: '';
+    border-radius: 50%;
+}
+
+.table tbody td.status .active {
+    background: #cff6dd;
+    color: #1fa750;
+}
+
+.table tbody td.status .active:after {
+    background: #23bd5a;
+}
+
+.table tbody td.status .waiting {
+    background: #fdf5dd;
+    color: #cfa00c;
+}
+
+.table tbody td.status .waiting:after {
+    background: #f2be1d;
+}
+
+.table tbody td .img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.table tbody td .email span {
+    display: block;
+    text-align: left !important;
+}
+
+.table tbody td .email span.text-muted {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.3);
+}
+
+.table tbody td .close span {
+    font-size: 12px;
+    color: #dc3545;
+}
+
+@media (max-width: 768px) {}
+
+@media (max-width: 768px) {
+
+    .table {
+        overflow-x: auto;
+    }
+
+    .table thead th {
+        display: none;
+    }
+
+    .table tbody th,
+    .table tbody td {
+        display: block;
+        padding: 10px;
+    }
+
+    .table tbody td .img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .table tbody td .email span {
+        display: inline;
+    }
+
+    .table tbody td .email span.text-muted {
+        display: none;
+    }
+}
