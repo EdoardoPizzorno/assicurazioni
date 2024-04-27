@@ -241,6 +241,8 @@ app.use("/api/", (req: any, res: any, next: any) => {
 
 //#region ROUTES
 
+//#region GET
+
 app.get("/api/perizie", async (req, res, next) => {
     const operator = req.query.operator;
     const date = req.query.date;
@@ -351,6 +353,10 @@ app.get("/api/user/:id", async (req, res, next) => {
     }
 })
 
+//#endregion
+
+//#region POST
+
 app.post("/api/user", async (req, res, next) => {
     const user = req["body"]["body"].user;
     user["_id"] = new ObjectId();
@@ -431,6 +437,10 @@ app.post("/api/role", async (req, res, next) => {
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
 })
 
+//#endregion
+
+//#region PATCH
+
 app.patch("/api/perizia/:id", async (req, res, next) => {
     const perizia = req["body"]["body"].perizia;
     let _id = perizia._id;
@@ -476,6 +486,10 @@ app.patch("/api/role/:id", async (req, res, next) => {
     rq.finally(() => client.close());
 })
 
+//#endregion
+
+//#region DELETE
+
 app.delete("/api/user/:id", async (req, res, next) => {
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
@@ -501,6 +515,8 @@ app.delete("/api/role/:id", async (req, res, next) => {
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
 })
+
+//#endregion
 
 //#endregion
 
