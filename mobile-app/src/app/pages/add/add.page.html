@@ -1,0 +1,53 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="ion-text-center">Aggiungi perizia</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title class="ion-text-center" size="large">Aggiungi perizia</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid class="ion-text-center">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="6" *ngIf="photoService.photo">
+        <ion-img [src]="photoService.photo.webviewPath" (click)="showActionSheet()"></ion-img>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list>
+
+    <ion-item>
+      <ion-label position="stacked">Descrizione</ion-label>
+      <ion-input [(ngModel)]="periziaService.newPerizia.description" placeholder="Descrizione"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Commenti</ion-label>
+      <ion-textarea id="focus-trigger" [(ngModel)]="textInput" placeholder="Commenti" (keyup.enter)="addLabel()"></ion-textarea>
+      <div *ngFor="let label of labels; index as i" class="filter-label">
+        <span class="filter-value">{{label}}</span>
+        <button class="close-btn" (click)="removeLabel(i)">×</button>
+      </div>
+
+      <ion-popover trigger="focus-trigger" triggerAction="focus">
+        <ng-template>
+          <ion-content class="ion-padding">Per inserire i commenti bisogna andare a capo!</ion-content>
+        </ng-template>
+      </ion-popover>
+
+    </ion-item>
+
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button (click)="addPhotoToGallery()">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

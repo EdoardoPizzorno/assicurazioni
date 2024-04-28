@@ -13,9 +13,10 @@ import { UserPage } from './pages/user/user.page';
 import { ManageUserPage } from './pages/manage-user/manage-user.page';
 import { FormsModule } from '@angular/forms';
 import { LoaderComponent } from './components/loader/loader.component';
+import { AddPage } from './pages/add/add.page';
 
 @NgModule({
-  declarations: [AppComponent, ToolbarComponent, LoaderComponent, HomePage, LoginPage, UserPage, ManageUserPage],
+  declarations: [AppComponent, ToolbarComponent, LoaderComponent, HomePage, LoginPage, UserPage, ManageUserPage, AddPage],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

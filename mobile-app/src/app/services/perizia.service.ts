@@ -10,10 +10,12 @@ export class PeriziaService {
 
   isLoading: boolean = false;
 
-  selectedPeriziaId: any;
-  perizie: any;
-  operators: any[] = [];
-
+  perizie: any[] = [];
+  newPerizia: any = {
+    description: "",
+    photos: []
+  }
+  
   constructor(private dataStorage: DataStorageService, private utils: UtilsService) { }
 
   getPerizie(): Promise<void> {

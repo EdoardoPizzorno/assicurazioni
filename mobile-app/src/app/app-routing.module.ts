@@ -3,13 +3,15 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { HomePage } from './pages/home/home.page';
 import { LoginPage } from './pages/login/login.page';
 import { UserPage } from './pages/user/user.page';
+import { AddPage } from './pages/add/add.page';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'login', component: LoginPage },
   { path: 'home', component: HomePage },
+  { path: 'add', component: AddPage },
   { path: 'user', component: UserPage },
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: '' }
 ];
 @NgModule({
   imports: [
