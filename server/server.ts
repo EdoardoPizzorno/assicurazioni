@@ -148,8 +148,8 @@ OAuth2Client.setCredentials({
 });
 
 app.post("/api/login", async (req, res, next) => {
-    let user = req["body"]["body"].email;
-    let pwd = req["body"]["body"].password;
+    let user = req["body"].email;
+    let pwd = req["body"].password;
 
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
@@ -358,7 +358,7 @@ app.get("/api/user/:id", async (req, res, next) => {
 //#region POST
 
 app.post("/api/user", async (req, res, next) => {
-    const user = req["body"]["body"].user;
+    const user = req["body"].user;
     user["_id"] = new ObjectId();
     user["password"] = generatePassword();
 
@@ -395,7 +395,7 @@ app.post("/api/user", async (req, res, next) => {
 })
 
 app.post("/api/user/generateImageProfile", async (req, res, next) => {
-    const user = req["body"]["body"].user;
+    const user = req["body"].user;
     await loadProfilePicture(user);
 
     const client = new MongoClient(CONNECTION_STRING);
@@ -408,8 +408,8 @@ app.post("/api/user/generateImageProfile", async (req, res, next) => {
 })
 
 app.post("/api/user/uploadImageProfile", async (req, res, next) => {
-    let userId = req["body"]["body"].userId;
-    let imgBase64 = req["body"]["body"].imgBase64;
+    let userId = req["body"].userId;
+    let imgBase64 = req["body"].imgBase64;
 
     _cloudinary.v2.uploader.upload(imgBase64, { "folder": "rilievi_perizie.profile_pictures" })
         .catch((err) => {
@@ -427,7 +427,7 @@ app.post("/api/user/uploadImageProfile", async (req, res, next) => {
 })
 
 app.post("/api/role", async (req, res, next) => {
-    const role = req["body"]["body"];
+    const role = req["body"];
 
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
@@ -442,7 +442,7 @@ app.post("/api/role", async (req, res, next) => {
 //#region PATCH
 
 app.patch("/api/perizia/:id", async (req, res, next) => {
-    const perizia = req["body"]["body"].perizia;
+    const perizia = req["body"].perizia;
     let _id = perizia._id;
     delete perizia._id;
 
@@ -456,7 +456,7 @@ app.patch("/api/perizia/:id", async (req, res, next) => {
 })
 
 app.patch("/api/user/:id", async (req, res, next) => {
-    const user = req["body"]["body"].user;
+    const user = req["body"].user;
     const _id = new ObjectId(user._id);
 
     delete user._id;
@@ -474,7 +474,7 @@ app.patch("/api/user/:id", async (req, res, next) => {
 })
 
 app.patch("/api/role/:id", async (req, res, next) => {
-    const roleName = req["body"]["body"].name;
+    const roleName = req["body"].name;
     const _id = new ObjectId(req.params.id);
 
     const client = new MongoClient(CONNECTION_STRING);

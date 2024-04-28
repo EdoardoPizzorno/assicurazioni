@@ -13,8 +13,8 @@
 
   <ion-grid class="ion-text-center">
     <ion-row class="ion-justify-content-center">
-      <ion-col size="6" *ngIf="photoService.photo">
-        <ion-img [src]="photoService.photo.webviewPath" (click)="showActionSheet()"></ion-img>
+      <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
+        <ion-img [src]="photo.webviewPath" id="open-modal"></ion-img>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -26,23 +26,44 @@
       <ion-input [(ngModel)]="periziaService.newPerizia.description" placeholder="Descrizione"></ion-input>
     </ion-item>
 
-    <ion-item>
-      <ion-label position="stacked">Commenti</ion-label>
-      <ion-textarea id="focus-trigger" [(ngModel)]="textInput" placeholder="Commenti" (keyup.enter)="addLabel()"></ion-textarea>
-      <div *ngFor="let label of labels; index as i" class="filter-label">
-        <span class="filter-value">{{label}}</span>
-        <button class="close-btn" (click)="removeLabel(i)">×</button>
-      </div>
-
-      <ion-popover trigger="focus-trigger" triggerAction="focus">
-        <ng-template>
-          <ion-content class="ion-padding">Per inserire i commenti bisogna andare a capo!</ion-content>
-        </ng-template>
-      </ion-popover>
-
-    </ion-item>
-
   </ion-list>
+
+  <ion-button shape="round" expand="block" (click)="confirm()">Aggiungi</ion-button>
+
+  <ion-modal trigger="open-modal">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="cancel()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title class="ion-text-center">Welcome</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label position="stacked">Commenti</ion-label>
+          <ion-textarea id="focus-trigger" [(ngModel)]="textInput" placeholder="Aggiungi commenti..."
+            (keyup.enter)="addLabel()"></ion-textarea>
+          <div *ngFor="let label of labels; index as i" class="filter-label">
+            <span class="filter-value">{{label}}</span>
+            <button class="close-btn" (click)="removeLabel(i)">×</button>
+          </div>
+
+          <ion-popover trigger="focus-trigger" triggerAction="focus">
+            <ng-template>
+              <ion-content class="ion-padding">Per inserire i commenti bisogna andare a capo!</ion-content>
+            </ng-template>
+          </ion-popover>
+
+        </ion-item>
+
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
     <ion-fab-button (click)="addPhotoToGallery()">

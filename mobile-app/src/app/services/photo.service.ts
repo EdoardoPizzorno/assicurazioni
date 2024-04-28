@@ -9,8 +9,8 @@ import { Platform } from '@ionic/angular';
   providedIn: 'root'
 })
 export class PhotoService {
-  public photo!: UserPhoto;
-  private PHOTO_STORAGE: string = 'photo';
+  public photos: UserPhoto[] = [];
+  private PHOTO_STORAGE: string = 'photos';
   private platform: Platform;
 
   constructor(platform: Platform) {
@@ -25,10 +25,10 @@ export class PhotoService {
     });
 
     const savedImageFile = await this.savePicture(capturedPhoto);
-    this.photo = savedImageFile;
+    this.photos.unshift(savedImageFile);
     Preferences.set({
       key: this.PHOTO_STORAGE,
-      value: JSON.stringify(this.photo),
+      value: JSON.stringify(this.photos),
     });
   }
 
@@ -56,34 +56,38 @@ export class PhotoService {
     }
   }
 
-  public async deletePicture() {
-    Preferences.remove({ key: this.PHOTO_STORAGE });
-    
-    const filename = this.photo.filepath
-      .substr(this.photo.filepath.lastIndexOf('/') + 1);
+  public async deletePicture(photo: UserPhoto, position: number) {
+    this.photos.splice(position, 1);
+
+    Preferences.set({
+      key: this.PHOTO_STORAGE,
+      value: JSON.stringify(this.photos)
+    });
+
+    const filename = photo.filepath
+      .substr(photo.filepath.lastIndexOf('/') + 1);
 
     await Filesystem.deleteFile({
       path: filename,
       directory: Directory.Data
     });
-
-    window.location.reload();
   }
 
   public async loadSaved() {
     const { value } = await Preferences.get({ key: this.PHOTO_STORAGE });
-    this.photo = (value ? JSON.parse(value) : null) as UserPhoto;
+    this.photos = (value ? JSON.parse(value) : []) as UserPhoto[];
 
-    if (!this.platform.is('hybrid') && this.photo) {
-      const readFile = await Filesystem.readFile({
-        path: this.photo.filepath,
-        directory: Directory.Data
-      });
+    if (!this.platform.is('hybrid')) {
+      for (let photo of this.photos) {
+        const readFile = await Filesystem.readFile({
+          path: photo.filepath,
+          directory: Directory.Data
+        });
 
-      this.photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
+        photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
+      }
     }
   }
-
   private async readAsBase64(photo: Photo) {
     if (this.platform.is('hybrid')) {
       const file = await Filesystem.readFile({
@@ -108,6 +112,7 @@ export class PhotoService {
     };
     reader.readAsDataURL(blob);
   });
+
 
 }
 

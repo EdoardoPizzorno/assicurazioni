@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActionSheetController, ModalController } from '@ionic/angular';
+import { IonModal } from '@ionic/angular/common';
 import { PeriziaService } from 'src/app/services/perizia.service';
 import { PhotoService, UserPhoto } from 'src/app/services/photo.service';
 
@@ -12,6 +13,7 @@ export class AddPage implements OnInit {
 
   textInput: string = "";
   labels: string[] = [];
+  @ViewChild(IonModal) modal!: IonModal;
 
   constructor(public photoService: PhotoService, public periziaService: PeriziaService, private actionSheetController: ActionSheetController) { }
 
@@ -23,7 +25,7 @@ export class AddPage implements OnInit {
     this.photoService.addNewToGallery();
   }
 
-  public async showActionSheet() {
+  public async showActionSheet(photo: UserPhoto, position: number) {
     const actionSheet = await this.actionSheetController.create({
       header: 'Photos',
       buttons: [{
@@ -31,7 +33,7 @@ export class AddPage implements OnInit {
         role: 'destructive',
         icon: 'trash',
         handler: () => {
-          this.photoService.deletePicture();
+          this.photoService.deletePicture(photo, position);
         }
       }, {
         text: 'Cancel',
@@ -42,6 +44,7 @@ export class AddPage implements OnInit {
       }]
     });
     await actionSheet.present();
+
   }
 
   addLabel() {
@@ -53,6 +56,16 @@ export class AddPage implements OnInit {
 
   removeLabel(index: number) {
     this.labels.splice(index, 1);
+  }
+
+  cancel() {
+    console.log(this.modal)
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  confirm() {
+    console.log(this.labels)
+    this.modal.dismiss(this.labels, 'confirm');
   }
 
 }

@@ -41,9 +41,9 @@ export class DataStorageService {
       case 'GET':
         return _axios.get(resource, { params });
       case 'POST':
-        return _axios.post(resource, { "body": params });
+        return _axios.post(resource, params);
       case 'PATCH':
-        return _axios.patch(resource, { "body": params });
+        return _axios.patch(resource, params);
       case 'PUT':
         return _axios.put(resource, params);
       case 'DELETE':
