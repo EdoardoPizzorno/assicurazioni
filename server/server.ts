@@ -53,19 +53,14 @@ https_server.listen(PORT, () => {
 */
 
 // HTTP
-const PORT: number = parseInt(process.env.PORT) || 3000;
+const PORT: number = parseInt(process.env.PORT) || 4000;
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
 const http_server = _http.createServer(app);
 
-app.listen(PORT, () => {
+http_server.listen(PORT, () => {
     init();
     console.log(`Server HTTP in ascolto sulla porta ${PORT}`);
 });
-
-// http_server.listen(PORT, () => {
-//     init();
-//     console.log(`Server HTTP in ascolto sulla porta ${PORT}`);
-// });
 
 function init() {
     _fs.readFile("./error.html", function (err, data) {
