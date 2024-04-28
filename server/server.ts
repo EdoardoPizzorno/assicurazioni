@@ -186,36 +186,6 @@ app.post("/api/login", async (req, res, next) => {
     rq.finally(() => client.close());
 });
 
-app.post("/api/google-login", async (req: any, res: any, next: any) => {
-    if (!req.headers["authorization"]) {
-        res.status(403).send("Token mancante");
-    }
-    else {
-        let token = req.headers["authorization"];
-        let payload = _jwt.decode(token);
-        let email = payload.email;
-        console.log(payload)
-        const client = new MongoClient(CONNECTION_STRING);
-        await client.connect();
-        const collection = client.db(DBNAME).collection("UTENTI");
-        let regex = new RegExp(`^${email}$`, "i");
-        let rq = collection.findOne({ "email": regex }, { "projection": { "email": 1 } });
-        rq.then((dbUser) => {
-            if (!dbUser) {
-                res.status(403).send("Username non autorizzato all'accesso");
-            }
-            else {
-                let token = createToken(dbUser);
-                res.setHeader("authorization", token);
-                res.setHeader("access-control-expose-headers", "authorization");
-                res.send({ "status": "ok" });
-            }
-        });
-        rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
-        rq.finally(() => client.close());
-    }
-});
-
 app.use("/api/", (req: any, res: any, next: any) => {
     if (!req.headers["authorization"]) {
         res.status(403).send("Token mancante");

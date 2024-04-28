@@ -30,39 +30,6 @@ export class LoginService {
       });
   }
 
-  googleLogin() {
-    /*global google*/
-    // const OAuth2 = JSON.parse(OAUTH_CREDENTIALS);
-    // window.google.accounts.id.initialize({
-    //   "client_id": OAuth2.client_id,
-    //   "callback": function (response: any) {
-    //     if (response.credential !== "") {
-    //       let token = response.credential
-    //       localStorage.setItem("token", token)
-    //       this.dataStorage.sendRequest("POST", "/google-login")
-    //         .catch(this.dataStorage.error)
-    //         .then((response: any) => {
-    //           if (response.status == 200) {
-    //             this.redirectToDashboard(response);
-    //           }
-    //         });
-    //     } else Swal.fire("Errore", "Errore durante il login con Google", "error")
-    //   }
-    // })
-    // window.google.accounts.id.renderButton(
-    //   document.getElementById("googleDiv"), // qualunque tag DIV della pagina
-    //   {
-    //     "theme": "outline",
-    //     "size": "large",
-    //     "type": "standard",
-    //     "text": "continue_with",
-    //     "shape": "rectangular",
-    //     "logo_alignment": "center"
-    //   }
-    // );
-    // window.google.accounts.id.prompt();
-  }
-
   async checkToken() {
     let cache: any = localStorage.getItem("ASSICURAZIONI");
     if (cache) {

@@ -21,8 +21,4 @@ export class LoginComponent {
     this.loginService.login(this.email, this.password);
   }
 
-  googleLogin() {
-    this.loginService.googleLogin();
-  }
-
 }

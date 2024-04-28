@@ -23,10 +23,6 @@ export class LoginPage implements OnInit {
     this.loginService.login(this.email, this.password);
   }
 
-  googleLogin() {
-    this.loginService.googleLogin();
-  }
-
   togglePasswordVisibility() {
     let passwordInput: HTMLElement = document.getElementById('password')!;
     if (passwordInput.getAttribute('type') === 'password') {
