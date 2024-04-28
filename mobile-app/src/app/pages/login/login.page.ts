@@ -8,6 +8,8 @@ import { LoginService } from 'src/app/services/login.service';
 })
 export class LoginPage implements OnInit {
 
+  alertButtons: any = ['OK'];
+
   email: string = "";
   password: string = "";
 
@@ -23,6 +25,15 @@ export class LoginPage implements OnInit {
 
   googleLogin() {
     this.loginService.googleLogin();
+  }
+
+  togglePasswordVisibility() {
+    let passwordInput: HTMLElement = document.getElementById('password')!;
+    if (passwordInput.getAttribute('type') === 'password') {
+      passwordInput.setAttribute('type', 'text');
+    } else {
+      passwordInput.setAttribute('type', 'password');
+    }
   }
 
 }

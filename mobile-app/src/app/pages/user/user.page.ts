@@ -9,7 +9,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class UserPage implements OnInit {
 
-  constructor(public userService: UserService, private activatedRouter: ActivatedRoute, private router: Router) { }
+  constructor(public userService: UserService, private router: Router) { }
 
   async ngOnInit() {
     await this.userService.getUser();

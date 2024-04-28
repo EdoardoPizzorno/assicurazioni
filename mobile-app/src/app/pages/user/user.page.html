@@ -10,9 +10,10 @@
 
 <ion-content [fullscreen]="true">
   <ion-card *ngIf="userService.currentUser">
-    <ion-card-header class="text-center align-items-center justify-content-center">
-      <img src="{{ userService.currentUser.avatar }}" class="rounded-circle" alt="Avatar"
-        style="width: 120px; height: 120px;">
+    <ion-card-header class="ion-align-items-center">
+      <ion-avatar>
+        <img src="{{ userService.currentUser.avatar }}" alt="Avatar">
+      </ion-avatar>
       <ion-card-title>{{ userService.currentUser.username }}</ion-card-title>
     </ion-card-header>
 

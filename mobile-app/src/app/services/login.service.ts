@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  loginError: boolean = false;
-
-  constructor(private dataStorage: DataStorageService, private router: Router) { }
+  constructor(private dataStorage: DataStorageService, private router: Router, private alertController: AlertController) { }
 
   login(email: string, password: string) {
     this.dataStorage.sendRequest('POST', '/login', { email, password })
@@ -20,7 +19,13 @@ export class LoginService {
       })
       .catch((error: any) => {
         if (error.response.status == 401) {
-          this.loginError = true;
+          this.alertController.create({
+            header: 'Errore',
+            message: 'Credenziali non valide',
+            buttons: ['OK']
+          }).then((alert: any) => {
+            alert.present();
+          });
         }
       });
   }
