@@ -3,17 +3,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { DashboardPageRoutingModule } from './dashboard-routing.module';
+import { HomePageRoutingModule } from './home-routing.module';
 
-import { DashboardPage } from './dashboard.page';
+import { HomePage } from './home.page';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    DashboardPageRoutingModule
+    HomePageRoutingModule
   ],
-  declarations: [DashboardPage]
+  declarations: [HomePage]
 })
-export class DashboardPageModule {}
+export class HomePageModule {}

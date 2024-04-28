@@ -21,7 +21,6 @@ export class UserService {
         .catch(this.dataStorage.error)
         .then((response) => {
           this.currentUser = response.data;
-          console.log(this.currentUser)
           this.isLoading = false;
           resolve();
         });

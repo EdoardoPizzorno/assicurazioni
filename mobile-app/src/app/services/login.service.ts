@@ -75,7 +75,7 @@ export class LoginService {
       username: response.data.username
     }
     localStorage.setItem("ASSICURAZIONI", JSON.stringify({ token: response.headers.authorization, currentUser: currentUser }));
-    this.router.navigateByUrl('/dashboard');
+    this.router.navigateByUrl('/home');
   }
 
 }
