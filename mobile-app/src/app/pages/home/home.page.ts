@@ -10,6 +10,4 @@ export class HomePage {
 
   constructor(public userService: UserService) { }
 
-  
-
 }

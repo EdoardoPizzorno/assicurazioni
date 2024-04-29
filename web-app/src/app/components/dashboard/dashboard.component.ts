@@ -16,7 +16,9 @@ export class DashboardComponent {
   constructor(public periziaService: PeriziaService, public googleMapsService: GoogleMapsService, private userService: UserService, private router: Router) { }
 
   async ngOnInit() {
-    await this.userService.getUsers();
+    if (!this.userService.users) {
+      await this.userService.getUsers();
+    }
     this.googleMapsService.map = this.map;
   }
 

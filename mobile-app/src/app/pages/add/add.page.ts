@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActionSheetController, ModalController } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
 import { IonModal } from '@ionic/angular/common';
 import { PeriziaService } from 'src/app/services/perizia.service';
 import { PhotoService, UserPhoto } from 'src/app/services/photo.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-add',
@@ -11,11 +12,10 @@ import { PhotoService, UserPhoto } from 'src/app/services/photo.service';
 })
 export class AddPage implements OnInit {
 
-  textInput: string = "";
-  labels: string[] = [];
-  @ViewChild(IonModal) modal!: IonModal;
+  @ViewChild('modal') modal!: IonModal;
 
-  constructor(public photoService: PhotoService, public periziaService: PeriziaService, private actionSheetController: ActionSheetController) { }
+
+  constructor(public photoService: PhotoService, public periziaService: PeriziaService, private actionSheetController: ActionSheetController, private userService: UserService) { }
 
   async ngOnInit() {
     await this.photoService.loadSaved();
@@ -47,25 +47,19 @@ export class AddPage implements OnInit {
 
   }
 
-  addLabel() {
-    if (this.textInput.trim() !== '') {
-      this.labels.push(this.textInput.trim());
-      this.textInput = '';
-    }
-  }
-
-  removeLabel(index: number) {
-    this.labels.splice(index, 1);
+  confirm() {
+    this.photoService.confirm();
+    this.modal.dismiss(this.photoService.currentImageClicked.comments, 'confirm');
   }
 
   cancel() {
-    console.log(this.modal)
     this.modal.dismiss(null, 'cancel');
   }
 
-  confirm() {
-    console.log(this.labels)
-    this.modal.dismiss(this.labels, 'confirm');
+  async openModal(photo: UserPhoto, position: number) {
+    this.photoService.currentImageClicked.index = position;
+    this.photoService.currentImageClicked.url = photo.webviewPath;
+    this.modal.present();
   }
 
 }

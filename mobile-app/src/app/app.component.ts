@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { LoginService } from './services/login.service';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import { LoginService } from './services/login.service';
 })
 export class AppComponent {
 
-  constructor(public platform: Platform, private loginService: LoginService) { }
+  constructor(public platform: Platform, private loginService: LoginService, private userService: UserService) { }
 
   async ngOnInit() {
     await this.loginService.checkToken();

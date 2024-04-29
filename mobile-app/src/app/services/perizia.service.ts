@@ -15,7 +15,7 @@ export class PeriziaService {
     description: "",
     photos: []
   }
-  
+
   constructor(private dataStorage: DataStorageService, private utils: UtilsService) { }
 
   getPerizie(): Promise<void> {

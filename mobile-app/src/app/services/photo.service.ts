@@ -4,6 +4,7 @@ import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Preferences } from '@capacitor/preferences';
 import { Platform } from '@ionic/angular';
+import { PeriziaService } from './perizia.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,15 @@ export class PhotoService {
   private PHOTO_STORAGE: string = 'photos';
   private platform: Platform;
 
-  constructor(platform: Platform) {
+  images: any[] = [];
+  currentImageClicked: any = {
+    index: 0,
+    url: "",
+    comments: []
+  }
+  textInput: string = "";
+
+  constructor(platform: Platform, private periziaService: PeriziaService) {
     this.platform = platform;
   }
 
@@ -26,6 +35,10 @@ export class PhotoService {
 
     const savedImageFile = await this.savePicture(capturedPhoto);
     this.photos.unshift(savedImageFile);
+    this.images.unshift({
+      url: savedImageFile.webviewPath,
+      comments: []
+    });
     Preferences.set({
       key: this.PHOTO_STORAGE,
       value: JSON.stringify(this.photos),
@@ -85,6 +98,10 @@ export class PhotoService {
         });
 
         photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
+        this.images.push({
+          url: photo.webviewPath,
+          comments: []
+        })
       }
     }
   }
@@ -113,6 +130,22 @@ export class PhotoService {
     reader.readAsDataURL(blob);
   });
 
+  addComment() {
+    if (this.textInput.trim() !== '') {
+      this.images[this.currentImageClicked.index]["comments"].push(this.textInput.trim());
+      this.textInput = '';
+    }
+  }
+
+  removeComment(index: number) {
+    this.images[this.currentImageClicked.index].comments.splice(index, 1);
+  }
+
+  confirm() {
+    console.log(this.images[this.currentImageClicked.index])
+    this.periziaService.newPerizia.photos = this.images;
+    console.log(this.periziaService.newPerizia);
+  }
 
 }
 

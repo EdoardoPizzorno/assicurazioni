@@ -12,7 +12,9 @@ export class UserPage implements OnInit {
   constructor(public userService: UserService, private router: Router) { }
 
   async ngOnInit() {
-    await this.userService.getUser();
+    if (!this.userService.currentUser) {
+      await this.userService.getUser();
+    }
   }
 
   edit() {

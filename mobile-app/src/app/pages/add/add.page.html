@@ -14,7 +14,7 @@
   <ion-grid class="ion-text-center">
     <ion-row class="ion-justify-content-center">
       <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
-        <ion-img [src]="photo.webviewPath" id="open-modal"></ion-img>
+        <ion-img [src]="photo.webviewPath" (click)="openModal(photo, position)"></ion-img>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -28,36 +28,45 @@
 
   </ion-list>
 
-  <ion-button shape="round" expand="block" (click)="confirm()">Aggiungi</ion-button>
+  <!-- <ion-button shape="round" expand="block" (click)="confirm()">Aggiungi</ion-button> -->
 
-  <ion-modal trigger="open-modal">
+  <save-button (click)="confirm()"></save-button>
+
+  <ion-modal #modal>
     <ng-template>
       <ion-header>
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-button (click)="cancel()">Cancel</ion-button>
+            <ion-button (click)="cancel()">Annulla</ion-button>
           </ion-buttons>
-          <ion-title class="ion-text-center">Welcome</ion-title>
+          <ion-title class="ion-text-center">Aggiungi commenti</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+            <ion-button (click)="confirm()" [strong]="true">CONFERMA</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
+
+        <ion-item>
+          <ion-img [src]="photoService.currentImageClicked.url"></ion-img>
+        </ion-item>
+
         <ion-item>
           <ion-label position="stacked">Commenti</ion-label>
-          <ion-textarea id="focus-trigger" [(ngModel)]="textInput" placeholder="Aggiungi commenti..."
-            (keyup.enter)="addLabel()"></ion-textarea>
-          <div *ngFor="let label of labels; index as i" class="filter-label">
+          <ion-textarea id="focus-trigger" [(ngModel)]="photoService.textInput" placeholder="Aggiungi commenti..."
+            (keyup.enter)="photoService.addComment()"></ion-textarea>
+          <div *ngFor="let label of photoService.currentImageClicked.comments; index as i" class="filter-label">
             <span class="filter-value">{{label}}</span>
-            <button class="close-btn" (click)="removeLabel(i)">×</button>
+            <button class="close-btn" (click)="photoService.removeComment(i)">×</button>
           </div>
 
-          <ion-popover trigger="focus-trigger" triggerAction="focus">
+          <!-- <ion-popover trigger="focus-trigger" triggerAction="focus">
             <ng-template>
               <ion-content class="ion-padding">Per inserire i commenti bisogna andare a capo!</ion-content>
             </ng-template>
-          </ion-popover>
+          </ion-popover> -->
+
+          
 
         </ion-item>
 
