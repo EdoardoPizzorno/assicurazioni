@@ -327,6 +327,19 @@ app.get("/api/user/:id", async (req, res, next) => {
 
 //#region POST
 
+app.post("/api/perizia", async (req, res, next) => {
+    const perizia = req["body"].perizia;
+    perizia["_id"] = new ObjectId();
+
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("PERIZIE");
+    let rq = collection.insertOne(perizia);
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    rq.finally(() => client.close());
+})
+
 app.post("/api/user", async (req, res, next) => {
     const user = req["body"].user;
     user["_id"] = new ObjectId();
@@ -389,11 +402,27 @@ app.post("/api/user/uploadImageProfile", async (req, res, next) => {
             const client = new MongoClient(CONNECTION_STRING);
             await client.connect();
             let collection = client.db(DBNAME).collection("UTENTI");
-            let rq = collection.updateOne({"_id": new ObjectId(userId)}, { "$set": { "avatar": response.secure_url } });
+            let rq = collection.updateOne({ "_id": new ObjectId(userId) }, { "$set": { "avatar": response.secure_url } });
             rq.then((data) => res.send(data));
             rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
             rq.finally(() => client.close());
         });
+})
+
+app.post("/api/images", async (req, res, next) => {
+    let imagesBase64 = req["body"].imagesBase64;
+    let secure_urls = [];
+
+    for (let imgBase64 of imagesBase64) {
+        await _cloudinary.v2.uploader.upload(imgBase64.url, { "folder": "rilievi_perizie.photos" })
+            .catch((err) => {
+                res.status(500).send(`Error while uploading file on Cloudinary: ${err}`);
+            })
+            .then(function (response: UploadApiResponse) {
+                secure_urls.push(response.secure_url);
+            });
+    }
+    res.send(secure_urls);
 })
 
 app.post("/api/role", async (req, res, next) => {

@@ -25,41 +25,22 @@ export class AddPage implements OnInit {
     this.photoService.addNewToGallery();
   }
 
-  public async showActionSheet(photo: UserPhoto, position: number) {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Photos',
-      buttons: [{
-        text: 'Delete',
-        role: 'destructive',
-        icon: 'trash',
-        handler: () => {
-          this.photoService.deletePicture(photo, position);
-        }
-      }, {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-        }
-      }]
-    });
-    await actionSheet.present();
-
-  }
-
   confirm() {
-    this.photoService.confirm();
-    this.modal.dismiss(this.photoService.currentImageClicked.comments, 'confirm');
-  }
-
-  cancel() {
-    this.modal.dismiss(null, 'cancel');
+    this.periziaService.newPerizia.photos = this.photoService.images;
+    this.periziaService.add();
   }
 
   async openModal(photo: UserPhoto, position: number) {
-    this.photoService.currentImageClicked.index = position;
-    this.photoService.currentImageClicked.url = photo.webviewPath;
+    this.photoService.currentImageClicked = {
+      index: position,
+      url: photo.webviewPath,
+      filepath: photo.filepath
+    }
     this.modal.present();
+  }
+
+  closeModal() {
+    this.modal.dismiss(null, 'cancel');
   }
 
 }

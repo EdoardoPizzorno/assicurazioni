@@ -32,7 +32,6 @@ export class PhotoService {
       source: CameraSource.Camera,
       quality: 100
     });
-
     const savedImageFile = await this.savePicture(capturedPhoto);
     this.photos.unshift(savedImageFile);
     this.images.unshift({
@@ -69,21 +68,23 @@ export class PhotoService {
     }
   }
 
-  public async deletePicture(photo: UserPhoto, position: number) {
-    this.photos.splice(position, 1);
+  public async deletePicture() {
+    this.photos.splice(this.currentImageClicked.index, 1);
 
     Preferences.set({
       key: this.PHOTO_STORAGE,
       value: JSON.stringify(this.photos)
     });
 
-    const filename = photo.filepath
-      .substr(photo.filepath.lastIndexOf('/') + 1);
+    this.images.splice(this.currentImageClicked.index, 1);
+    const filename = this.currentImageClicked.filepath
+      .substr(this.currentImageClicked.filepath.lastIndexOf('/') + 1);
 
     await Filesystem.deleteFile({
       path: filename,
       directory: Directory.Data
     });
+
   }
 
   public async loadSaved() {
@@ -99,12 +100,15 @@ export class PhotoService {
 
         photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
         this.images.push({
+          filepath: photo.filepath,
           url: photo.webviewPath,
           comments: []
         })
       }
     }
+
   }
+
   private async readAsBase64(photo: Photo) {
     if (this.platform.is('hybrid')) {
       const file = await Filesystem.readFile({
@@ -139,12 +143,6 @@ export class PhotoService {
 
   removeComment(index: number) {
     this.images[this.currentImageClicked.index].comments.splice(index, 1);
-  }
-
-  confirm() {
-    console.log(this.images[this.currentImageClicked.index])
-    this.periziaService.newPerizia.photos = this.images;
-    console.log(this.periziaService.newPerizia);
   }
 
 }

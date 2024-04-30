@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
 import { UtilsService } from './utils/utils.service';
 import Swal from 'sweetalert2';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class PeriziaService {
     photos: []
   }
 
-  constructor(private dataStorage: DataStorageService, private utils: UtilsService) { }
+  constructor(private dataStorage: DataStorageService, private utils: UtilsService, private userService: UserService) { }
 
   getPerizie(): Promise<void> {
     this.isLoading = true;
@@ -30,6 +31,37 @@ export class PeriziaService {
           this.perizie = response.data;
           this.isLoading = false;
           resolve();
+        });
+    });
+  }
+
+  add(): Promise<void> {
+    this.isLoading = true;
+    return new Promise((resolve, reject) => {
+      this.dataStorage.sendRequest("POST", "/images", { imagesBase64: this.newPerizia.photos })
+        .catch(error => {
+          this.dataStorage.error(error);
+          reject(error);
+        })
+        .then(async (response) => {
+          await this.fillPeriziaFields(response.data);
+          console.log(this.newPerizia)
+          this.dataStorage.sendRequest("POST", "/perizia", { perizia: this.newPerizia })
+            .catch(error => {
+              this.dataStorage.error(error);
+              reject(error);
+            })
+            .then(async (response) => {
+              await this.getPerizie();
+              this.isLoading = false;
+              Swal.fire("Perizia aggiunta", "", "success").then(() => {
+                this.newPerizia = {
+                  description: "",
+                  photos: []
+                }
+              });
+              resolve();
+            });
         });
     });
   }
@@ -106,6 +138,35 @@ export class PeriziaService {
         this.utils.substituteFields(perizia, fields);
         await this.update(perizia);
       }
+    });
+  }
+
+  async fillPeriziaFields(secure_urls: any) {
+    for (let i = 0; i < this.newPerizia.photos.length; i++) {
+      this.newPerizia.photos[i].photographer = this.userService.currentUser.username;
+      this.newPerizia.photos[i].url = secure_urls[i];
+      delete this.newPerizia.photos[i].filepath;
+    }
+    this.newPerizia.operator = {
+      _id: this.userService.currentUser._id,
+      username: this.userService.currentUser.username
+    }
+    this.newPerizia.coords = await this.getCoords();
+    const date = new Date();
+    let parsedDate = date.getFullYear() + "-" + (date.getMonth() + 1).toString().padStart(2, '0') + "-" + date.getDate().toString().padStart(2, '0');
+    this.newPerizia.date = parsedDate
+    this.newPerizia.time = date.toLocaleTimeString();
+    this.newPerizia.icon = "";
+    console.log(this.newPerizia)
+  }
+
+  async getCoords() {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition((position) => {
+        resolve({ lat: position.coords.latitude, lng: position.coords.longitude });
+      }, (error) => {
+        reject(error);
+      });
     });
   }
 
