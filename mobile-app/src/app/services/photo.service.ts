@@ -26,6 +26,28 @@ export class PhotoService {
     this.platform = platform;
   }
 
+  public async loadSaved() {
+    const { value } = await Preferences.get({ key: this.PHOTO_STORAGE });
+    this.photos = (value ? JSON.parse(value) : []) as UserPhoto[];
+
+    if (!this.platform.is('hybrid')) {
+      for (let photo of this.photos) {
+        const readFile = await Filesystem.readFile({
+          path: photo.filepath,
+          directory: Directory.Data
+        });
+
+        photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
+        this.images.push({
+          filepath: photo.filepath,
+          url: photo.webviewPath,
+          comments: []
+        })
+      }
+    }
+
+  }
+
   public async addNewToGallery() {
     const capturedPhoto = await Camera.getPhoto({
       resultType: CameraResultType.Uri,
@@ -87,27 +109,27 @@ export class PhotoService {
 
   }
 
-  public async loadSaved() {
-    const { value } = await Preferences.get({ key: this.PHOTO_STORAGE });
-    this.photos = (value ? JSON.parse(value) : []) as UserPhoto[];
-
-    if (!this.platform.is('hybrid')) {
-      for (let photo of this.photos) {
-        const readFile = await Filesystem.readFile({
-          path: photo.filepath,
-          directory: Directory.Data
-        });
-
-        photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
-        this.images.push({
-          filepath: photo.filepath,
-          url: photo.webviewPath,
-          comments: []
-        })
-      }
-    }
-
+  clearPictures() {
+    this.photos = [];
+    this.images = [];
+    Preferences.set({
+      key: this.PHOTO_STORAGE,
+      value: JSON.stringify(this.photos)
+    });
   }
+
+  addComment() {
+    if (this.textInput.trim() !== '') {
+      this.images[this.currentImageClicked.index]["comments"].push(this.textInput.trim());
+      this.textInput = '';
+    }
+  }
+
+  removeComment(index: number) {
+    this.images[this.currentImageClicked.index].comments.splice(index, 1);
+  }
+
+  //#region INTERNAL FUNCTIONS
 
   private async readAsBase64(photo: Photo) {
     if (this.platform.is('hybrid')) {
@@ -134,16 +156,7 @@ export class PhotoService {
     reader.readAsDataURL(blob);
   });
 
-  addComment() {
-    if (this.textInput.trim() !== '') {
-      this.images[this.currentImageClicked.index]["comments"].push(this.textInput.trim());
-      this.textInput = '';
-    }
-  }
-
-  removeComment(index: number) {
-    this.images[this.currentImageClicked.index].comments.splice(index, 1);
-  }
+  //#endregion
 
 }
 

@@ -25,9 +25,10 @@ export class AddPage implements OnInit {
     this.photoService.addNewToGallery();
   }
 
-  confirm() {
+  async confirm() {
     this.periziaService.newPerizia.photos = this.photoService.images;
-    this.periziaService.add();
+    await this.periziaService.add();
+    this.photoService.clearPictures();
   }
 
   async openModal(photo: UserPhoto, position: number) {
