@@ -38,7 +38,7 @@ export class PerizieTableComponent {
     } else if (filterType === "description") {
       this.selectedDescription = "";
     } else if (filterType === "indications") {
-      await this.router.navigateByUrl('/dashboard');
+      await this.router.navigateByUrl('/home');
       window.location.reload();
     }
 
@@ -48,7 +48,7 @@ export class PerizieTableComponent {
   }
 
   async loadIndications(coords: any) {
-    await this.router.navigateByUrl('/dashboard?indications=' + coords.lat + ',' + coords.lng
+    await this.router.navigateByUrl('/home?indications=' + coords.lat + ',' + coords.lng
       + "&travelMode=" + this.googleMapsService.travelMode);
     window.location.reload();
     //await this.googleMapsService.getDirections();

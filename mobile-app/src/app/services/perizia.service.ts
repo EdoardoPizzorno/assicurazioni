@@ -3,6 +3,7 @@ import { DataStorageService } from './data-storage.service';
 import { UtilsService } from './utils/utils.service';
 import { UserService } from './user.service';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class PeriziaService {
     photos: []
   }
 
-  constructor(private dataStorage: DataStorageService, private utils: UtilsService, private userService: UserService, private alertController: AlertController) { }
+  constructor(private dataStorage: DataStorageService, private utils: UtilsService, private userService: UserService, private router: Router, private alertController: AlertController) { }
 
   getPerizie(): Promise<void> {
     this.isLoading = true;
@@ -106,8 +107,10 @@ export class PeriziaService {
             header: "Perizia eliminata",
             message: "La perizia è stata eliminata con successo",
             buttons: ["OK"]
-          }).then(alert => {
-            alert.present();
+          }).then(async(alert) => {
+            await alert.present();
+            await this.getPerizie();
+            this.router.navigateByUrl("/home");
           });
           resolve();
         });

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
-import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { UtilsService } from './utils/utils.service';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class UserService {
   isLoading: boolean = false;
   currentUser: any;
 
-  constructor(private dataStorage: DataStorageService, private utils: UtilsService, private router: Router) { }
+  constructor(private dataStorage: DataStorageService, private utils: UtilsService, private router: Router, private alertController: AlertController) { }
 
   async getUser(id: any = null): Promise<void> {
     this.isLoading = true;
@@ -39,39 +39,20 @@ export class UserService {
       .then((response) => {
         this.isLoading = false;
         if (response.data.modifiedCount != undefined && response.data.modifiedCount != 0) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Utente modificato correttamente',
-          }).then(() => {
-            window.location.href = "/users";
-          });
+          this.alertController.create({
+            header: "Utente modificato",
+            message: "L'utente è stato modificato con successo",
+            buttons: [
+              {
+                text: 'OK',
+                handler: () => {
+                  window.location.href = "/users";
+                }
+              }
+            ]
+          }).then(alert => alert.present());
         }
       })
-  }
-
-  delete(id: any) {
-    Swal.fire({
-      title: 'Sei sicuro di voler eliminare l\'utente?',
-      showCancelButton: true,
-      confirmButtonText: `Conferma`,
-      confirmButtonColor: '#d33',
-      cancelButtonText: `Cancella`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.dataStorage.sendRequest("DELETE", "/user/" + id)
-          .catch(this.dataStorage.error)
-          .then((response) => {
-            if (response != undefined) {
-              Swal.fire({
-                icon: 'success',
-                title: 'Utente eliminato correttamente',
-              }).then(() => {
-                window.location.href = "/users";
-              });
-            }
-          })
-      }
-    })
   }
 
   generateImageProfile() {
@@ -81,12 +62,11 @@ export class UserService {
       .then((response) => {
         this.isLoading = false;
         if (response != undefined) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Immagine profilo generata correttamente',
-          }).then(() => {
-            window.location.reload();
-          });
+          this.alertController.create({
+            header: "Immagine profilo generata",
+            message: "L'immagine profilo è stata generata con successo",
+            buttons: ["OK"]
+          }).then(alert => alert.present());
         }
       });
   }
@@ -98,12 +78,12 @@ export class UserService {
       .then((response: any) => {
         this.isLoading = false;
         if (response != undefined) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Immagine profilo caricata correttamente',
-          }).then(() => {
-            window.location.reload();
-          });
+          this.alertController.create({
+            header: "Immagine profilo caricata",
+            message: "L'immagine profilo è stata caricata con successo",
+            buttons: ["OK"]
+          }).then(alert => alert.present());
+          this.currentUser = response.data;
         }
       });
   }
