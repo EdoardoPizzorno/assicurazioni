@@ -481,6 +481,8 @@ app.post("/api/images", async (req, res, next) => {
     let secure_urls = [];
 
     for (let imgBase64 of imagesBase64) {
+        if (!imgBase64.url.startsWith("data:image"))
+            imgBase64.url = "data:image/jpeg;base64," + imgBase64.url;
         await _cloudinary.v2.uploader.upload(imgBase64.url, { "folder": "rilievi_perizie.photos" })
             .catch((err) => {
                 res.status(500).send(`Error while uploading file on Cloudinary: ${err}`);
