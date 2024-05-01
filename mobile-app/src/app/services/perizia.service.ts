@@ -152,6 +152,7 @@ export class PeriziaService {
             }
             this.utils.substituteFields(perizia, fields);
             await this.update(perizia);
+            await this.getPerizie();
           }
         },
         {
