@@ -6,8 +6,10 @@
         <ion-back-button defaultHref="/"></ion-back-button>
       </ion-buttons>
       <ion-title class="ion-text-center">Le mie perizie</ion-title>
-      <ion-buttons slot="end" style="visibility: hidden;">
-        <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-buttons slot="end">
+        <ion-button [routerLink]="['/add']">
+          <ion-icon name="add"></ion-icon>
+        </ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>

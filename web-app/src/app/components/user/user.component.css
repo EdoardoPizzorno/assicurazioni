@@ -1,3 +1,7 @@
+.container {
+    margin: 5% auto;
+}
+
 .card {
     background-color: aliceblue;
 }

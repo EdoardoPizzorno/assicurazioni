@@ -15,7 +15,7 @@
         [title]="googleMapsService.position.title" [options]="googleMapsService.markerOptions"></map-marker>
 
       <map-marker *ngFor="let perizia of periziaService.perizie" [position]="perizia.coords" [icon]="perizia.icon"
-        [title]="perizia.description" [options]="googleMapsService.markerOptions">
+        [title]="perizia.description" [options]="googleMapsService.markerOptions" (mapClick)="periziaService.editModal(perizia)">
       </map-marker>
     </google-map>
     <br>

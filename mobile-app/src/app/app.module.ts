@@ -20,9 +20,12 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { PerizieTableComponent } from './components/perizie-table/perizie-table.component';
 import { TravelModesComponent } from './components/travel-modes/travel-modes.component';
 import { MyPeriziePage } from './pages/my-perizie/my-perizie.page';
+import { ForgotPasswordPage } from './pages/forgot-password/forgot-password.page';
+import { ChangePasswordPage } from './pages/change-password/change-password.page';
 
 @NgModule({
   declarations: [AppComponent, ToolbarComponent, LoaderComponent, SaveButtonComponent, DeleteButtonComponent, PerizieTableComponent, TravelModesComponent,
+    ChangePasswordPage, ForgotPasswordPage,
     HomePage, LoginPage, UserPage, ManageUserPage, AddPage, MyPeriziePage],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, GoogleMapsModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],

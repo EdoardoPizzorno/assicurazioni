@@ -7,8 +7,10 @@
         <ion-back-button defaultHref="/"></ion-back-button>
       </ion-buttons>
       <ion-title class="ion-text-center">Profilo</ion-title>
-      <ion-buttons slot="end" style="visibility: hidden;">
-        <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-buttons slot="end">
+        <ion-button (click)="loginService.logout()">
+          <ion-icon name="log-out-outline"></ion-icon>
+        </ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
@@ -37,5 +39,8 @@
         <ion-icon name="create" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-card-content>
+    <ion-footer class="ion-text-center">
+      <ion-button [routerLink]="['/change-password']">Cambia password</ion-button>
+    </ion-footer>
   </ion-card>
 </ion-content>

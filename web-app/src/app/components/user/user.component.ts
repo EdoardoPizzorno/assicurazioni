@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoginService } from '../../services/login.service';
+import { UtilsService } from '../../services/utils/utils.service';
 
 @Component({
   selector: 'app-user',
@@ -11,7 +13,7 @@ export class UserComponent {
 
   currentId: any;
 
-  constructor(public userService: UserService, private activatedRouter: ActivatedRoute, private router: Router) {
+  constructor(public userService: UserService, public loginService: LoginService, public utils: UtilsService, private activatedRouter: ActivatedRoute, private router: Router) {
     this.activatedRouter.params.subscribe((params: any) => {
       this.currentId = params.id;
       this.userService.getUser(this.currentId);

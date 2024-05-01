@@ -2,7 +2,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="container shadow">
+            <div class="container card shadow">
                 <div class="card-body" *ngIf="userService.selectedUser">
                     <div class="d-flex align-items-center mb-4">
                         <img src="{{ userService.selectedUser.avatar }}" class="rounded-circle mr-3" alt="Avatar"
@@ -28,8 +28,18 @@
                     </div>
                     <hr>
                     <div class="row text-center justify-content-center">
-                        <button class="btn btn-primary mr-2" (click)="edit()">Edit</button>
-                        <button class="btn btn-danger" (click)="delete()">Delete</button>
+                        <button class="btn btn-primary mr-2" (click)="edit()">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger" (click)="delete()">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                    <br>
+                    <div *ngIf="userService.selectedUser._id==utils.getUserFromCache()._id" class="row text-center justify-content-center">
+                        <button class="btn btn-primary" [routerLink]="['/change-password']">
+                            Cambia password
+                        </button>
                     </div>
                 </div>
             </div>

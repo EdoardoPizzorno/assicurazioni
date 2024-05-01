@@ -16,7 +16,7 @@
             <div class="error__title">Credenziali errate</div>
         </div>
         
-        <span class="forgot-password"><a href="#">Password dimenticata?</a></span>
+        <span class="forgot-password"><a [routerLink]="['/forgot-password']">Password dimenticata?</a></span>
         <input class="login-button" type="submit" value="Accedi" (click)="login()">
 
     </form>

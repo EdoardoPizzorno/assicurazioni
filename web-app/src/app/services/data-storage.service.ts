@@ -69,6 +69,7 @@ export class DataStorageService {
         });
         break;
       case 403:
+        localStorage.removeItem("ASSICURAZIONI");
         window.location.href = "/login";
         break;
       case 409:

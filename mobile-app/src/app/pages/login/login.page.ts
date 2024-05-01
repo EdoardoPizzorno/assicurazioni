@@ -6,7 +6,7 @@ import { LoginService } from 'src/app/services/login.service';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage {
 
   alertButtons: any = ['OK'];
 
@@ -14,10 +14,6 @@ export class LoginPage implements OnInit {
   password: string = "";
 
   constructor(public loginService: LoginService) { }
-
-  async ngOnInit() {
-    await this.loginService.checkToken();
-  }
 
   login() {
     this.loginService.login(this.email, this.password);

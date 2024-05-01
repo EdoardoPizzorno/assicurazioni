@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UtilsService } from '../../services/utils/utils.service';
 import { LoginService } from '../../services/login.service';
 import { GoogleMapsService } from '../../services/google-maps.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'perizie-table',
@@ -15,12 +16,14 @@ export class PerizieTableComponent {
   selectedDescription: string = "";
   selectedDate: string = "";
 
-  constructor(public periziaService: PeriziaService, public loginService: LoginService, public googleMapsService: GoogleMapsService, private router: Router, private utils: UtilsService) { }
+  constructor(private userService: UserService, public periziaService: PeriziaService, public loginService: LoginService, public googleMapsService: GoogleMapsService, private router: Router, private utils: UtilsService) { }
 
   async ngOnInit() {
     this.selectedDate = this.router.parseUrl(this.router.url).queryParams["date"] || "";
     this.selectedDescription = this.router.parseUrl(this.router.url).queryParams["search"] || "";
-
+    if (!this.userService.currentUser) {
+      await this.userService.getUser();
+    }
     if (!this.periziaService.perizie) {
       await this.periziaService.getPerizie();
     }

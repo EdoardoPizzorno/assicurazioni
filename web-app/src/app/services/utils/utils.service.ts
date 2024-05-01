@@ -149,6 +149,15 @@ export class UtilsService {
     return perizia;
   }
 
+  getUserFromCache() {
+    let cache: any = localStorage.getItem("ASSICURAZIONI");
+    if (cache) {
+      let parsedCache: any = JSON.parse(cache);
+      return parsedCache.currentUser;
+    }
+    return null;
+  }
+
   getCoordsFromUrl(indications: string): any {
     const aus = indications.split(',');
     return {

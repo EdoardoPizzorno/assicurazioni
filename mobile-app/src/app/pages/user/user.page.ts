@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoginService } from 'src/app/services/login.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class UserPage implements OnInit {
 
-  constructor(public userService: UserService, private router: Router) { }
+  constructor(public userService: UserService, public loginService: LoginService, private router: Router) { }
 
   async ngOnInit() {
     if (!this.userService.currentUser) {

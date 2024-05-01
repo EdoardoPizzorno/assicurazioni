@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PeriziaService } from 'src/app/services/perizia.service';
 
 @Component({
   selector: 'app-my-perizie',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyPeriziePage implements OnInit {
 
-  constructor() { }
+  constructor(private periziaService: PeriziaService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    if (!this.periziaService.perizie)
+      await this.periziaService.getPerizie();
   }
 
 }

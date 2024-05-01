@@ -14,7 +14,7 @@ export class PeriziaService {
   isLoading: boolean = false;
 
   selectedPeriziaId: any;
-  perizie: any[] = [];
+  perizie!: any[];
   newPerizia: any = {
     description: "",
     photos: []
@@ -119,27 +119,7 @@ export class PeriziaService {
     });
   }
 
-  openInfo(perizia: any) {
-    let imagesHtml = this.utils.generatePhotosHtml(perizia.photos);
-
-    // Swal.fire({
-    //   title: perizia.description,
-    //   html: `
-    //   <b>Data:</b> ${perizia.date} alle ${perizia.time}<br>
-    //   <b>Descrizione:</b> ${perizia.description}<br>
-    //   <b>Creata da:</b> <span class="${this.utils.checkOperatorDeleted(perizia.operator.username)}"> ${perizia.operator.username} </span> <br>
-    //   <div class="row container">
-    //     ${imagesHtml}
-    //   </div>
-    //   `,
-    //   width: "60%"
-    // });
-
-  }
-
   async editModal(perizia: any) {
-    let imagesHtml = this.utils.generatePhotosHtmlForEdit(perizia.photos);
-
     this.alertController.create({
       header: "Modifica perizia",
       inputs: [

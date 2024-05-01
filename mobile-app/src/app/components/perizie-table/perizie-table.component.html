@@ -36,7 +36,7 @@
 
     <!--TABLE-->
     <div class="mt-3">
-        <ng-container *ngIf="periziaService.perizie.length > 0; else noPerizie">
+        <ng-container *ngIf="periziaService.perizie; else noPerizie">
             <ion-card *ngFor="let perizia of periziaService.perizie">
                 <ion-card-header>
                     <ion-card-title><b>{{ perizia.description }}</b></ion-card-title>
@@ -65,6 +65,11 @@
                         </ion-button>
                     </ion-col>
                 </ion-row>
+            </ion-card>
+            <ion-card [routerLink]="['/add']">
+                <ion-card-content class="ion-text-center">
+                    <ion-icon name="add"></ion-icon>
+                </ion-card-content>
             </ion-card>
         </ng-container>
         <ng-template #noPerizie>

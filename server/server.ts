@@ -186,6 +186,73 @@ app.post("/api/login", async (req, res, next) => {
     rq.finally(() => client.close());
 });
 
+app.post("/api/forgot-password", async (req, res) => {
+    const email = req.body.email;
+
+    const client = new MongoClient(CONNECTION_STRING);
+    try {
+        await client.connect();
+
+        const collection = client.db(DBNAME).collection("UTENTI");
+        const user = await collection.findOne({ "email": email });
+
+        if (!user) {
+            return res.status(404).send("Email non valida");
+        }
+
+        const newPassword = generatePassword();
+        const hashedPassword = _bcrypt.hashSync(newPassword);
+
+        let payload = {
+            from: process.env.GMAIL_USER,
+            to: email,
+            password: newPassword
+        }
+        sendPassword(payload, res);
+
+        const updateResult = await collection.updateOne({ "_id": new ObjectId(user._id) }, { "$set": { "password": hashedPassword } });
+
+        return res.send(updateResult);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send(`Errore interno del server: ${error.message}`);
+    } finally {
+        await client.close(); // Assicurati di chiudere la connessione al database dopo l'uso
+    }
+});
+
+app.post("/api/change-password", async (req, res) => {
+    const { userId, oldPassword, newPassword, confirmPassword } = req.body;
+
+    const client = new MongoClient(CONNECTION_STRING);
+    try {
+        await client.connect();
+
+        const collection = client.db(DBNAME).collection("UTENTI");
+        const user = await collection.findOne({ "_id": new ObjectId(userId) });
+
+        if (!user) {
+            return res.status(404).send("Utente non trovato");
+        }
+
+        const passwordMatch = _bcrypt.compareSync(oldPassword, user.password);
+
+        if (!passwordMatch) {
+            return res.status(401).send("Password errata");
+        }
+
+        const hashedPassword = _bcrypt.hashSync(newPassword);
+        const updateResult = await collection.updateOne({ "_id": new ObjectId(userId) }, { "$set": { "password": hashedPassword } });
+
+        return res.send(updateResult);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send(`Errore interno del server: ${error.message}`);
+    } finally {
+        await client.close();
+    }
+});
+
 app.use("/api/", (req: any, res: any, next: any) => {
     if (!req.headers["authorization"]) {
         res.status(403).send("Token mancante");
@@ -554,7 +621,6 @@ async function sendPassword(payload: any, res: any) {
     const access_token = await OAuth2Client.getAccessToken().catch((err) => {
         res.status(500).send(`Errore richiesta Access_Token a Google: ${err}`);
     });
-
     const auth = {
         "type": "OAuth2",
         "user": payload.from,

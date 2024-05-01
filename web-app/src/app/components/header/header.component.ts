@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +14,7 @@ export class HeaderComponent {
     username: ""
   }
 
-  constructor() {
+  constructor(public loginService: LoginService) {
     let cache: any = localStorage.getItem("ASSICURAZIONI");
     if (cache) {
       let parsedCache: any = JSON.parse(cache);
@@ -21,11 +22,6 @@ export class HeaderComponent {
       this.currentUser._id = parsedCache.currentUser._id;
       this.currentUser.username = parsedCache.currentUser.username;
     }
-  }
-
-  logout() {
-    localStorage.removeItem("ASSICURAZIONI");
-    window.location.href = "/login";
   }
 
 }

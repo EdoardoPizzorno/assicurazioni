@@ -26,12 +26,13 @@
                 src="{{currentUser.user_picture}}" alt="{{currentUser.username}}" class="profile-image">
             <ul class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item" [routerLink]="['/user', currentUser._id]"
-                    routerLinkActive="router-link-active">Profile</a>
-                <a class="dropdown-item" [routerLink]="['/roles']" routerLinkActive="router-link-active">Roles</a>
+                    routerLinkActive="router-link-active">Profilo</a>
+                <a class="dropdown-item" [routerLink]="['/roles']" routerLinkActive="router-link-active">Ruoli</a>
                 <a class="dropdown-item" [routerLink]="['/user', currentUser._id, 'edit']"
-                    routerLinkActive="router-link-active">Settings</a>
+                    routerLinkActive="router-link-active">Impostazioni</a>
+                <a class="dropdown-item" [routerLink]="['/change-password']" routerLinkActive="router-link-active">Cambia password</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" [routerLink]="['/login']" (click)="logout()">Logout</a>
+                <a class="dropdown-item" [routerLink]="['/login']" (click)="loginService.logout()">Logout</a>
             </ul>
         </li>
     </ul>

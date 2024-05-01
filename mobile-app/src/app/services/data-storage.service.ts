@@ -74,6 +74,7 @@ export class DataStorageService {
         await alert200.present();
         break;
       case 403:
+        localStorage.removeItem("ASSICURAZIONI");
         window.location.href = "/login";
         break;
       case 409:

@@ -16,6 +16,8 @@ import { PerizieTableComponent } from './components/perizie-table/perizie-table.
 import { RoleComponent } from './components/role/role.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { TravelModesComponent } from './components/utils/travel-modes/travel-modes.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { TravelModesComponent } from './components/utils/travel-modes/travel-mod
     RoleComponent,
     LoaderComponent,
     TravelModesComponent,
+    ForgotPasswordComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

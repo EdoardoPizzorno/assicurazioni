@@ -7,6 +7,8 @@ import { ManageUserComponent } from './components/manage-user/manage-user.compon
 import { UserListComponent } from './components/user-list/user-list.component';
 import { PerizieTableComponent } from './components/perizie-table/perizie-table.component';
 import { RoleComponent } from './components/role/role.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -23,6 +25,8 @@ const routes: Routes = [
       { path: ':id/edit', component: ManageUserComponent }
     ]
   },
+  {path: 'forgot-password', component: ForgotPasswordComponent},
+  {path: 'change-password', component: ChangePasswordComponent},
   { path: '**', redirectTo: '/dashboard' }
 ];
 

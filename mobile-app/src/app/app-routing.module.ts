@@ -5,6 +5,8 @@ import { LoginPage } from './pages/login/login.page';
 import { UserPage } from './pages/user/user.page';
 import { AddPage } from './pages/add/add.page';
 import { MyPeriziePage } from './pages/my-perizie/my-perizie.page';
+import { ChangePasswordPage } from './pages/change-password/change-password.page';
+import { ForgotPasswordPage } from './pages/forgot-password/forgot-password.page';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -13,6 +15,8 @@ const routes: Routes = [
   { path: 'perizie', component: MyPeriziePage },
   { path: 'add', component: AddPage },
   { path: 'user', component: UserPage },
+  { path: 'change-password', component: ChangePasswordPage },
+  { path: 'forgot-password', component: ForgotPasswordPage },
   { path: '**', redirectTo: '' }
 ];
 @NgModule({
