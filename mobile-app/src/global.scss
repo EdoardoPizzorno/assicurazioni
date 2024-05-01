@@ -149,11 +149,6 @@ hr.divider {
     background: linear-gradient(0deg, #00c32e, #38da5b);
 } */
 
-.container {
-    margin: 0 auto;
-    padding: 0 15px;
-}
-
 .table .thead-dark th {
     color: inherit;
     border-color: #dee2e6;
@@ -171,6 +166,7 @@ hr.divider {
     -moz-box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29);
     box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29);
     text-align: center !important;
+    border: 1px solid #d6d6d6;
 }
 
 .table thead th {
@@ -183,12 +179,12 @@ hr.divider {
 
 .table thead tr {
     background: #fff;
-    border-bottom: 4px solid #eceffa;
 }
 
 .table tbody tr {
     margin-bottom: 10px;
-    border-bottom: 4px solid #f8f9fd;
+    border: 1px solid #d6d6d6;
+    border-radius: 5px;
 }
 
 .table tbody tr:last-child {

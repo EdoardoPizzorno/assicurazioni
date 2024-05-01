@@ -7,11 +7,8 @@ export class UtilsService {
 
   constructor() { }
 
-  createUrl(selectedOperator: string, selectedDate: string, selectedDescription: string): string {
+  createUrl(selectedDate: string, selectedDescription: string): string {
     let url = window.location.pathname + "?";
-    if (selectedOperator !== "") {
-      url += "operator=" + selectedOperator + "&";
-    }
     if (selectedDate !== "") {
       url += "date=" + selectedDate + "&";
     }
@@ -148,11 +145,13 @@ export class UtilsService {
   }
 
   getCoordsFromUrl(indications: string): any {
-    const aus = indications.split(',');
-    return {
-      lat: parseFloat(aus[0]),
-      lng: parseFloat(aus[1])
-    };
+    if (indications) {
+      const aus = indications.split(',');
+      return {
+        lat: parseFloat(aus[0]),
+        lng: parseFloat(aus[1])
+      };
+    }
   }
 
   getIdFromCache() {

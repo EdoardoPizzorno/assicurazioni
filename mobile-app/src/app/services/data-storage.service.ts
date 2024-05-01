@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import _axios from 'axios';
-import Swal from 'sweetalert2';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataStorageService {
 
-  private REST_API_SERVER = "http://localhost:3000/api";
+  private REST_API_SERVER = "http://192.168.1.11:3000/api";
 
-  constructor() {
+  constructor(private alertController: AlertController) {
 
     _axios.interceptors.response.use((response: any) => {
       let token: any = response.headers["authorization"];
@@ -54,37 +54,51 @@ export class DataStorageService {
     }
   }
 
-  public error(err: any) {
+  public async error(err: any) {
     switch (err.response.status) {
       case undefined:
-        Swal.fire({
-          icon: 'error',
-          title: 'Connection Refused or Server timeout'
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message: 'Connection Refused or Server timeout',
+          buttons: ['OK']
         });
+        await alert.present();
         break;
       case 200:
-        Swal.fire({
-          icon: 'error',
-          title: 'Formato dei dati non corretto',
-          text: err.response.data
+        const alert200 = await this.alertController.create({
+          header: 'Error',
+          message: 'Formato dei dati non corretto',
+          subHeader: err.response.data,
+          buttons: ['OK']
         });
+        await alert200.present();
         break;
       case 403:
         window.location.href = "/login";
         break;
       case 409:
-        Swal.fire({
-          icon: 'error',
-          title: 'Elemento già presente',
-          text: err.response.data
+        const alert409 = await this.alertController.create({
+          header: 'Error',
+          message: 'Elemento già presente',
+          subHeader: err.response.data,
+          buttons: ['OK']
         });
+        await alert409.present();
         break;
       default:
-        Swal.fire({
-          icon: 'error',
-          title: 'Server Error: ' + err.response.status,
-          text: err.response.data
-        }).then(() => window.history.back());
+        const alertDefault = await this.alertController.create({
+          header: 'Server Error: ' + err.response.status,
+          message: err.response.data,
+          buttons: [
+            {
+              text: 'OK',
+              handler: () => {
+                window.history.back();
+              }
+            }
+          ]
+        });
+        await alertDefault.present();
         break;
     }
   }

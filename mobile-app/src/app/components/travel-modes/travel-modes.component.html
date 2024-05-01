@@ -1,0 +1,48 @@
+<div class="container radio-inputs">
+    <label>
+        <input checked class="radio-input" type="radio" name="engine" value="DRIVING"
+            [(ngModel)]="googleMapsService.travelMode">
+        <span class="radio-tile">
+            <span class="radio-icon">
+                <i class="fa-solid fa-car"></i>
+            </span>
+            <span class="radio-label">Car</span>
+        </span>
+    </label>
+    <label>
+        <input class="radio-input" type="radio" name="engine" value="BICYCLING"
+            [(ngModel)]="googleMapsService.travelMode">
+        <span class="radio-tile">
+            <span class="radio-icon">
+                <i class="fa-solid fa-bicycle"></i>
+            </span>
+            <span class="radio-label">Bicycle</span>
+        </span>
+    </label>
+    <label>
+        <input class="radio-input" type="radio" name="engine" value="TRANSIT"
+            [(ngModel)]="googleMapsService.travelMode">
+        <span class="radio-tile">
+            <span class="radio-icon">
+                <i class="fa-solid fa-bus"></i>
+            </span>
+            <span class="radio-label">Transit</span>
+        </span>
+    </label>
+    <label>
+        <input class="radio-input" type="radio" name="engine" value="WALKING"
+            [(ngModel)]="googleMapsService.travelMode">
+        <span class="radio-tile">
+            <span class="radio-icon">
+                <i class="fa-solid fa-person-walking"></i>
+            </span>
+            <span class="radio-label">Walking</span>
+        </span>
+    </label>
+</div>
+
+<hr class="divider">
+
+<div class="container">
+    <div id="sidebar"></div>
+</div>

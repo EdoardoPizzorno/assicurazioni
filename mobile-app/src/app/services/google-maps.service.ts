@@ -15,6 +15,7 @@ export class GoogleMapsService {
       lat: 44.5558401,
       lng: 7.7358973
     },
+    icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
     title: "Tu sei qui!"
   }
 
@@ -56,31 +57,35 @@ export class GoogleMapsService {
 
   async getDirections() {
     const destination = this.utils.getCoordsFromUrl(this.activatedRoute.snapshot.queryParams["indications"]);
-    const directionsService = new google.maps.DirectionsService();
-    const directionsRenderer = new google.maps.DirectionsRenderer();
-    const sideBar: HTMLElement = document.getElementById("sidebar") as HTMLElement;
+    if (destination) {
+      const directionsService = new google.maps.DirectionsService();
+      const directionsRenderer = new google.maps.DirectionsRenderer();
+      const sideBar: HTMLElement = document.getElementById("sidebar") as HTMLElement;
 
-    sideBar.innerHTML = '';
+      this.periziaService.selectedPeriziaId = this.getIdFromCoords(destination);
+      console.log(this.periziaService.selectedPeriziaId);
+      sideBar.innerHTML = '';
 
-    this.map.panTo(destination);
-    directionsRenderer.setMap(this.map.googleMap!);
-    directionsRenderer.setPanel(null);
-    directionsRenderer.setPanel(sideBar);
+      this.map.panTo(destination);
+      directionsRenderer.setMap(this.map.googleMap!);
+      directionsRenderer.setPanel(null);
+      directionsRenderer.setPanel(sideBar);
 
-    const request: google.maps.DirectionsRequest = {
-      origin: this.position.coords,
-      destination: destination,
-      travelMode: this.getTravelMode(directionsRenderer), // BICYCLING, DRIVING, TRANSIT, WALKING
-      provideRouteAlternatives: true
-    };
+      const request: google.maps.DirectionsRequest = {
+        origin: this.position.coords,
+        destination: destination,
+        travelMode: this.getTravelMode(directionsRenderer), // BICYCLING, DRIVING, TRANSIT, WALKING
+        provideRouteAlternatives: true
+      };
 
-    directionsService.route(request, (result, status) => {
-      if (status === google.maps.DirectionsStatus.OK) {
-        directionsRenderer.setDirections(result);
-      } else {
-        console.error('Errore durante il calcolo del percorso:', status);
-      }
-    });
+      directionsService.route(request, (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+          directionsRenderer.setDirections(result);
+        } else {
+          console.error('Errore durante il calcolo del percorso:', status);
+        }
+      });
+    }
   }
 
   getTravelMode(directionsRenderer: google.maps.DirectionsRenderer): google.maps.TravelMode {
@@ -131,6 +136,7 @@ export class GoogleMapsService {
 
   getIdFromCoords(coords: any): string {
     for (let perizia of this.periziaService.perizie) {
+      console.log(perizia.coords)
       if (perizia.coords.lat == coords.lat && perizia.coords.lng == coords.lng) {
         return perizia._id;
       }

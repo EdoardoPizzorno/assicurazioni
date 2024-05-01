@@ -1,0 +1,78 @@
+<loader *ngIf="!periziaService.perizie || periziaService.isLoading"></loader>
+<div class="container mt-4 text-center">
+
+    <!--FILTERS-->
+    <div class="row">
+
+        <div class="container">
+            <div class="col-md- align-self-center mt-3">
+                <label for="dateFilter">Data:</label>
+                <input type="date" class="form-control" id="dateFilter" [(ngModel)]="selectedDate" (change)="filter()">
+            </div>
+
+            <div class="col-md-3 mt-3">
+                <label for="descriptionFilter">Oggetto:</label>
+                <input type="text" class="form-control" id="descriptionFilter" [(ngModel)]="selectedDescription"
+                    (change)="filter()">
+            </div>
+        </div>
+
+        <div class="filter-box">
+            <div *ngIf="selectedDate != ''" class="filter-label">
+                <span class="filter-value">{{selectedDate}}</span>
+                <button class="close-btn" (click)="removeFilter('date')">×</button>
+            </div>
+            <div *ngIf="selectedDescription != ''" class="filter-label">
+                <span class="filter-value">{{selectedDescription}}</span>
+                <button class="close-btn" (click)="removeFilter('description')">×</button>
+            </div>
+            <div *ngIf="periziaService.selectedPeriziaId" class="filter-label">
+                <span class="filter-value">Indicazioni </span>
+                <button class="close-btn" (click)="removeFilter('indications')">×</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!--TABLE-->
+    <div class="ion-padding mt-3">
+        <ng-container *ngIf="periziaService.perizie.length > 0; else noPerizie">
+            <ion-card *ngFor="let perizia of periziaService.perizie">
+                <ion-card-header>
+                    <ion-card-subtitle>Data: <b>{{ perizia.date }}</b></ion-card-subtitle>
+                    <ion-card-subtitle>Ora: <b>{{ perizia.time }}</b></ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                    <p>Descrizione: <b>{{ perizia.description }}</b></p>
+                </ion-card-content>
+                <ion-row class="ion-align-items-center ion-justify-content-center">
+                    <ion-col size="4">
+                        <ion-button expand="block" fill="outline" color="primary"
+                            (click)="loadIndications(perizia.coords)">
+                            <ion-icon name="location"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+                    <ion-col size="4">
+                        <ion-button expand="block" fill="outline" color="secondary">
+                            <ion-icon name="book"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+                    <ion-col size="4">
+                        <ion-button expand="block" fill="outline" color="danger"
+                            (click)="periziaService.delete(perizia._id)">
+                            <ion-icon name="trash"></ion-icon>
+                        </ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-card>
+        </ng-container>
+        <ng-template #noPerizie>
+            <ion-card>
+                <ion-card-content class="ion-text-center text-muted">
+                    Nessuna perizia trovata
+                </ion-card-content>
+            </ion-card>
+        </ng-template>
+    </div>
+
+</div>

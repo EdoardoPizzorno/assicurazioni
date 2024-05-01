@@ -4,7 +4,6 @@ import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Preferences } from '@capacitor/preferences';
 import { Platform } from '@ionic/angular';
-import { PeriziaService } from './perizia.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +21,7 @@ export class PhotoService {
   }
   textInput: string = "";
 
-  constructor(platform: Platform, private periziaService: PeriziaService) {
+  constructor(platform: Platform) {
     this.platform = platform;
   }
 
@@ -54,12 +53,9 @@ export class PhotoService {
       source: CameraSource.Camera,
       quality: 100
     });
-    const savedImageFile = await this.savePicture(capturedPhoto);
-    this.photos.unshift(savedImageFile);
-    this.images.unshift({
-      url: savedImageFile.webviewPath,
-      comments: []
-    });
+    
+    await this.savePicture(capturedPhoto);
+
     Preferences.set({
       key: this.PHOTO_STORAGE,
       value: JSON.stringify(this.photos),
@@ -74,6 +70,17 @@ export class PhotoService {
       path: fileName,
       data: base64Data,
       directory: Directory.Data
+    });
+
+    this.images.unshift({
+      filepath: fileName,
+      url: base64Data,
+      comments: []
+    });
+
+    this.photos.unshift({
+      filepath: fileName,
+      webviewPath: photo.webPath
     });
 
     if (this.platform.is('hybrid')) {
@@ -109,13 +116,21 @@ export class PhotoService {
 
   }
 
-  clearPictures() {
+  async clearPictures() {
+    for (let photo of this.photos) {
+      const filename = photo.filepath.substr(photo.filepath.lastIndexOf('/') + 1);
+      await Filesystem.deleteFile({
+        path: filename,
+        directory: Directory.Data
+      });
+    }
     this.photos = [];
     this.images = [];
     Preferences.set({
       key: this.PHOTO_STORAGE,
       value: JSON.stringify(this.photos)
     });
+
   }
 
   addComment() {

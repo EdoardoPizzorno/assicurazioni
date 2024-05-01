@@ -7,29 +7,30 @@
 <loader *ngIf="userService.isLoading"></loader>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Home</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
   <div class="container">
     <google-map #map id="map" width="100%" [center]="googleMapsService.mapCenter" [zoom]="googleMapsService.zoom"
       [options]="googleMapsService.mapOptions">
-      <!-- <map-marker *ngFor="let perizia of periziaService.perizie" [position]="perizia.coords" [icon]="perizia.icon"
-            [title]="perizia.description" [options]="googleMapsService.markerOptions" >
-        </map-marker> -->
-      <map-marker [position]="googleMapsService.position.coords" [icon]="userService.icon" 
+      <map-marker [position]="googleMapsService.position.coords" [icon]="googleMapsService.position.icon"
         [title]="googleMapsService.position.title" [options]="googleMapsService.markerOptions"></map-marker>
 
-
+      <map-marker *ngFor="let perizia of periziaService.perizie" [position]="perizia.coords" [icon]="perizia.icon"
+        [title]="perizia.description" [options]="googleMapsService.markerOptions">
+      </map-marker>
     </google-map>
-
-    <ion-fab horizontal="end">
+    <br>
+    <ion-fab horizontal="center">
       <ion-fab-button (click)="googleMapsService.getCurrentLocation()">
         <ion-icon name="locate"></ion-icon>
       </ion-fab-button>
     </ion-fab>
+    <br>
+    <br>
+    <hr class="divider">
+
+    <perizie-table></perizie-table>
+
+    <travel-modes></travel-modes>
 
   </div>
 

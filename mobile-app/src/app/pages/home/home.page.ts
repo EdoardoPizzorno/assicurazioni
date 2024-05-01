@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { GoogleMapsService } from 'src/app/services/google-maps.service';
+import { PeriziaService } from 'src/app/services/perizia.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -9,9 +10,9 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class HomePage {
 
-  @ViewChild('map') map!: any;
+  @ViewChild('map') map: any;
 
-  constructor(public userService: UserService, public googleMapsService: GoogleMapsService) { }
+  constructor(public userService: UserService, public periziaService: PeriziaService, public googleMapsService: GoogleMapsService) { }
 
   async ngOnInit() {
     if (!this.userService.currentUser) {
@@ -19,6 +20,7 @@ export class HomePage {
       await this.googleMapsService.getCurrentLocation();
     }
     this.googleMapsService.map = this.map;
+    await this.googleMapsService.getDirections();
   }
 
 }

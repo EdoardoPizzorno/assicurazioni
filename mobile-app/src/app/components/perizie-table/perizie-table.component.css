@@ -1,0 +1,30 @@
+.filter-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 10px auto;
+}
+
+.filter-label {
+    background-color: #007bff;
+    color: white;
+    border-radius: 20px;
+    padding: 5px 10px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.selected {
+    background-color: #d4eaff;
+    color: rgb(0, 0, 0);
+}

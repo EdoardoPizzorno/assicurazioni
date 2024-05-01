@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { ActionSheetController } from '@ionic/angular';
 import { IonModal } from '@ionic/angular/common';
 import { PeriziaService } from 'src/app/services/perizia.service';
@@ -15,7 +16,7 @@ export class AddPage implements OnInit {
   @ViewChild('modal') modal!: IonModal;
 
 
-  constructor(public photoService: PhotoService, public periziaService: PeriziaService, private actionSheetController: ActionSheetController, private userService: UserService) { }
+  constructor(public photoService: PhotoService, public periziaService: PeriziaService, private router: Router) { }
 
   async ngOnInit() {
     await this.photoService.loadSaved();
@@ -28,7 +29,8 @@ export class AddPage implements OnInit {
   async confirm() {
     this.periziaService.newPerizia.photos = this.photoService.images;
     await this.periziaService.add();
-    this.photoService.clearPictures();
+    await this.photoService.clearPictures();
+    this.router.navigateByUrl('/home');
   }
 
   async openModal(photo: UserPhoto, position: number) {
@@ -41,6 +43,11 @@ export class AddPage implements OnInit {
   }
 
   closeModal() {
+    this.modal.dismiss(null, 'cancel');
+  }
+
+  async deletePicture() {
+    await this.photoService.deletePicture();
     this.modal.dismiss(null, 'cancel');
   }
 

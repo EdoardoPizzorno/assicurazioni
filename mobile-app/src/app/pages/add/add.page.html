@@ -1,15 +1,15 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
-    </ion-buttons>
-    <ion-title class="ion-text-center">Aggiungi perizia</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <loader *ngIf="periziaService.isLoading"></loader>
 
 <ion-content [fullscreen]="true" class="ion-text-center ion-align-items-center ion-justify-content-center">
+
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/"></ion-back-button>
+      </ion-buttons>
+      <ion-title class="ion-text-center">Aggiungi perizia</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
   <ion-grid class="ion-text-center">
     <ion-row class="ion-justify-content-center">
@@ -43,9 +43,9 @@
           <ion-buttons slot="start">
             <ion-button (click)="closeModal()">Annulla</ion-button>
           </ion-buttons>
-          <ion-title class="ion-text-center">Aggiungi commenti</ion-title>
+          <ion-title class="ion-text-center">Commenti</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="closeModal()" [strong]="true">CONFERMA</ion-button>
+            <ion-button (click)="closeModal()" [strong]="true">Conferma</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -56,7 +56,7 @@
           <ion-img [src]="photoService.currentImageClicked.url"></ion-img>
 
           <div class="button-delete">
-            <delete-button (click)="photoService.deletePicture()"></delete-button>
+            <delete-button (click)="deletePicture()"></delete-button>
           </div>
 
           <hr class="divider">
