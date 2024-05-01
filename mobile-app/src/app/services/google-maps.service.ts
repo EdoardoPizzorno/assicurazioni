@@ -4,6 +4,7 @@ import { PeriziaService } from './perizia.service';
 import { ActivatedRoute } from '@angular/router';
 import { UtilsService } from './utils/utils.service';
 import { UserService } from './user.service';
+import { Geolocation } from '@capacitor/geolocation';
 
 @Injectable({
   providedIn: 'root'
@@ -44,15 +45,12 @@ export class GoogleMapsService {
   }
 
   async getCurrentLocation() {
-    navigator.geolocation.getCurrentPosition(
-      (position: GeolocationPosition) => {
-        const point: google.maps.LatLngLiteral = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        this.position.coords = point;
-        this.mapCenter = new google.maps.LatLng(point);
-      });
+    const coordinates = await Geolocation.getCurrentPosition();
+    this.position.coords = {
+      lat: coordinates.coords.latitude,
+      lng: coordinates.coords.longitude
+    };
+    this.mapCenter = this.position.coords;
   }
 
   async getDirections() {
