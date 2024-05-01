@@ -63,7 +63,7 @@ export class GoogleMapsService {
       const sideBar: HTMLElement = document.getElementById("sidebar") as HTMLElement;
 
       this.periziaService.selectedPeriziaId = this.getIdFromCoords(destination);
-      console.log(this.periziaService.selectedPeriziaId);
+
       sideBar.innerHTML = '';
 
       this.map.panTo(destination);
@@ -136,7 +136,6 @@ export class GoogleMapsService {
 
   getIdFromCoords(coords: any): string {
     for (let perizia of this.periziaService.perizie) {
-      console.log(perizia.coords)
       if (perizia.coords.lat == coords.lat && perizia.coords.lng == coords.lng) {
         return perizia._id;
       }

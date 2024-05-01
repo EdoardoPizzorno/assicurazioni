@@ -15,8 +15,9 @@
       <ion-avatar>
         <img src="{{ userService.currentUser.avatar }}" alt="Avatar">
       </ion-avatar>
-      <ion-card-title>{{ userService.currentUser.username }}</ion-card-title>
     </ion-card-header>
+
+    <ion-card-title class="ion-text-center">{{ userService.currentUser.username }}</ion-card-title>
 
     <ion-card-content>
       <p><strong>Name:</strong> {{ userService.currentUser.name }}</p>
