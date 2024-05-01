@@ -442,13 +442,12 @@ app.post("/api/role", async (req, res, next) => {
 
 app.patch("/api/perizia/:id", async (req, res, next) => {
     const perizia = req["body"].perizia;
-    let _id = perizia._id;
     delete perizia._id;
 
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
     const collection = client.db(DBNAME).collection("PERIZIE");
-    let rq = collection.updateOne({ "_id": _id }, { "$set": perizia });
+    let rq = collection.updateOne({ "_id": new ObjectId(req.params.id) }, { "$set": perizia });
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());

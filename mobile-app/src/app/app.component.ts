@@ -14,7 +14,8 @@ export class AppComponent {
 
   async ngOnInit() {
     await this.loginService.checkToken();
-    await this.userService.getUser();
+    if (!this.userService.currentUser)
+      await this.userService.getUser();
   }
 
 }

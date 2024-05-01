@@ -18,8 +18,13 @@ export class UserService {
 
   async getUser(id: any = null): Promise<void> {
     this.isLoading = true;
+    let userId = id || this.utils.getIdFromCache();
+    if (userId == null) {
+      this.router.navigate(['/login']);
+      return;
+    }
     return new Promise((resolve, reject) => {
-      this.dataStorage.sendRequest("GET", "/user/" + (id || this.utils.getIdFromCache()))
+      this.dataStorage.sendRequest("GET", "/user/" + userId)
         .catch(this.dataStorage.error)
         .then((response) => {
           this.currentUser = response.data;
