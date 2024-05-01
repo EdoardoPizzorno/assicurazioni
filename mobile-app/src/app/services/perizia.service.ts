@@ -4,6 +4,7 @@ import { UtilsService } from './utils/utils.service';
 import { UserService } from './user.service';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,9 @@ export class PeriziaService {
 
   getPerizie(): Promise<void> {
     this.isLoading = true;
+    const params = window.location.search == "" ? ("?operator=" + this.userService.currentUser.username) : (window.location.search + "&operator=" + this.userService.currentUser.username);
     return new Promise((resolve, reject) => {
-      this.dataStorage.sendRequest("GET", "/perizie?operator=" + this.userService.currentUser.username + "&" + window.location.search)
+      this.dataStorage.sendRequest("GET", "/perizie" + params)
         .catch(error => {
           this.dataStorage.error(error);
           reject(error);
