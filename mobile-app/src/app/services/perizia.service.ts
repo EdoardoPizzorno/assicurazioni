@@ -107,7 +107,7 @@ export class PeriziaService {
             header: "Perizia eliminata",
             message: "La perizia è stata eliminata con successo",
             buttons: ["OK"]
-          }).then(async(alert) => {
+          }).then(async (alert) => {
             await alert.present();
             await this.getPerizie();
             this.router.navigateByUrl("/home");
@@ -135,47 +135,54 @@ export class PeriziaService {
 
   }
 
-  // async editModal(perizia: any) {
-  //   let imagesHtml = this.utils.generatePhotosHtmlForEdit(perizia.photos);
+  async editModal(perizia: any) {
+    let imagesHtml = this.utils.generatePhotosHtmlForEdit(perizia.photos);
 
-  //   Swal.fire({
-  //     title: "Modifica perizia",
-  //     html: `
-  //     <form id="editForm" class="container">
-  //       <div class="form-group">
-  //         <label for="description">Descrizione</label>
-  //         <input type="text" class="form-control" id="description" value="${perizia.description}">
-  //       </div>
-  //       <div class="form-group">
-  //         <label for="date">Data</label>
-  //         <input type="date" class="form-control" id="date" value="${perizia.date}">
-  //       </div>
-  //       <div class="form-group">
-  //         <label for="time">Ora</label>
-  //         <input type="time" class="form-control" id="time" value="${perizia.time}">
-  //       </div>
-  //       <div class="row">
-  //         ${imagesHtml}
-  //       </div>
-  //     </form>
-  //   `,
-  //     showCancelButton: true,
-  //     confirmButtonText: "Salva",
-  //     cancelButtonText: "Annulla",
-  //     width: "80%"
-  //   }).then(async (result) => {
-  //     if (result.isConfirmed) {
-  //       let fields: any = {
-  //         description: (<HTMLInputElement>document.getElementById("description")).value,
-  //         date: (<HTMLInputElement>document.getElementById("date")).value,
-  //         time: (<HTMLInputElement>document.getElementById("time")).value,
-  //         comments: (document.getElementsByClassName("comment"))
-  //       }
-  //       this.utils.substituteFields(perizia, fields);
-  //       await this.update(perizia);
-  //     }
-  //   });
-  // }
+    this.alertController.create({
+      header: "Modifica perizia",
+      inputs: [
+        {
+          id: "description",
+          type: "text",
+          placeholder: "Descrizione",
+          value: perizia.description
+        },
+        {
+          id: "date",
+          type: "date",
+          value: perizia.date
+        },
+        {
+          id: "time",
+          type: "time",
+          value: perizia.time
+        }
+      ],
+      buttons: [
+        {
+          text: "Salva",
+          handler: async () => {
+            let fields: any = {
+              description: (<HTMLInputElement>document.getElementById("description")).value,
+              date: (<HTMLInputElement>document.getElementById("date")).value,
+              time: (<HTMLInputElement>document.getElementById("time")).value,
+              comments: (document.getElementsByClassName("comment"))
+            }
+            this.utils.substituteFields(perizia, fields);
+            await this.update(perizia);
+          }
+        },
+        {
+          text: "Annulla",
+          role: "cancel"
+        }
+      ],
+      backdropDismiss: false,
+      cssClass: "edit-perizia-alert"
+    }).then(alert => {
+      alert.present();
+    });
+  }
 
   async fillPeriziaFields(secure_urls: any) {
     for (let i = 0; i < this.newPerizia.photos.length; i++) {

@@ -50,8 +50,7 @@ export class PerizieTableComponent {
   async loadIndications(coords: any) {
     await this.router.navigateByUrl('/home?indications=' + coords.lat + ',' + coords.lng
       + "&travelMode=" + this.googleMapsService.travelMode);
-    window.location.reload();
-    //await this.googleMapsService.getDirections();
+    await this.googleMapsService.getDirections();
   }
 
 }

@@ -35,15 +35,15 @@
     </div>
 
     <!--TABLE-->
-    <div class="ion-padding mt-3">
+    <div class="mt-3">
         <ng-container *ngIf="periziaService.perizie.length > 0; else noPerizie">
             <ion-card *ngFor="let perizia of periziaService.perizie">
                 <ion-card-header>
-                    <ion-card-subtitle>Data: <b>{{ perizia.date }}</b></ion-card-subtitle>
-                    <ion-card-subtitle>Ora: <b>{{ perizia.time }}</b></ion-card-subtitle>
+                    <ion-card-title><b>{{ perizia.description }}</b></ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                    <p>Descrizione: <b>{{ perizia.description }}</b></p>
+                    <ion-card-subtitle>Data: <b>{{ perizia.date }}</b></ion-card-subtitle>
+                    <ion-card-subtitle>Ora: <b>{{ perizia.time }}</b></ion-card-subtitle>
                 </ion-card-content>
                 <ion-row class="ion-align-items-center ion-justify-content-center">
                     <ion-col size="4">
@@ -53,8 +53,9 @@
                         </ion-button>
                     </ion-col>
                     <ion-col size="4">
-                        <ion-button expand="block" fill="outline" color="secondary">
-                            <ion-icon name="book"></ion-icon>
+                        <ion-button expand="block" fill="outline" color="secondary"
+                            (click)="periziaService.editModal(perizia)">
+                            <i class="fa-solid fa-pencil"></i>
                         </ion-button>
                     </ion-col>
                     <ion-col size="4">
