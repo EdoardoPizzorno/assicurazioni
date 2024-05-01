@@ -54,6 +54,7 @@ export class PerizieTableComponent {
     await this.router.navigateByUrl('/home?indications=' + coords.lat + ',' + coords.lng
       + "&travelMode=" + this.googleMapsService.travelMode);
     await this.googleMapsService.getDirections();
+    window.location.reload();
   }
 
 }

@@ -11,11 +11,9 @@
   <div class="container">
     <google-map #map id="map" width="100%" [center]="googleMapsService.mapCenter" [zoom]="googleMapsService.zoom"
       [options]="googleMapsService.mapOptions">
-      <map-marker [position]="googleMapsService.position.coords" [icon]="periziaService.icon"
-        [title]="googleMapsService.position.title" [options]="googleMapsService.markerOptions"></map-marker>
-
       <map-marker *ngFor="let perizia of periziaService.perizie" [position]="perizia.coords"
-        [title]="perizia.description" [options]="googleMapsService.markerOptions" (mapClick)="periziaService.editModal(perizia)">
+        [title]="perizia.description" [options]="googleMapsService.markerOptions"
+        (mapClick)="periziaService.editModal(perizia)">
       </map-marker>
     </google-map>
     <br>
