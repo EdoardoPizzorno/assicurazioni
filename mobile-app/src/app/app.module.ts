@@ -16,10 +16,11 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { AddPage } from './pages/add/add.page';
 import { SaveButtonComponent } from './components/save-button/save-button.component';
 import { DeleteButtonComponent } from './components/delete-button/delete-button.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @NgModule({
   declarations: [AppComponent, ToolbarComponent, LoaderComponent, HomePage, LoginPage, UserPage, ManageUserPage, AddPage, SaveButtonComponent, DeleteButtonComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, GoogleMapsModule, ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

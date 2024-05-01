@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { GoogleMapsService } from 'src/app/services/google-maps.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -8,6 +9,16 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class HomePage {
 
-  constructor(public userService: UserService) { }
+  @ViewChild('map') map!: any;
+
+  constructor(public userService: UserService, public googleMapsService: GoogleMapsService) { }
+
+  async ngOnInit() {
+    if (!this.userService.currentUser) {
+      await this.userService.getUser();
+      await this.googleMapsService.getCurrentLocation();
+    }
+    this.googleMapsService.map = this.map;
+  }
 
 }

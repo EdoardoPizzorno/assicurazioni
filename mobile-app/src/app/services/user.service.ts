@@ -12,6 +12,8 @@ export class UserService {
   isLoading: boolean = false;
   currentUser: any;
 
+  icon: any;
+
   constructor(private dataStorage: DataStorageService, private utils: UtilsService, private router: Router) { }
 
   async getUser(id: any = null): Promise<void> {
@@ -21,6 +23,11 @@ export class UserService {
         .catch(this.dataStorage.error)
         .then((response) => {
           this.currentUser = response.data;
+          this.icon = {
+            url: this.currentUser.avatar,
+            size: new google.maps.Size(50, 82),
+            origin: new google.maps.Point(50, 50),
+          }
           this.isLoading = false;
           resolve();
         });

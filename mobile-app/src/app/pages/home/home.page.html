@@ -13,6 +13,24 @@
     </ion-toolbar>
   </ion-header>
 
-  
+  <div class="container">
+    <google-map #map id="map" width="100%" [center]="googleMapsService.mapCenter" [zoom]="googleMapsService.zoom"
+      [options]="googleMapsService.mapOptions">
+      <!-- <map-marker *ngFor="let perizia of periziaService.perizie" [position]="perizia.coords" [icon]="perizia.icon"
+            [title]="perizia.description" [options]="googleMapsService.markerOptions" >
+        </map-marker> -->
+      <map-marker [position]="googleMapsService.position.coords" [icon]="userService.icon" 
+        [title]="googleMapsService.position.title" [options]="googleMapsService.markerOptions"></map-marker>
+
+
+    </google-map>
+
+    <ion-fab horizontal="end">
+      <ion-fab-button (click)="googleMapsService.getCurrentLocation()">
+        <ion-icon name="locate"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+  </div>
 
 </ion-content>
