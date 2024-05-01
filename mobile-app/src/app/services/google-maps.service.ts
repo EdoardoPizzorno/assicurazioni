@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UtilsService } from './utils/utils.service';
 import { UserService } from './user.service';
 import { Geolocation } from '@capacitor/geolocation';
+import { Title } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +17,9 @@ export class GoogleMapsService {
       lat: 44.5558401,
       lng: 7.7358973
     },
-    icon: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
     title: "Tu sei qui!"
-  }
+  };
+
 
   map!: GoogleMap;
   mapOptions: google.maps.MapOptions = {

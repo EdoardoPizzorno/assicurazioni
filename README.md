@@ -1,22 +1,3 @@
 # assicurazioni
 Progetto Assicurazioni
 
-## TO DO - admin:
-
-! LOGIN WITH GOOGLE
-
-LOGIN WITH X
-
-CSV
-
-## TO DO - mobile:
-
-RIFARE LOGIN
-
-IMPRONTA DIGITALE
-
-## GENERICHE
-
-!! CAMBIO PASSWORD 
-
-! PASSWORD DIMENTICATA

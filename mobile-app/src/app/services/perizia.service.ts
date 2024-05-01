@@ -4,7 +4,6 @@ import { UtilsService } from './utils/utils.service';
 import { UserService } from './user.service';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +12,7 @@ export class PeriziaService {
 
   isLoading: boolean = false;
 
+  icon: any = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
   selectedPeriziaId: any;
   perizie!: any[];
   newPerizia: any = {
