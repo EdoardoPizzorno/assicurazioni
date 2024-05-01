@@ -58,6 +58,7 @@
                     <th>Oggetto</th>
                     <th>Indicazioni</th>
                     <th>Dettagli</th>
+                    <th>Elimina</th>
                 </tr>
             </thead>
             <tbody>
@@ -72,6 +73,11 @@
                     </td>
                     <td>
                         <button class="btn btn-primary" (click)="periziaService.editModal(perizia)">Dettagli</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" (click)="periziaService.delete(perizia._id)">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </td>
                 </tr>
                 <tr *ngIf="!periziaService.perizie">

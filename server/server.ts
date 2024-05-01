@@ -489,6 +489,16 @@ app.patch("/api/role/:id", async (req, res, next) => {
 
 //#region DELETE
 
+app.delete("/api/perizia/:id", async (req, res, next) => {
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("PERIZIE");
+    let rq = collection.deleteOne({ "_id": new ObjectId(req.params.id) });
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    rq.finally(() => client.close());
+})
+
 app.delete("/api/user/:id", async (req, res, next) => {
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();

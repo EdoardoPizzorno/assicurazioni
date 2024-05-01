@@ -57,6 +57,23 @@ export class PeriziaService {
     });
   }
 
+  delete(_id: any): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.dataStorage.sendRequest("DELETE", "/perizia/" + _id)
+        .catch(error => {
+          this.dataStorage.error(error);
+          reject(error);
+        })
+        .then(async (response) => {
+          await this.getPerizie();
+          Swal.fire("Perizia eliminata", "", "success").then(() => {
+            window.location.href = window.location.pathname;
+          });
+          resolve();
+        });
+    });
+  }
+
   openInfo(perizia: any) {
     let imagesHtml = this.utils.generatePhotosHtml(perizia.photos);
 
