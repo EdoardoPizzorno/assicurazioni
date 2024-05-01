@@ -19,10 +19,12 @@ import { DeleteButtonComponent } from './components/delete-button/delete-button.
 import { GoogleMapsModule } from '@angular/google-maps';
 import { PerizieTableComponent } from './components/perizie-table/perizie-table.component';
 import { TravelModesComponent } from './components/travel-modes/travel-modes.component';
+import { MyPeriziePage } from './pages/my-perizie/my-perizie.page';
 
 @NgModule({
-  declarations: [AppComponent, ToolbarComponent, LoaderComponent, HomePage, LoginPage, UserPage, ManageUserPage, AddPage, SaveButtonComponent, DeleteButtonComponent, PerizieTableComponent, TravelModesComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, GoogleMapsModule, ],
+  declarations: [AppComponent, ToolbarComponent, LoaderComponent, SaveButtonComponent, DeleteButtonComponent, PerizieTableComponent, TravelModesComponent,
+    HomePage, LoginPage, UserPage, ManageUserPage, AddPage, MyPeriziePage],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, GoogleMapsModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
