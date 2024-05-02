@@ -157,7 +157,7 @@ app.post("/api/login", async (req, res, next) => {
     let regex = new RegExp(`^${user}$`, "i");
     let rq = collection.findOne(
         { $or: [{ "email": regex }, { "username": regex }] },
-        { "projection": { "_id": 1, "email": 1, "password": 1, "avatar": 1, "username": 1 } }
+        { "projection": { "_id": 1, "email": 1, "password": 1, "avatar": 1, "username": 1, "firstLogin": 1 } }
     );
     rq.then((dbUser) => {
         if (!dbUser) {
@@ -210,7 +210,7 @@ app.post("/api/forgot-password", async (req, res) => {
         }
         sendPassword(payload, res);
 
-        const updateResult = await collection.updateOne({ "_id": new ObjectId(user._id) }, { "$set": { "password": hashedPassword } });
+        const updateResult = await collection.updateOne({ "_id": new ObjectId(user._id) }, { "$set": { "password": hashedPassword, "firstLogin": true } });
 
         return res.send(updateResult);
     } catch (error) {
@@ -242,7 +242,7 @@ app.post("/api/change-password", async (req, res) => {
         }
 
         const hashedPassword = _bcrypt.hashSync(newPassword);
-        const updateResult = await collection.updateOne({ "_id": new ObjectId(userId) }, { "$set": { "password": hashedPassword } });
+        const updateResult = await collection.updateOne({ "_id": new ObjectId(userId) }, { "$set": { "password": hashedPassword, "firstLogin": false } });
 
         return res.send(updateResult);
     } catch (error) {
@@ -428,13 +428,14 @@ app.post("/api/user", async (req, res, next) => {
 
         sendPassword(payload, res);
         user["password"] = _bcrypt.hashSync(user["password"]);
+        user["firstLogin"] = true;
 
         let oldRole = user.role._id;
         user.role = "";
         user.role = oldRole;
 
         user["avatar"] = "https://www.civictheatre.ie/wp-content/uploads/2016/05/blank-profile-picture-973460_960_720.png"
-        //await loadProfilePicture(user);
+        await loadProfilePicture(user);
 
         let rq = collection.insertOne(user)
         rq.then((data) => res.send(data))

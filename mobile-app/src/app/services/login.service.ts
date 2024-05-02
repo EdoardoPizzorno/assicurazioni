@@ -26,7 +26,8 @@ export class LoginService {
           let currentUser: any = {
             _id: response.data._id,
             user_picture: response.data.user_picture,
-            username: response.data.username
+            username: response.data.username,
+            firstLogin: response.data.firstLogin
           }
           localStorage.setItem("ASSICURAZIONI", JSON.stringify({ token: response.headers.authorization, currentUser: currentUser }));
           this.router.navigateByUrl('/home');

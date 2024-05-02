@@ -7,7 +7,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class DataStorageService {
 
-  private REST_API_SERVER = "https://assicurazioni.onrender.com/api";
+  private REST_API_SERVER = "http://localhost:3000/api";
 
   constructor(private alertController: AlertController) {
 
