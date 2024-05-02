@@ -158,7 +158,7 @@ app.post("/api/login", async (req, res, next) => {
     let regex = new RegExp(`^${user}$`, "i");
     let rq = collection.findOne(
         { $or: [{ "email": regex }, { "username": regex }] },
-        { "projection": { "_id": 1, "email": 1, "password": 1, "avatar": 1, "username": 1, "firstLogin": 1 } }
+        { "projection": { "_id": 1, "email": 1, "password": 1, "avatar": 1, "role": 1, "username": 1, "firstLogin": 1 } }
     );
     rq.then((dbUser) => {
         if (!dbUser) {
@@ -177,7 +177,7 @@ app.post("/api/login", async (req, res, next) => {
                         let token = createToken(dbUser);
                         res.setHeader("authorization", token);
                         res.setHeader("access-control-expose-headers", "authorization");
-                        res.send({ "user_picture": dbUser.avatar, "_id": dbUser._id, "username": dbUser.username });
+                        res.send({ "user_picture": dbUser.avatar, "_id": dbUser._id, "username": dbUser.username, "role": dbUser.role, "firstLogin": dbUser.firstLogin });
                     }
                 }
             })
@@ -389,6 +389,16 @@ app.get("/api/user/:id", async (req, res, next) => {
     } finally {
         client.close();
     }
+})
+
+app.get("/api/role/:id", async (req, res, next) => {
+    const client = new MongoClient(CONNECTION_STRING);
+    await client.connect();
+    const collection = client.db(DBNAME).collection("RUOLI");
+    let rq = collection.findOne({ "_id": new ObjectId(req.params.id) });
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
+    rq.finally(() => client.close());
 })
 
 //#endregion

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
 import { Router } from '@angular/router';
 import { UtilsService } from './utils/utils.service';
+import Swal from 'sweetalert2';
 
 declare global {
   interface Window {
@@ -20,15 +21,31 @@ export class LoginService {
 
   login(email: string, password: string) {
     this.dataStorage.sendRequest('POST', '/login', { email, password })
-      .then((response: any) => {
+      .then(async (response: any) => {
+        console.log(response)
         if (response.status == 200) {
+          const user = response.data;
           let currentUser: any = {
-            _id: response.data._id,
-            user_picture: response.data.user_picture,
-            username: response.data.username
+            _id: user._id,
+            user_picture: user.user_picture,
+            username: user.username
           }
-          localStorage.setItem("ASSICURAZIONI", JSON.stringify({ token: response.headers.authorization, currentUser: currentUser }));
-          this.router.navigateByUrl('/dashboard');
+          const token = response.headers.authorization;
+          localStorage.setItem("ASSICURAZIONI", JSON.stringify({ token: token, currentUser: currentUser }));
+
+          let role: any = await this.dataStorage.sendRequest('GET', '/role/' + user.role);
+          console.log(role.data.canAccessToWebApp)
+          if (role.data.canAccessToWebApp == true) {
+            this.router.navigateByUrl('/dashboard');
+          }
+          else {
+            localStorage.removeItem("ASSICURAZIONI");
+            Swal.fire({
+              icon: 'error',
+              title: 'Non hai i permessi per accedere a questa applicazione'
+            });
+          }
+
         }
       })
       .catch((error: any) => {
