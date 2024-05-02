@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
   providedIn: 'root'
 })
 export class DataStorageService {
-  private REST_API_SERVER = "http://localhost:3000/api";
+  private REST_API_SERVER = "https://assicurazioni.onrender.com/api";
 
   constructor() {
 
