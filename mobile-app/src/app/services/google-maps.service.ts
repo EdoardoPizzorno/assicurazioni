@@ -5,7 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { UtilsService } from './utils/utils.service';
 import { UserService } from './user.service';
 import { Geolocation } from '@capacitor/geolocation';
-import { Title } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -64,7 +63,7 @@ export class GoogleMapsService {
       this.periziaService.selectedPeriziaId = this.getIdFromCoords(destination);
 
       sideBar.innerHTML = '';
-
+      console.log(this.map)
       this.map.panTo(destination);
       directionsRenderer.setMap(this.map.googleMap!);
       directionsRenderer.setPanel(null);
