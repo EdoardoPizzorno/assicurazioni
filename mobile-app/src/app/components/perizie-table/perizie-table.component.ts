@@ -70,6 +70,7 @@ export class PerizieTableComponent {
 
   confirm() {
     this.periziaService.update(this.periziaService.currentEditPerizia);
+    this.photoService.clearPictures();
     this.closeModal();
   }
 
@@ -96,7 +97,6 @@ export class PerizieTableComponent {
   addComment(imageIndex: number, isNewPhoto: boolean = false) {
     let currentPhotos = isNewPhoto ? this.periziaService.currentEditPerizia.newPhotos[imageIndex] : this.periziaService.currentEditPerizia.photos[imageIndex];
     if (this.textInput.trim() !== '') {
-      console.log(currentPhotos)
       if (!currentPhotos.comments)
         currentPhotos.comments = [];
       currentPhotos.comments.push(this.textInput.trim());

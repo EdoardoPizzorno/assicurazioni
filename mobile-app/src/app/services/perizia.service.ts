@@ -75,26 +75,32 @@ export class PeriziaService {
   }
 
   async update(perizia: any): Promise<void> {
-    let newImages: any = [];
-    let newImagesComments: any = [];
+    this.isLoading = true;
+
     if ("newPhotos" in perizia) {
-      newImages = await this.dataStorage.sendRequest("POST", "/images", { imagesBase64: perizia.newPhotos })
+      let newImages: any = [];
+      let newImagesComments: any = [];
+
       // Load comments for new images
       for (let photo of perizia.newPhotos)
         newImagesComments.push(photo.comments);
 
+      newImages = await this.dataStorage.sendRequest("POST", "/images", { imagesBase64: perizia.newPhotos })
+
       delete perizia.newPhotos;
       newImages = newImages.data;
-    }
-    if (newImages.length > 0) {
-      for (let newImage of newImages) {
-        perizia.photos.push({
-          url: newImage,
-          comments: newImagesComments[newImages.indexOf(newImage)],
-          photographer: this.userService.currentUser.username
-        });
+
+      if (newImages.length > 0) {
+        for (let newImage of newImages) {
+          perizia.photos.push({
+            url: newImage,
+            comments: newImagesComments[newImages.indexOf(newImage)],
+            photographer: this.userService.currentUser.username
+          });
+        }
       }
     }
+
     return new Promise((resolve, reject) => {
       this.dataStorage.sendRequest("PATCH", "/perizia/" + perizia._id, { perizia })
         .catch(error => {
@@ -109,6 +115,7 @@ export class PeriziaService {
             buttons: ["OK"]
           }).then(alert => {
             alert.present();
+            this.isLoading = false;
           });
           resolve();
         });

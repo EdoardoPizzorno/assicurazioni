@@ -89,6 +89,7 @@ export class PhotoService {
     } else {
       this.periziaService.currentEditPerizia.newPhotos = []
       this.periziaService.currentEditPerizia.newPhotos.push({
+        filepath: fileName,
         url: base64Data,
         comments: []
       });
@@ -137,8 +138,18 @@ export class PhotoService {
         directory: Directory.Data
       });
     }
+    for (let photo of this.periziaService.currentEditPerizia.newPhotos) {
+      const filename = photo.filepath.substr(photo.filepath.lastIndexOf('/') + 1);
+      await Filesystem.deleteFile({
+        path: filename,
+        directory: Directory.Data
+      });
+    }
+
     this.photos = [];
     this.images = [];
+    this.periziaService.currentEditPerizia.newPhotos = [];
+
     Preferences.set({
       key: this.PHOTO_STORAGE,
       value: JSON.stringify(this.photos)
