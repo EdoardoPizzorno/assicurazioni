@@ -66,6 +66,7 @@ export class UserService {
             message: "L'immagine profilo è stata generata con successo",
             buttons: ["OK"]
           }).then(alert => alert.present());
+          window.location.reload();
         }
       });
   }

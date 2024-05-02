@@ -41,4 +41,9 @@ export class AddPage implements OnInit {
     await this.photoService.deletePicture(this.modal);
   }
 
+  async handleRefresh(event: any) {
+    window.location.reload();    
+    event.target.complete();
+  }
+
 }

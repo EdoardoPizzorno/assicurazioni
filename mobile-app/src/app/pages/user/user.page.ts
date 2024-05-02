@@ -22,4 +22,9 @@ export class UserPage implements OnInit {
     this.router.navigateByUrl("user/edit");
   }
 
+  async handleRefresh(event: any) {
+    await this.userService.getUser();
+    event.target.complete();
+  }
+
 }

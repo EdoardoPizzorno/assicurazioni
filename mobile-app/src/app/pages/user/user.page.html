@@ -15,32 +15,57 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-refresher slot="fixed" [pullFactor]="0.5" [pullMin]="100" [pullMax]="200" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-card *ngIf="userService.currentUser">
+    <br>
+    <ion-card-title class="ion-text-center"><b>{{ userService.currentUser.username }}</b></ion-card-title>
+
     <ion-card-header class="ion-align-items-center">
       <ion-avatar>
         <img src="{{ userService.currentUser.avatar }}" alt="Avatar">
       </ion-avatar>
+      <generate-button (click)="userService.generateImageProfile()"></generate-button>
     </ion-card-header>
 
-    <ion-card-title class="ion-text-center">{{ userService.currentUser.username }}</ion-card-title>
-
-    <ion-card-content>
-      <p><strong>Name:</strong> {{ userService.currentUser.name }}</p>
-      <p><strong>Surname:</strong> {{ userService.currentUser.surname }}</p>
-      <p><strong>Email:</strong> {{ userService.currentUser.email }}</p>
-      <p><strong>Age:</strong> {{ userService.currentUser.age }}</p>
-      <p><strong>Role:</strong> {{ userService.currentUser.role.name }}</p>
-      <p><strong>Gender:</strong> {{ userService.currentUser.gender == "m" ? "Male" : "Female" }}
-      </p>
-      <p><strong>City:</strong> {{ userService.currentUser.city }}</p>
-      <p><strong>Created at:</strong><br> {{ userService.currentUser.createdAt.date }} at
-        {{userService.currentUser.createdAt.time}}</p>
-      <!-- <ion-button>
-        <ion-icon name="create" slot="icon-only"></ion-icon>
-      </ion-button> -->
+    <ion-card-content class="ion-text-center">
+      <ion-item>
+        <ion-label position="stacked">Nome</ion-label>
+        <ion-input [clearInput]="true" type="text" [(ngModel)]="userService.currentUser.name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Cognome</ion-label>
+        <ion-input [clearInput]="true" type="text" [(ngModel)]="userService.currentUser.surname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input [clearInput]="true" type="email" [(ngModel)]="userService.currentUser.email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Età</ion-label>
+        <ion-input [clearInput]="true" type="number" [(ngModel)]="userService.currentUser.age"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Ruolo</ion-label>
+        <ion-input readonly type="text" [(ngModel)]="userService.currentUser.role.name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">City</ion-label>
+        <ion-input [clearInput]="true" type="text" [(ngModel)]="userService.currentUser.city"></ion-input>
+      </ion-item>
+      <ion-item class="ion-text-center">
+        <ion-label>User created on <b>{{userService.currentUser.createdAt.date}}</b> at
+          <b>{{userService.currentUser.createdAt.time}}</b></ion-label>
+      </ion-item>
+      <ion-button expand="block" color="success"
+        (click)="userService.update(userService.currentUser)">Salva</ion-button>
     </ion-card-content>
-    <ion-footer class="ion-text-center">
-      <ion-button [routerLink]="['/change-password']">Cambia password</ion-button>
-    </ion-footer>
   </ion-card>
+
+  <div class="text-center p-4">
+    <ion-button [routerLink]="['/change-password']">Cambia password</ion-button>
+  </div>
+
 </ion-content>

@@ -36,4 +36,9 @@ export class HomePage {
     }
   }
 
+  async handleRefresh(event: any) {
+    await this.periziaService.getPerizie();
+    event.target.complete();
+  }
+
 }

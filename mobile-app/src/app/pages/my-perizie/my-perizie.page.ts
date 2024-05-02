@@ -15,4 +15,9 @@ export class MyPeriziePage implements OnInit {
       await this.periziaService.getPerizie();
   }
 
+  async handleRefresh(event: any) {
+    await this.periziaService.getPerizie();
+    event.target.complete();
+  }
+
 }

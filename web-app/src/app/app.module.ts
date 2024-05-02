@@ -20,6 +20,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { GenerateButtonComponent } from './components/utils/generate-button/generate-button.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     LoaderComponent,
     TravelModesComponent,
     ForgotPasswordComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    GenerateButtonComponent
   ],
   imports: [
     BrowserModule,

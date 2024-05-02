@@ -11,12 +11,12 @@
   <div class="container">
     <ion-card>
       <google-map #map id="map" width="100%" [center]="googleMapsService.mapCenter" [zoom]="googleMapsService.zoom"
-      [options]="googleMapsService.mapOptions">
-      <map-marker *ngFor="let perizia of periziaService.perizie" [position]="perizia.coords"
-        [title]="perizia.description" [options]="googleMapsService.markerOptions"
-        (mapClick)="periziaService.editModal(perizia)">
-      </map-marker>
-    </google-map>
+        [options]="googleMapsService.mapOptions">
+        <map-marker *ngFor="let perizia of periziaService.perizie" [position]="perizia.coords"
+          [title]="perizia.description" [options]="googleMapsService.markerOptions"
+          (mapClick)="periziaService.editModal(perizia)">
+        </map-marker>
+      </google-map>
     </ion-card>
     <br>
     <ion-fab horizontal="center">
