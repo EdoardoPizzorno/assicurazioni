@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { PhotoService } from '../photo.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilsService {
 
-  constructor() { }
+  constructor(private photoService: PhotoService) { }
 
   createUrl(selectedDate: string, selectedDescription: string): string {
     let url = window.location.pathname + "?";
@@ -33,29 +34,6 @@ export class UtilsService {
     return operator == "Utente eliminato" ? "deleted" : "";
   }
 
-  substituteFields(perizia: any, fields: any) {
-    let comments: any = [];
-
-    for (let i = 0; i < fields.comments.length; i++) {
-      comments.push({ "text": fields.comments[i].innerHTML, "imageIndex": fields.comments[i].id });
-    }
-
-    perizia.description = fields.description;
-    perizia.date = fields.date;
-    perizia.time = fields.time;
-
-    let count = 0;
-    let prevImageIndex = 0;
-    comments.forEach((comment: any) => {
-      if (comment.imageIndex != prevImageIndex) {
-        count = 0;
-        prevImageIndex = comment.imageIndex;
-      }
-      perizia.photos[comment.imageIndex].comments[count++] = comment.text;
-    });
-    return perizia;
-  }
-
   getCoordsFromUrl(indications: string): any {
     if (indications) {
       const aus = indications.split(',');
@@ -64,6 +42,19 @@ export class UtilsService {
         lng: parseFloat(aus[1])
       };
     }
+  }
+
+  async openModal(modal: any, photo: any, position: number) {
+    this.photoService.currentImageClicked = {
+      index: position,
+      url: photo.webviewPath,
+      filepath: photo.filepath
+    }
+    modal.present();
+  }
+
+  closeModal(modal: any) {
+    modal.dismiss();
   }
 
   getUserFromCache() {

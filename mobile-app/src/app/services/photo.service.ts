@@ -4,6 +4,8 @@ import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Preferences } from '@capacitor/preferences';
 import { Platform } from '@ionic/angular';
+import { PeriziaService } from './perizia.service';
+import { UtilsService } from './utils/utils.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,7 @@ export class PhotoService {
   }
   textInput: string = "";
 
-  constructor(platform: Platform) {
+  constructor(platform: Platform, private periziaService: PeriziaService) {
     this.platform = platform;
   }
 
@@ -47,14 +49,15 @@ export class PhotoService {
 
   }
 
-  public async addNewToGallery() {
+  public async addNewToGallery(isEditMode: boolean = false) {
     const capturedPhoto = await Camera.getPhoto({
       resultType: CameraResultType.Uri,
       source: CameraSource.Camera,
-      quality: 100
+      quality: 100,
+      allowEditing: true
     });
-    
-    await this.savePicture(capturedPhoto);
+
+    await this.savePicture(capturedPhoto, isEditMode);
 
     Preferences.set({
       key: this.PHOTO_STORAGE,
@@ -62,7 +65,7 @@ export class PhotoService {
     });
   }
 
-  private async savePicture(photo: Photo) {
+  private async savePicture(photo: Photo, isEditMode: boolean = false) {
     const base64Data = await this.readAsBase64(photo);
 
     const fileName = Date.now() + '.jpeg';
@@ -72,16 +75,24 @@ export class PhotoService {
       directory: Directory.Data
     });
 
-    this.images.unshift({
-      filepath: fileName,
-      url: base64Data,
-      comments: []
-    });
+    if (!isEditMode) {
+      this.images.unshift({
+        filepath: fileName,
+        url: base64Data,
+        comments: []
+      });
 
-    this.photos.unshift({
-      filepath: fileName,
-      webviewPath: photo.webPath
-    });
+      this.photos.unshift({
+        filepath: fileName,
+        webviewPath: photo.webPath
+      });
+    } else {
+      this.periziaService.currentEditPerizia.newPhotos = []
+      this.periziaService.currentEditPerizia.newPhotos.push({
+        url: base64Data,
+        comments: []
+      });
+    }
 
     if (this.platform.is('hybrid')) {
       return {
@@ -97,7 +108,7 @@ export class PhotoService {
     }
   }
 
-  public async deletePicture() {
+  public async deletePicture(modal: any) {
     this.photos.splice(this.currentImageClicked.index, 1);
 
     Preferences.set({
@@ -113,6 +124,8 @@ export class PhotoService {
       path: filename,
       directory: Directory.Data
     });
+
+    modal.dismiss();
 
   }
 
@@ -135,6 +148,8 @@ export class PhotoService {
 
   addComment() {
     if (this.textInput.trim() !== '') {
+      if (!this.images[this.currentImageClicked.index].comments)
+        this.images[this.currentImageClicked.index].comments = [];
       this.images[this.currentImageClicked.index]["comments"].push(this.textInput.trim());
       this.textInput = '';
     }
@@ -146,7 +161,7 @@ export class PhotoService {
 
   //#region INTERNAL FUNCTIONS
 
-  private async readAsBase64(photo: Photo) {
+  async readAsBase64(photo: Photo) {
     if (this.platform.is('hybrid')) {
       const file = await Filesystem.readFile({
         path: photo.path!

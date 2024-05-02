@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
 import { Router } from '@angular/router';
-import { UtilsService } from './utils/utils.service';
 import { AlertController } from '@ionic/angular';
 
 @Injectable({
@@ -12,11 +11,11 @@ export class UserService {
   isLoading: boolean = false;
   currentUser: any;
 
-  constructor(private dataStorage: DataStorageService, private utils: UtilsService, private router: Router, private alertController: AlertController) { }
+  constructor(private dataStorage: DataStorageService, private router: Router, private alertController: AlertController) { }
 
   async getUser(id: any = null): Promise<void> {
     this.isLoading = true;
-    let userId = id || this.utils.getUserFromCache();
+    let userId = id || this.getUserFromCache();
     if (userId == null) {
       await this.router.navigate(['/login']);
       window.location.reload();
@@ -86,6 +85,15 @@ export class UserService {
           this.currentUser = response.data;
         }
       });
+  }
+
+  getUserFromCache() {
+    let cache: any = localStorage.getItem("ASSICURAZIONI");
+    if (cache) {
+      let parsedCache: any = JSON.parse(cache);
+      return parsedCache.currentUser;
+    }
+    return null;
   }
 
 }

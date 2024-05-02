@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { DataStorageService } from './data-storage.service';
-import { UtilsService } from './utils/utils.service';
 import { UserService } from './user.service';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -19,8 +18,9 @@ export class PeriziaService {
     description: "",
     photos: []
   }
+  currentEditPerizia: any;
 
-  constructor(private dataStorage: DataStorageService, private utils: UtilsService, private userService: UserService, private router: Router, private alertController: AlertController) { }
+  constructor(private dataStorage: DataStorageService, private userService: UserService, private router: Router, private alertController: AlertController) { }
 
   getPerizie(): Promise<void> {
     this.isLoading = true;
@@ -49,7 +49,6 @@ export class PeriziaService {
         })
         .then(async (response) => {
           await this.fillPeriziaFields(response.data);
-          console.log(this.newPerizia)
           this.dataStorage.sendRequest("POST", "/perizia", { perizia: this.newPerizia })
             .catch(error => {
               this.dataStorage.error(error);
@@ -75,7 +74,27 @@ export class PeriziaService {
     });
   }
 
-  update(perizia: any): Promise<void> {
+  async update(perizia: any): Promise<void> {
+    let newImages: any = [];
+    let newImagesComments: any = [];
+    if ("newPhotos" in perizia) {
+      newImages = await this.dataStorage.sendRequest("POST", "/images", { imagesBase64: perizia.newPhotos })
+      // Load comments for new images
+      for (let photo of perizia.newPhotos)
+        newImagesComments.push(photo.comments);
+
+      delete perizia.newPhotos;
+      newImages = newImages.data;
+    }
+    if (newImages.length > 0) {
+      for (let newImage of newImages) {
+        perizia.photos.push({
+          url: newImage,
+          comments: newImagesComments[newImages.indexOf(newImage)],
+          photographer: this.userService.currentUser.username
+        });
+      }
+    }
     return new Promise((resolve, reject) => {
       this.dataStorage.sendRequest("PATCH", "/perizia/" + perizia._id, { perizia })
         .catch(error => {
@@ -150,7 +169,7 @@ export class PeriziaService {
               time: (<HTMLInputElement>document.getElementById("time")).value,
               comments: (document.getElementsByClassName("comment"))
             }
-            this.utils.substituteFields(perizia, fields);
+            this.substituteFields(perizia, fields);
             await this.update(perizia);
             await this.getPerizie();
           }
@@ -165,6 +184,31 @@ export class PeriziaService {
     }).then(alert => {
       alert.present();
     });
+  }
+
+  //#region INTERNAL FUNCTIONS
+
+  substituteFields(perizia: any, fields: any) {
+    let comments: any = [];
+
+    for (let i = 0; i < fields.comments.length; i++) {
+      comments.push({ "text": fields.comments[i].innerHTML, "imageIndex": fields.comments[i].id });
+    }
+
+    perizia.description = fields.description;
+    perizia.date = fields.date;
+    perizia.time = fields.time;
+
+    let count = 0;
+    let prevImageIndex = 0;
+    comments.forEach((comment: any) => {
+      if (comment.imageIndex != prevImageIndex) {
+        count = 0;
+        prevImageIndex = comment.imageIndex;
+      }
+      perizia.photos[comment.imageIndex].comments[count++] = comment.text;
+    });
+    return perizia;
   }
 
   async fillPeriziaFields(secure_urls: any) {
@@ -183,7 +227,6 @@ export class PeriziaService {
     this.newPerizia.date = parsedDate
     this.newPerizia.time = date.toLocaleTimeString();
     this.newPerizia.icon = "";
-    console.log(this.newPerizia)
   }
 
   async getCoords() {
@@ -195,5 +238,7 @@ export class PeriziaService {
       });
     });
   }
+
+  //#endregion
 
 }

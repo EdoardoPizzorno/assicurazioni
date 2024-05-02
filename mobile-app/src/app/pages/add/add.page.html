@@ -19,7 +19,7 @@
       <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
         <ion-img [src]="photo.webviewPath" (click)="openModal(photo, position)"></ion-img>
       </ion-col>
-      <ion-col class="card" (click)="addPhotoToGallery()">
+      <ion-col class="card" (click)="photoService.addNewToGallery()">
         <ion-icon name="camera-outline"></ion-icon>
         <ion-label>Aggiungi foto</ion-label>
       </ion-col>

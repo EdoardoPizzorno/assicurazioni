@@ -61,7 +61,6 @@ export class GoogleMapsService {
       const sideBar: HTMLElement = document.getElementById("sidebar") as HTMLElement;
 
       this.periziaService.selectedPeriziaId = this.getIdFromCoords(destination);
-      console.log(this.periziaService.selectedPeriziaId)
 
       sideBar.innerHTML = '';
 
