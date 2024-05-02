@@ -18,6 +18,8 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { TravelModesComponent } from './components/utils/travel-modes/travel-modes.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -41,8 +43,11 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
     AppRoutingModule,
     FormsModule,
     GoogleMapsModule,
+    MatSlideToggleModule
   ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

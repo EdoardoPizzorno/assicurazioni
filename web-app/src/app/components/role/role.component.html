@@ -7,15 +7,21 @@
         <thead>
             <tr>
                 <th>Nome</th>
+                <th>Accesso a Web App</th>
                 <th>Modifica</th>
                 <th>Elimina</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let role of roleService.roles" >
+            <tr *ngFor="let role of roleService.roles">
                 <td>{{role.name}}</td>
                 <td>
-                    <button class="btn btn-primary" (click)="roleService.update(role)">Modifica</button>
+                    <mat-slide-toggle color="blue" [aria-label]="role.canAccessToWebApp" (change)="updateAccess(role)"
+                        [checked]="role.canAccessToWebApp">
+                    </mat-slide-toggle>
+                </td>
+                <td>
+                    <button class="btn btn-primary" (click)="updateName(role)">Modifica</button>
                 </td>
                 <td>
                     <button class="btn btn-danger" (click)="roleService.delete(role)">

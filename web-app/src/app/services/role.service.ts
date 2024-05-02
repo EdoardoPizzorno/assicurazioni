@@ -43,26 +43,14 @@ export class RoleService {
   }
 
   update(role: any) {
-    Swal.fire({
-      title: 'Modifica ruolo',
-      input: 'text',
-      inputValue: role.name,
-      showCancelButton: true,
-      confirmButtonText: 'Update',
-      showLoaderOnConfirm: true,
+    
 
-    }).then((response: any) => {
-      if (response.isConfirmed) {
-        const roleName = response.value;
-        this.dataStorage.sendRequest("PATCH", "/role/" + role._id, { "name": roleName })
+    this.dataStorage.sendRequest("PATCH", "/role/" + role._id, { role })
           .catch(this.dataStorage.error)
           .then(async (response: any) => {
             await Swal.fire('Ruolo modificato', '', 'success');
             await this.getRoles();
           });
-      }
-
-    })
   }
 
   delete(_id: any) {

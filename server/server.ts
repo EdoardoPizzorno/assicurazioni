@@ -107,6 +107,7 @@ const corsOptions = {
     credentials: true
 };
 app.use("/", _cors(corsOptions));
+
 /*
 const whitelist = [
     "http://edoardopizzorno-crudserver.onrender.com",	// porta 80 (default)
@@ -542,13 +543,13 @@ app.patch("/api/user/:id", async (req, res, next) => {
 })
 
 app.patch("/api/role/:id", async (req, res, next) => {
-    const roleName = req["body"].name;
+    const role = req["body"].role;
     const _id = new ObjectId(req.params.id);
 
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
     const collection = client.db(DBNAME).collection("RUOLI");
-    let rq = collection.updateOne({ "_id": _id }, { "$set": { "name": roleName } });
+    let rq = collection.updateOne({ "_id": _id }, { "$set": { "name": role.name, "canAccessToWebApp": role.canAccessToWebApp } });
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err.message}`));
     rq.finally(() => client.close());
