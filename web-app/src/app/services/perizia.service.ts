@@ -67,7 +67,7 @@ export class PeriziaService {
         .then(async (response) => {
           await this.getPerizie();
           Swal.fire("Perizia eliminata", "", "success").then(() => {
-            window.location.href = window.location.pathname;
+            this.getPerizie();
           });
           resolve();
         });

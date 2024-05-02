@@ -18,9 +18,9 @@ export class HomePage {
     if (!this.userService.currentUser) {
       await this.userService.getUser();
       await this.periziaService.getPerizie();
+      this.googleMapsService.map = this.map;
+      await this.googleMapsService.getDirections();
     }
-    this.googleMapsService.map = this.map;
-    await this.googleMapsService.getDirections();
   }
 
 }
