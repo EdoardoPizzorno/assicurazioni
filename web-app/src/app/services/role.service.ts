@@ -43,8 +43,6 @@ export class RoleService {
   }
 
   update(role: any) {
-    
-
     this.dataStorage.sendRequest("PATCH", "/role/" + role._id, { role })
           .catch(this.dataStorage.error)
           .then(async (response: any) => {

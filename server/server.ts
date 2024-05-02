@@ -498,6 +498,7 @@ app.post("/api/images", async (req, res, next) => {
 
 app.post("/api/role", async (req, res, next) => {
     const role = req["body"];
+    role["canAccessToWebApp"] = false;
 
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
@@ -545,7 +546,7 @@ app.patch("/api/user/:id", async (req, res, next) => {
 app.patch("/api/role/:id", async (req, res, next) => {
     const role = req["body"].role;
     const _id = new ObjectId(req.params.id);
-
+    console.log(role)
     const client = new MongoClient(CONNECTION_STRING);
     await client.connect();
     const collection = client.db(DBNAME).collection("RUOLI");
