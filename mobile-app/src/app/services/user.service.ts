@@ -45,7 +45,7 @@ export class UserService {
               {
                 text: 'OK',
                 handler: () => {
-                  window.location.href = "/users";
+                  window.location.href = "/user";
                 }
               }
             ]
