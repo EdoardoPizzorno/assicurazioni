@@ -125,7 +125,6 @@ export class UtilsService {
     return commentsHtml;
   }
 
-
   substituteFields(perizia: any, fields: any) {
     let comments: any = [];
 
@@ -147,6 +146,15 @@ export class UtilsService {
       perizia.photos[comment.imageIndex].comments[count++] = comment.text;
     });
     return perizia;
+  }
+
+  setUserInCache(user: any) {
+    let cache: any = localStorage.getItem("ASSICURAZIONI");
+    if (cache) {
+      let parsedCache: any = JSON.parse(cache);
+      parsedCache.currentUser = user;
+      localStorage.setItem("ASSICURAZIONI", JSON.stringify(parsedCache));
+    }
   }
 
   getUserFromCache() {

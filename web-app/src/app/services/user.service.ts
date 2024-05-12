@@ -47,6 +47,7 @@ export class UserService {
         .catch(this.dataStorage.error)
         .then((response) => {
           this.selectedUser = response.data;
+          this.utils.setUserInCache(this.selectedUser);
           this.isLoading = false;
           resolve();
         });
