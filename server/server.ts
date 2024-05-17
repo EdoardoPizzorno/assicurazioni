@@ -16,7 +16,6 @@ import Replicate from "replicate";
 
 import { MongoClient, ObjectId } from "mongodb";
 
-
 //#region SERVER SETUP
 
 _dotenv.config({ "path": ".env" });
